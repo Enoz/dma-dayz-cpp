@@ -4,9 +4,7 @@
 
 
 namespace DayZ {
-	class NetworkClient : public DMAMem::MemoryObject {
-
-	public:
+	struct NetworkClient : public DMAMem::MemoryObject {
 
 		uint16_t PlayerCount;
 		std::shared_ptr<Scoreboard> scoreboardPtr;

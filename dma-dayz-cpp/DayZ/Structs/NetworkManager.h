@@ -10,9 +10,7 @@
 //}; //Size: 0x0838
 
 namespace DayZ {
-	class NetworkManager : public DMAMem::MemoryObject {
-
-	public:
+	struct NetworkManager : public DMAMem::MemoryObject {
 		std::shared_ptr<NetworkClient> NetworkClientPtr;
 
 		NetworkManager() {

@@ -155,10 +155,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DayZ\Structs\ArmaString.h" />
+    <ClInclude Include="DayZ\Structs\Camera.h" />
+    <ClInclude Include="DayZ\Structs\Entity.h" />
+    <ClInclude Include="DayZ\Structs\EntityTable.h" />
+    <ClInclude Include="DayZ\Structs\EntityType.h" />
+    <ClInclude Include="DayZ\Structs\FutureVisualState.h" />
+    <ClInclude Include="DayZ\Structs\World.h" />
     <ClInclude Include="DayZ\Structs\NetworkClient.h" />
     <ClInclude Include="DayZ\Structs\NetworkManager.h" />
     <ClInclude Include="DayZ\Structs\Scoreboard.h" />
     <ClInclude Include="DayZ\Structs\ScoreboardIdentity.h" />
+    <ClInclude Include="DayZ\Structs\Vectors.h" />
     <ClInclude Include="DMAMemoryManagement\includes.h" />
     <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObject.h" />
     <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObjectPointable.h" />

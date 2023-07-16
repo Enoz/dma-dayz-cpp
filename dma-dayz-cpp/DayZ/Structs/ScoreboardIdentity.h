@@ -3,10 +3,7 @@
 #include "ArmaString.h"
 
 namespace DayZ {
-	class ScoreboardIdentity : public DMAMem::MemoryObject {
-
-	public:
-
+	struct ScoreboardIdentity : public DMAMem::MemoryObject {
 		uint32_t NetworkID;
 		std::shared_ptr<ArmaString> PlayerName;
 

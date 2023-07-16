@@ -2,10 +2,7 @@
 #include "../../DMAMemoryManagement/includes.h";
 
 namespace DayZ {
-	class ArmaString : public DMAMem::MemoryObject {
-
-	public:
-
+	struct ArmaString : public DMAMem::MemoryObject {
 		uint16_t length;
 		char value[256];
 
