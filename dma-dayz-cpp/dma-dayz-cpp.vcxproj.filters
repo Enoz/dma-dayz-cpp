@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dma-dayz-cpp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMAMemoryManagement\MemoryObject\MemoryObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMAMemoryManagement\MemoryObject\MemoryObjectScatterable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMAMemoryManagement\StaticManager\StaticManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMAMemoryManagement\Utils\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMAMemoryManagement\VmmManager\VmmManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FTD3XX.dll" />
+    <None Include="leechcore.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="vmm.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObjectScatterable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMAMemoryManagement\MemProcFS\leechcore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMAMemoryManagement\MemProcFS\vmmdll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMAMemoryManagement\StaticManager\StaticManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMAMemoryManagement\Utils\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMAMemoryManagement\VmmManager\VmmManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMAMemoryManagement\includes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="vmm.dll" />
+    <CopyFileToFolders Include="leechcore.lib" />
+  </ItemGroup>
+</Project>
