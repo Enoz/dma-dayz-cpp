@@ -15,6 +15,7 @@ namespace DayZ {
 
 		EntityTable(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : EntityTable() {
 			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
+			this->postPointerResolution(vmmManager, remotePid);
 		}
 
 		void postPointerResolution(DMAMem::VmmManager* vmmManager, DWORD remotePid) {
