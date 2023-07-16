@@ -154,12 +154,14 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DayZ\DayzUtil.h" />
     <ClInclude Include="DayZ\Structs\ArmaString.h" />
     <ClInclude Include="DayZ\Structs\Camera.h" />
     <ClInclude Include="DayZ\Structs\Entity.h" />
     <ClInclude Include="DayZ\Structs\EntityTable.h" />
     <ClInclude Include="DayZ\Structs\EntityType.h" />
     <ClInclude Include="DayZ\Structs\FutureVisualState.h" />
+    <ClInclude Include="DayZ\Structs\WorldPointer.h" />
     <ClInclude Include="DayZ\Structs\World.h" />
     <ClInclude Include="DayZ\Structs\NetworkClient.h" />
     <ClInclude Include="DayZ\Structs\NetworkManager.h" />

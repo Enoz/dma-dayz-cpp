@@ -5,8 +5,10 @@
 
 namespace DayZ {
 	struct Entity : public DMAMem::MemoryObject {
+	public:
 		std::shared_ptr<FutureVisualState> FutureVisualStatePtr;
 		std::shared_ptr<EntityType> EntityTypePtr;
+		
 
 		Entity() {
 			FutureVisualStatePtr = std::shared_ptr<FutureVisualState>(new FutureVisualState());
@@ -17,6 +19,10 @@ namespace DayZ {
 
 		Entity(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : Entity() {
 			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
+		}
+
+		bool isValid() {
+			return EntityTypePtr->TypeName->length < 1000;
 		}
 	};
 }
