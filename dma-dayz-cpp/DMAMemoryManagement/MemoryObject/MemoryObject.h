@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#define GAME_POINTER_TYPE DWORD
+#define GAME_POINTER_TYPE QWORD
 #define GAME_POINTER_SIZE sizeof(GAME_POINTER_TYPE)
 
 namespace DMAMem {

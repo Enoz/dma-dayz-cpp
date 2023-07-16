@@ -154,6 +154,10 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DayZ\Structs\ArmaString.h" />
+    <ClInclude Include="DayZ\Structs\NetworkClient.h" />
+    <ClInclude Include="DayZ\Structs\Scoreboard.h" />
+    <ClInclude Include="DayZ\Structs\ScoreboardIdentity.h" />
     <ClInclude Include="DMAMemoryManagement\includes.h" />
     <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObject.h" />
     <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObjectScatterable.h" />
@@ -162,6 +166,9 @@
     <ClInclude Include="DMAMemoryManagement\StaticManager\StaticManager.h" />
     <ClInclude Include="DMAMemoryManagement\Utils\Utils.h" />
     <ClInclude Include="DMAMemoryManagement\VmmManager\VmmManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

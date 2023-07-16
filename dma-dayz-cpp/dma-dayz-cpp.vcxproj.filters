@@ -66,9 +66,24 @@
     <ClInclude Include="DMAMemoryManagement\includes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DayZ\Structs\ArmaString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\ScoreboardIdentity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\Scoreboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\NetworkClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="vmm.dll" />
     <CopyFileToFolders Include="leechcore.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes.txt" />
   </ItemGroup>
 </Project>
