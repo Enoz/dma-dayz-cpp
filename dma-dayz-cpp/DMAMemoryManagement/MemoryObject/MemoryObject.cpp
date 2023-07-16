@@ -54,8 +54,7 @@ BOOL DMAMem::MemoryObject::resolveOffsets(VmmManager* vmmManager, DWORD remotePi
 	int memReadSize = getObjectSize();
 	std::shared_ptr<char[]> objectData(new char[memReadSize]);
 
-
-	if (VMMDLL_MemReadEx(vmmManager->getVmm(), remotePid, remoteAddress, (PBYTE)objectData.get(), memReadSize, NULL, flags)) {
+	if (vmmManager->readMemory(remotePid, remoteAddress, objectData.get(), memReadSize, flags)) {
 		return resolveObject(vmmManager, remotePid, objectData.get());
 	}
 	return FALSE;
@@ -77,18 +76,18 @@ void DMAMem::MemoryObject::registerScatterObject(MemoryObject* memObj, QWORD rem
 
 void DMAMem::MemoryObject::populateScatterObjects(VmmManager* vmmManager, DWORD remotePid, ULONG64 flags)
 {
-	VMMDLL_SCATTER_HANDLE scatterHandle = VMMDLL_Scatter_Initialize(vmmManager->getVmm(), remotePid, flags);
+	VMMDLL_SCATTER_HANDLE scatterHandle = vmmManager->initializeScatter(remotePid, flags);
+
 	auto resolvedList = std::vector<ResolvedScatterEntry>();
 	for (ScatterEntry se : scatterEntries) {
 		ResolvedScatterEntry rse;
 		rse.se = se;
 		int size = se.memObj->getObjectSize();
 		rse.objectData = std::shared_ptr<char[]>(new char[size]);
-		VMMDLL_Scatter_PrepareEx(scatterHandle, se.remoteAddress, size, (PBYTE)rse.objectData.get(), nullptr);
+		vmmManager->addScatterRead(scatterHandle, se.remoteAddress, size, rse.objectData.get());
 		resolvedList.push_back(rse);
 	}
-	VMMDLL_Scatter_ExecuteRead(scatterHandle);
-	VMMDLL_Scatter_CloseHandle(scatterHandle);
+	vmmManager->executeScatter(scatterHandle);
 	for (const ResolvedScatterEntry rse : resolvedList) {
 		rse.se.memObj->resolveObject(vmmManager, remotePid, rse.objectData.get());
 	}

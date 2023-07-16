@@ -15,6 +15,9 @@ namespace DMAMem {
 			VMM_HANDLE initialize();
 	public:
 			VMM_HANDLE getVmm();
-
+			BOOL readMemory(DWORD pid, QWORD remoteAddress, void* destination, int size, ULONG64 flags);
+			VMMDLL_SCATTER_HANDLE initializeScatter(DWORD pid, ULONG64 flags);
+			void addScatterRead(VMMDLL_SCATTER_HANDLE handle, QWORD remoteAddress, int size, void* destination);
+			void executeScatter(VMMDLL_SCATTER_HANDLE handle);
 	};
 }

@@ -22,7 +22,7 @@ DMAMem::MODULE_DUMP DMAMem::StaticManager::getModule(DWORD pid, std::string modu
 	DMAMem::MODULE_DUMP dumpEntry;
 	dumpEntry.pvmEntry = pModuleEntry;
 	dumpEntry.dump = std::shared_ptr<BYTE[]>(new BYTE[pModuleEntry->cbImageSize]);
-	bool success = VMMDLL_MemReadEx(vmmManager->getVmm(), pid, pModuleEntry->vaBase, dumpEntry.dump.get(), pModuleEntry->cbImageSize, NULL, VMMDLL_FLAG_NOCACHE);
+	bool success = vmmManager->readMemory(pid, pModuleEntry->vaBase, dumpEntry.dump.get(), pModuleEntry->cbImageSize, VMMDLL_FLAG_NOCACHE);
 	if (success) {
 		std::cout << "[+] Dumped " << moduleName << std::endl;
 	}
