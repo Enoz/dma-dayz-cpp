@@ -9,11 +9,12 @@ void DMAMem::MemoryObject::registerOffset(int offset, void* destination, int typ
 	offsetVector.push_back(oe);
 }
 
-void DMAMem::MemoryObject::registerPointer(int offset, MemoryObject* destination)
+void DMAMem::MemoryObject::registerPointer(int offset, MemoryObject* destination, ULONG64 flags)
 {
 	OffsetPointer op = OffsetPointer();
 	op.offset = offset;
 	op.destination = destination;
+	op.flags = flags;
 	pointerVector.push_back(op);
 }
 
@@ -36,13 +37,13 @@ BOOL DMAMem::MemoryObject::resolveObject(VmmManager* vmmManager, DWORD remotePid
 	for (const OffsetPointer& op : pointerVector) {
 		GAME_POINTER_TYPE gp;
 		memcpy(&gp, objectData + op.offset, GAME_POINTER_SIZE);
-		op.destination->resolveOffsets(vmmManager, remotePid, gp);
+		op.destination->resolveOffsets(vmmManager, remotePid, gp, op.flags);
 		op.destination->postPointerResolution(vmmManager, remotePid);
 	}
 	return TRUE;
 }
 
-BOOL DMAMem::MemoryObject::resolveOffsets(VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress)
+BOOL DMAMem::MemoryObject::resolveOffsets(VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress, ULONG64 flags)
 {
 	if (remoteAddress == NULL) {
 		return FALSE;
@@ -51,7 +52,7 @@ BOOL DMAMem::MemoryObject::resolveOffsets(VmmManager* vmmManager, DWORD remotePi
 	std::shared_ptr<char[]> objectData(new char[memReadSize]);
 
 
-	if (VMMDLL_MemReadEx(vmmManager->getVmm(), remotePid, remoteAddress, (PBYTE)objectData.get(), memReadSize, NULL, VMMDLL_FLAG_NOCACHE)) {
+	if (VMMDLL_MemReadEx(vmmManager->getVmm(), remotePid, remoteAddress, (PBYTE)objectData.get(), memReadSize, NULL, flags)) {
 		return resolveObject(vmmManager, remotePid, objectData.get());
 	}
 	return FALSE;
