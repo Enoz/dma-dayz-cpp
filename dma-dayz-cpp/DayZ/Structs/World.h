@@ -60,9 +60,5 @@ namespace DayZ {
 			this->registerOffset(0x1FDC, &ItemTableCount, sizeof(int32_t));
 
 		}
-
-		World(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : World() {
-			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
-		}
 	};
 }

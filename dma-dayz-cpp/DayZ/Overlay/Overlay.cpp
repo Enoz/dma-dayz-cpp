@@ -30,12 +30,14 @@ void Overlay::threadWorker()
 		}
 		overlayWindow.clear();
 		overlayWindow.draw(rectBackground);
-		camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera(game->getVMM(), game->getPid(), camera->_remoteAddress));
+		QWORD oldCam = camera->_lastAddressUsed;
+		camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera());
+		camera->resolveObject(game->getVMM(), game->getPid(), oldCam);
 
 		//Update Entity Tables
-		nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), nearEntities->_remoteAddress));
+		//nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), nearEntities->_remoteAddress));
 		//farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), farEntities->_remoteAddress));
-		slowEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), slowEntities->_remoteAddress, NULL));
+		//slowEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), slowEntities->_remoteAddress, NULL));
 		//itemEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), itemEntities->_remoteAddress, NULL));
 
 		//Combine Entity Tables

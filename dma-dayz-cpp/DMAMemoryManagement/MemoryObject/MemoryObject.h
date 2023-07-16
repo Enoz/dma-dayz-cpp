@@ -2,6 +2,7 @@
 #include <map>
 #include "../MemProcFS/vmmdll.h"
 #include "../VmmManager/VmmManager.h"
+#include "../../DMAMemoryManagement/Utils/Utils.h"
 #include <vector>
 #include <memory>
 
@@ -11,10 +12,7 @@
 namespace DMAMem {
 	class MemoryObject {
 	protected:
-		void registerOffset(int offset, void* destination, int typeSize);
-		void registerPointer(int offset, MemoryObject* destination, ULONG64 flags = VMMDLL_FLAG_NOCACHE);
 
-	private:
 		struct OffsetEntry {
 			int offset;
 			void* destination;
@@ -24,31 +22,33 @@ namespace DMAMem {
 			int offset;
 			MemoryObject* destination;
 			ULONG64 flags;
+			GAME_POINTER_TYPE resolvedAddress;
 		};
-		std::vector<OffsetEntry> offsetVector;
-		std::vector<OffsetPointer> pointerVector;
+		struct ResolutionRequest {
+			QWORD address;
+			void* destination;
+			int size;
+		};
 
 
-		struct ScatterEntry {
-			MemoryObject* memObj;
-			QWORD remoteAddress;
-		};
-		struct ResolvedScatterEntry {
-			ScatterEntry se;
-			std::shared_ptr<char[]> objectData;
-		};
-		std::vector<ScatterEntry> scatterEntries;
+		void registerOffset(int offset, void* destination, int typeSize);
+		void registerPointer(int offset, MemoryObject* destination, ULONG64 flags = VMMDLL_FLAG_NOCACHE);
+
+		bool _isBaseResolved = false;
+
+
+		std::vector<ResolutionRequest>* generateDefaultResolutions(QWORD baseAddress);
+
+	private:
+		std::shared_ptr<std::vector<OffsetEntry>> offsetVector = std::shared_ptr<std::vector<OffsetEntry>>(new std::vector<OffsetEntry>());
+		std::shared_ptr<std::vector<std::shared_ptr<OffsetPointer>>> pointerVector = std::shared_ptr<std::vector<std::shared_ptr<OffsetPointer>>>(new std::vector<std::shared_ptr<OffsetPointer>>());
+		void readResolutions(VmmManager* manager, DWORD pid, std::vector<ResolutionRequest>* resolutionRequests);
 
 
 
 	public:
-		QWORD _remoteAddress = NULL;
-		int getObjectSize();
-		BOOL resolveOffsets(VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress, ULONG64 flags = VMMDLL_FLAG_NOCACHE);
-		BOOL resolveObject(VmmManager* vmmManager, DWORD remotePid, char* objectData);
-		void initializeScatter();
-		void registerScatterObject(MemoryObject* memObj, QWORD remoteAddress);
-		void populateScatterObjects(VmmManager* vmmManager, DWORD remotePid, ULONG64 flags = VMMDLL_FLAG_NOCACHE | VMMDLL_FLAG_NOPAGING_IO);
-		virtual void postPointerResolution(VmmManager* vmmManager, DWORD remotePid) {};
+		GAME_POINTER_TYPE _lastAddressUsed = NULL;
+		void resolveObject(VmmManager* manager, DWORD pid, QWORD address);
+		virtual std::vector<ResolutionRequest>* getRequestedResolutions(QWORD baseAddress);
 	};
 }

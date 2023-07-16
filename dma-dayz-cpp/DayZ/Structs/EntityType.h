@@ -18,9 +18,5 @@ namespace DayZ {
 			this->registerPointer(0xA8, ConfigName.get(), NULL);
 			this->registerPointer(0x4E8, CleanName.get(), NULL);
 		}
-
-		EntityType(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : EntityType() {
-			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
-		}
 	};
 }

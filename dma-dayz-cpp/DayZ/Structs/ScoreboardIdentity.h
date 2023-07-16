@@ -13,9 +13,5 @@ namespace DayZ {
 			PlayerName = std::shared_ptr<ArmaString>(new ArmaString());
 			this->registerPointer(0xF0, PlayerName.get(), NULL);
 		}
-
-		ScoreboardIdentity(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : ScoreboardIdentity() {
-			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
-		}
 	};
 }

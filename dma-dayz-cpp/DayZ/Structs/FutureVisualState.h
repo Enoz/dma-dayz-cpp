@@ -10,8 +10,5 @@ namespace DayZ {
 			this->registerOffset(0x2c, &position, sizeof(Vector3));
 		}
 
-		FutureVisualState(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : FutureVisualState() {
-			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
-		}
 	};
 }

@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DayZ\DayZMem\DayZMem.cpp" />
+    <ClCompile Include="DayZ\DayzUtil.cpp" />
     <ClCompile Include="DayZ\Overlay\Overlay.cpp" />
     <ClCompile Include="dma-dayz-cpp.cpp" />
     <ClCompile Include="DMAMemoryManagement\MemoryObject\MemoryObject.cpp" />

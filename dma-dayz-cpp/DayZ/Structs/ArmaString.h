@@ -10,9 +10,5 @@ namespace DayZ {
 			this->registerOffset(0x8, &length, sizeof(uint16_t));
 			this->registerOffset(0x10, &value, sizeof(char[256]));
 		}
-
-		ArmaString(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : ArmaString() {
-			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
-		}
 	};
 }

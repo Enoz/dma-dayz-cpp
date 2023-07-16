@@ -44,7 +44,7 @@ QWORD DMAMem::StaticManager::sigScan(DWORD pid, std::string moduleName, std::str
 	MODULE_DUMP module = getModule(pid, moduleName);
 	
 	//Split pattern
-	std::vector<std::string> patternSplit = Utils::split(pattern, " ");
+	std::vector<std::string> patternSplit = DMAUtils::split(pattern, " ");
 	std::vector<BYTE> patternBytes = std::vector<BYTE>();
 	for (std::string sByte : patternSplit)
 		if (sByte == "?")

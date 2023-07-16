@@ -6,90 +6,74 @@ void DMAMem::MemoryObject::registerOffset(int offset, void* destination, int typ
 	oe.offset = offset;
 	oe.destination = destination;
 	oe.typeSize = typeSize;
-	offsetVector.push_back(oe);
+	offsetVector->push_back(oe);
 }
 
 void DMAMem::MemoryObject::registerPointer(int offset, MemoryObject* destination, ULONG64 flags)
 {
-	OffsetPointer op = OffsetPointer();
-	op.offset = offset;
-	op.destination = destination;
-	op.flags = flags;
-	pointerVector.push_back(op);
+	std::shared_ptr<OffsetPointer> op(new OffsetPointer());
+	op->offset = offset;
+	op->destination = destination;
+	op->flags = flags;
+	op->resolvedAddress = NULL;
+	pointerVector->push_back(op);
 }
 
-int DMAMem::MemoryObject::getObjectSize()
+std::vector<DMAMem::MemoryObject::ResolutionRequest>* DMAMem::MemoryObject::getRequestedResolutions(QWORD baseAddress)
 {
-	int memReadSize = 0;
-	for (const OffsetEntry& oe : offsetVector) {
-		memReadSize = (((memReadSize) > (oe.offset + oe.typeSize)) ? (memReadSize) : (oe.offset + oe.typeSize));
-	}
-	for (const OffsetPointer& op : pointerVector) {
-		memReadSize = (((memReadSize) > (op.offset + GAME_POINTER_SIZE)) ? (memReadSize) : (op.offset + GAME_POINTER_SIZE));
-	}
-	return memReadSize;
+	return generateDefaultResolutions(baseAddress);
 }
 
-
-
-BOOL DMAMem::MemoryObject::resolveObject(VmmManager* vmmManager, DWORD remotePid, char* objectData) {
-	for (const OffsetEntry& oe : offsetVector) {
-		memcpy(oe.destination, objectData + oe.offset, oe.typeSize);
-	}
-	for (const OffsetPointer& op : pointerVector) {
-		GAME_POINTER_TYPE gp;
-		memcpy(&gp, objectData + op.offset, GAME_POINTER_SIZE);
-		op.destination->resolveOffsets(vmmManager, remotePid, gp, op.flags);
-		op.destination->postPointerResolution(vmmManager, remotePid);
-	}
-	return TRUE;
-}
-
-BOOL DMAMem::MemoryObject::resolveOffsets(VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress, ULONG64 flags)
+std::vector<DMAMem::MemoryObject::ResolutionRequest>* DMAMem::MemoryObject::generateDefaultResolutions(QWORD baseAddress)
 {
-	if (remoteAddress == NULL) {
-		return FALSE;
+	std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
+	if (baseAddress == NULL)
+		return requestVec.get();
+	_lastAddressUsed = baseAddress;
+	if (!_isBaseResolved) {
+		for (const auto offEntry : *offsetVector) {
+			ResolutionRequest resReq;
+			resReq.address = baseAddress + offEntry.offset;
+			resReq.destination = offEntry.destination;
+			resReq.size = offEntry.typeSize;
+			requestVec->push_back(resReq);
+		}
+		for (const auto ptrEntry : *pointerVector) {
+			ResolutionRequest resReq;
+			resReq.address = baseAddress + ptrEntry->offset;
+			resReq.destination = &ptrEntry->resolvedAddress;
+			resReq.size = GAME_POINTER_SIZE;
+			requestVec->push_back(resReq);
+		}
 	}
-	_remoteAddress = remoteAddress;
-	int memReadSize = getObjectSize();
-	std::shared_ptr<char[]> objectData(new char[memReadSize]);
-
-	if (vmmManager->readMemory(remotePid, remoteAddress, objectData.get(), memReadSize, flags)) {
-		return resolveObject(vmmManager, remotePid, objectData.get());
+	else {
+		for (const auto ptrEntry : *pointerVector) {
+			auto ptrResolutions = ptrEntry->destination->getRequestedResolutions(ptrEntry->resolvedAddress);
+			if (ptrResolutions->size() > 0) {
+				DMAUtils::concatVectors<ResolutionRequest>(requestVec.get(), ptrResolutions);
+			}
+		}
 	}
-	return FALSE;
+	_isBaseResolved = true;
+	return requestVec.get();
 }
 
-void DMAMem::MemoryObject::initializeScatter()
+void DMAMem::MemoryObject::readResolutions(VmmManager* manager, DWORD pid, std::vector<ResolutionRequest>* resolutionRequests)
 {
-	scatterEntries.empty();
+	VMMDLL_SCATTER_HANDLE scatterHandle = manager->initializeScatter(pid);
+	for (const auto res : *resolutionRequests) {
+		manager->addScatterRead(scatterHandle, res.address, res.size, res.destination);
+	}
+	manager->executeScatter(scatterHandle);
 }
 
-void DMAMem::MemoryObject::registerScatterObject(MemoryObject* memObj, QWORD remoteAddress)
-{
-	ScatterEntry se;
-	se.memObj = memObj;
-	se.memObj->_remoteAddress = remoteAddress;
-	se.remoteAddress = remoteAddress;
-	scatterEntries.push_back(se);
-}
 
-void DMAMem::MemoryObject::populateScatterObjects(VmmManager* vmmManager, DWORD remotePid, ULONG64 flags)
-{
-	VMMDLL_SCATTER_HANDLE scatterHandle = vmmManager->initializeScatter(remotePid, flags);
 
-	auto resolvedList = std::vector<ResolvedScatterEntry>();
-	for (ScatterEntry se : scatterEntries) {
-		ResolvedScatterEntry rse;
-		rse.se = se;
-		int size = se.memObj->getObjectSize();
-		rse.objectData = std::shared_ptr<char[]>(new char[size]);
-		vmmManager->addScatterRead(scatterHandle, se.remoteAddress, size, rse.objectData.get());
-		resolvedList.push_back(rse);
+void DMAMem::MemoryObject::resolveObject(VmmManager* manager, DWORD pid, QWORD address)
+{
+	auto resolutions = this->getRequestedResolutions(address);
+	while (resolutions->size() > 0) {
+		readResolutions(manager, pid, resolutions);
+		auto resolutions = this->getRequestedResolutions(address);
 	}
-	vmmManager->executeScatter(scatterHandle);
-	for (const ResolvedScatterEntry rse : resolvedList) {
-		rse.se.memObj->resolveObject(vmmManager, remotePid, rse.objectData.get());
-	}
-	scatterEntries.empty();
 }

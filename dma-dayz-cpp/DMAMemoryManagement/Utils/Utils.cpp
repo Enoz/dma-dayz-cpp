@@ -1,7 +1,6 @@
-#include "Utils.h"
+#include "Utils.h";
 
-//https://stackoverflow.com/a/46931770
-std::vector<std::string> DMAMem::Utils::split(std::string s, std::string delimiter)
+std::vector<std::string> DMAUtils::split(std::string s, std::string delimiter)
 {
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();
     std::string token;

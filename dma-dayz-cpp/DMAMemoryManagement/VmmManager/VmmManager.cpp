@@ -23,6 +23,11 @@ BOOL DMAMem::VmmManager::readMemory(DWORD pid, QWORD remoteAddress, void* destin
 	return VMMDLL_MemReadEx(this->getVmm(), pid, remoteAddress, (PBYTE)destination, size, NULL, flags);
 }
 
+VMMDLL_SCATTER_HANDLE DMAMem::VmmManager::initializeScatter(DWORD pid)
+{
+	return initializeScatter(pid, VMMDLL_FLAG_NOCACHE);
+}
+
 VMMDLL_SCATTER_HANDLE DMAMem::VmmManager::initializeScatter(DWORD pid, ULONG64 flags)
 {
 	return VMMDLL_Scatter_Initialize(this->getVmm(), pid, flags);

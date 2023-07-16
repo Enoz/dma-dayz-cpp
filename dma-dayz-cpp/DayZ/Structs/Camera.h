@@ -21,9 +21,5 @@ namespace DayZ {
 			this->registerOffset(0xD0, &GetProjectionD1, sizeof(Vector3));
 			this->registerOffset(0xDC, &GetProjectionD2, sizeof(Vector3));
 		}
-
-		Camera(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : Camera() {
-			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
-		}
 	};
 }

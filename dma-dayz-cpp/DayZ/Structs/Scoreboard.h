@@ -1,6 +1,8 @@
 #pragma once
 #include "../../DMAMemoryManagement/includes.h";
 #include "ScoreboardIdentity.h";
+#include <set>;
+#include "../DayzUtil.h";
 
 namespace DayZ {
 	class Scoreboard : public DMAMem::MemoryObject {
@@ -11,21 +13,26 @@ namespace DayZ {
 			this->registerOffset(0x0, &ScoreboardIdentityPointers, sizeof(QWORD[60]));
 		}
 
-		Scoreboard(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : Scoreboard() {
-			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
-		}
-
-		void postPointerResolution(DMAMem::VmmManager* vmmManager, DWORD remotePid) {
-			resolvedIdentities = std::vector<std::shared_ptr<ScoreboardIdentity>>();
-			this->initializeScatter();
-			for (QWORD identityPointer : ScoreboardIdentityPointers) {
-				if (identityPointer != NULL) {
-					auto ident = std::shared_ptr<ScoreboardIdentity>(new ScoreboardIdentity());
-					this->registerScatterObject(ident.get(), identityPointer);
-					resolvedIdentities.push_back(ident);
-				}
-			}
-			this->populateScatterObjects(vmmManager, remotePid, NULL);
-		}
+		//std::vector<ResolutionRequest>* getRequestedResolutions(QWORD baseAddress) override {
+		//	if (!_isBaseResolved) {
+		//		return generateDefaultResolutions(baseAddress);
+		//	}
+		//	if (resolvedIdentities.size() > 0) {
+		//		std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
+		//		for (auto const ident : resolvedIdentities) {
+		//			DMAMem::Utils::concatVectors(requestVec.get(), ident->getRequestedResolutions(ident->_lastAddressUsed));
+		//		}
+		//		return requestVec.get();
+		//	}
+		//	std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
+		//	std::set<QWORD> vecEntityPointers(std::begin(resolvedIdentities), std::end(resolvedIdentities));
+		//	for (QWORD identityPtr : vecEntityPointers) {
+		//		if (DzUtil::isPointerValid(identityPtr)) {
+		//			auto ent = std::shared_ptr<ScoreboardIdentity>(new ScoreboardIdentity());
+		//			DMAMem::Utils::concatVectors(requestVec.get(), ent->getRequestedResolutions(identityPtr));
+		//			resolvedIdentities.push_back(ent);
+		//		}
+		//	}
+		//}
 	};
 }

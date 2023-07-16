@@ -29,10 +29,14 @@ DWORD DayZ::Mem::getPid() {
 
 DayZ::WorldPointer DayZ::Mem::getWorld()
 {
-	return WorldPointer(vmmManager, getPid(), this->worldAddress);
+	DayZ::WorldPointer wp;
+	wp.resolveObject(getVMM(), getPid(), this->worldAddress);
+	return wp;
 }
 
 DayZ::NetworkManager DayZ::Mem::getNetworkManager()
 {
-	return NetworkManager(vmmManager, getPid(), this->networkManagerAddress);
+	DayZ::NetworkManager nm;
+	nm.resolveObject(getVMM(), getPid(), this->networkManagerAddress);
+	return nm;
 }

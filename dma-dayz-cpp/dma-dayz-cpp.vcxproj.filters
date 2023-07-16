@@ -24,9 +24,6 @@
     <ClCompile Include="DMAMemoryManagement\StaticManager\StaticManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DMAMemoryManagement\Utils\Utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DMAMemoryManagement\VmmManager\VmmManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +31,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DayZ\Overlay\Overlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMAMemoryManagement\Utils\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DayZ\DayzUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

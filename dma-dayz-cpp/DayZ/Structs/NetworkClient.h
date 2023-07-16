@@ -15,9 +15,5 @@ namespace DayZ {
 			scoreboardPtr = std::shared_ptr<Scoreboard>(new Scoreboard());
 			this->registerPointer(0x10, scoreboardPtr.get(), NULL);
 		}
-
-		NetworkClient(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : NetworkClient() {
-			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
-		}
 	};
 }
