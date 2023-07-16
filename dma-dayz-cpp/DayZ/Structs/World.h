@@ -27,7 +27,7 @@
 
 namespace DayZ {
 	struct World : public DMAMem::MemoryObject {
-		std::shared_ptr<EntityTable> NearEntityTablePtr;
+		std::shared_ptr<EntityTable> NearEntityTable;
 		int32_t NearEntityTableCount;
 		std::shared_ptr<EntityTable> FarEntityTable;
 		int32_t FarEntityTableCount;
@@ -39,12 +39,12 @@ namespace DayZ {
 		int32_t ItemTableCount;
 
 		World() {
-			NearEntityTablePtr = std::shared_ptr<EntityTable>(new EntityTable());
+			NearEntityTable = std::shared_ptr<EntityTable>(new EntityTable());
 			FarEntityTable = std::shared_ptr<EntityTable>(new EntityTable());
 			SlowEntityTable = std::shared_ptr<EntityTable>(new EntityTable());
 			ItemTable = std::shared_ptr<EntityTable>(new EntityTable());
 
-			this->registerPointer(0xEB8, NearEntityTablePtr.get());
+			this->registerPointer(0xEB8, NearEntityTable.get());
 			this->registerOffset(0xEC0, &NearEntityTableCount, sizeof(int32_t));
 			this->registerPointer(0x1000, FarEntityTable.get());
 			this->registerOffset(0x1008, &FarEntityTableCount, sizeof(int32_t));
