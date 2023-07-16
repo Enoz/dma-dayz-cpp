@@ -43,11 +43,18 @@ BOOL DMAMem::MemoryObject::resolveObject(VmmManager* vmmManager, DWORD remotePid
 	return TRUE;
 }
 
+void DMAMem::MemoryObject::updateResolution(VmmManager* vmmManager, DWORD remotePid)
+{
+	if(lastRemoteAddressUsed != NULL)
+		resolveOffsets(vmmManager, remotePid, lastRemoteAddressUsed);
+}
+
 BOOL DMAMem::MemoryObject::resolveOffsets(VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress, ULONG64 flags)
 {
 	if (remoteAddress == NULL) {
 		return FALSE;
 	}
+	lastRemoteAddressUsed = remoteAddress;
 	int memReadSize = getObjectSize();
 	std::shared_ptr<char[]> objectData(new char[memReadSize]);
 

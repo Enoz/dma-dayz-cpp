@@ -33,13 +33,12 @@
     <ClCompile Include="DMAMemoryManagement\VmmManager\VmmManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FTD3XX.dll" />
-    <None Include="leechcore.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="vmm.lib" />
+    <ClCompile Include="DayZ\DayZMem\DayZMem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DayZ\Overlay\Overlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObject.h">
@@ -81,13 +80,53 @@
     <ClInclude Include="DayZ\Structs\NetworkManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObjectPointable.h">
+    <ClInclude Include="DayZ\DayzUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\EntityTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\EntityType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\FutureVisualState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\WorldPointer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\World.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\Vectors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Overlay\Overlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\DayZMem\DayZMem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="vmm.dll" />
     <CopyFileToFolders Include="leechcore.lib" />
+    <CopyFileToFolders Include="FTD3XX.dll" />
+    <CopyFileToFolders Include="leechcore.dll" />
+    <CopyFileToFolders Include="vmm.lib" />
+    <CopyFileToFolders Include="SMFLbins\openal32.dll" />
+    <CopyFileToFolders Include="SMFLbins\sfml-graphics-2.dll" />
+    <CopyFileToFolders Include="SMFLbins\sfml-system-2.dll" />
+    <CopyFileToFolders Include="SMFLbins\sfml-window-2.dll" />
+    <CopyFileToFolders Include="SMFLbins\sfml-graphics-d-2.dll" />
+    <CopyFileToFolders Include="SMFLbins\sfml-system-d-2.dll" />
+    <CopyFileToFolders Include="SMFLbins\sfml-window-d-2.dll" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />

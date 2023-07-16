@@ -1,6 +1,7 @@
 #pragma once
 #include "../../DMAMemoryManagement/includes.h";
 #include "EntityTable.h";
+#include "Camera.h";
 //
 //class World
 //{
@@ -37,13 +38,16 @@ namespace DayZ {
 		std::shared_ptr<EntityTable> ItemTable;
 		int32_t ItemTableCountMax;
 		int32_t ItemTableCount;
+		std::shared_ptr<Camera> camera;
 
 		World() {
 			NearEntityTable = std::shared_ptr<EntityTable>(new EntityTable());
 			FarEntityTable = std::shared_ptr<EntityTable>(new EntityTable());
 			SlowEntityTable = std::shared_ptr<EntityTable>(new EntityTable());
 			ItemTable = std::shared_ptr<EntityTable>(new EntityTable());
+			camera = std::shared_ptr<Camera>(new Camera());
 
+			this->registerPointer(0x1B8, camera.get());
 			this->registerPointer(0xEB8, NearEntityTable.get());
 			this->registerOffset(0xEC0, &NearEntityTableCount, sizeof(int32_t));
 			this->registerPointer(0x1000, FarEntityTable.get());

@@ -8,8 +8,8 @@ namespace DayZ {
 	class Mem {
 		DMAMem::VmmManager* vmmManager = NULL;
 		DMAMem::StaticManager staticManager = NULL;
-		DWORD worldAddress;
-		DWORD networkManagerAddress;
+		QWORD worldAddress;
+		QWORD networkManagerAddress;
 
 	public:
 

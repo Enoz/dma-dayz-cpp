@@ -14,6 +14,14 @@ namespace DayZ {
 			this->y = y;
 			this->z = z;
 		}
+
+		Vector3 operator-(const Vector3& vec) {
+			return Vector3(this->x - vec.x, this->y - vec.y, this->z - vec.z);
+		}
+
+		float Dot(const Vector3& other) {
+			return this->x * other.x + this->y * other.y + this->z * other.z;
+		}
 	};
 
 	struct Vector2 {
