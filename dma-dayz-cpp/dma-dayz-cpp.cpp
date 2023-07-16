@@ -3,10 +3,21 @@
 
 #include <iostream>
 #include "DMAMemoryManagement/includes.h"
+#include "DayZ/Structs/NetworkManager.h";
 
 int main()
 {
     std::cout << "Hello World!\n";
-    auto manager = new DMAMem::VmmManager();
-    manager->getVmm();
+    auto vmm = new DMAMem::VmmManager();
+    auto staticManager = new DMAMem::StaticManager(vmm);
+    DWORD pid = staticManager->getPid("DayZ_x64.exe");
+    auto baseModule = staticManager->getModule(pid, "DayZ_x64.exe");
+    std::cout << "Base At " << std::hex << baseModule.pvmEntry->vaBase << std::endl;
+    std::cout << "NetworkManager At " << std::hex << baseModule.pvmEntry->vaBase + 0xee7a88 << std::endl;
+    auto nm = DayZ::NetworkManager(vmm, pid, baseModule.pvmEntry->vaBase + 0xee7a88);
+    std::cout << "Player Count" << std::dec << nm.NetworkClientPtr->PlayerCount << std::endl;
+    for (const auto ident : nm.NetworkClientPtr->scoreboardPtr->resolvedIdentities) {
+        std::cout << ident->PlayerName->value << std::endl;
+    }
+    std::cout << "Done!" << std::endl;
 }

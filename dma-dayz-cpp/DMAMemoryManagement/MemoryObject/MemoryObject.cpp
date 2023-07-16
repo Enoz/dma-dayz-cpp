@@ -37,6 +37,7 @@ BOOL DMAMem::MemoryObject::resolveObject(VmmManager* vmmManager, DWORD remotePid
 		GAME_POINTER_TYPE gp;
 		memcpy(&gp, objectData + op.offset, GAME_POINTER_SIZE);
 		op.destination->resolveOffsets(vmmManager, remotePid, gp);
+		op.destination->postPointerResolution(vmmManager, remotePid);
 	}
 	return TRUE;
 }

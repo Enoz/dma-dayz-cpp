@@ -29,5 +29,6 @@ namespace DMAMem {
 		int getObjectSize();
 		BOOL resolveOffsets(VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress);
 		BOOL resolveObject(VmmManager* vmmManager, DWORD remotePid, char* objectData);
+		virtual void postPointerResolution(VmmManager* vmmManager, DWORD remotePid) {};
 	};
 }

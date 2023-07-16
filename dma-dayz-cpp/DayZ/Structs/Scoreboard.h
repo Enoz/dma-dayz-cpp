@@ -13,7 +13,9 @@ namespace DayZ {
 
 		Scoreboard(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : Scoreboard() {
 			this->resolveOffsets(vmmManager, remotePid, remoteAddress);
+		}
 
+		void postPointerResolution(DMAMem::VmmManager* vmmManager, DWORD remotePid) {
 			resolvedIdentities = std::vector<std::shared_ptr<ScoreboardIdentity>>();
 			this->initializeScatter();
 			for (QWORD identityPointer : ScoreboardIdentityPointers) {
