@@ -43,12 +43,6 @@ BOOL DMAMem::MemoryObject::resolveObject(VmmManager* vmmManager, DWORD remotePid
 	return TRUE;
 }
 
-void DMAMem::MemoryObject::updateResolution(VmmManager* vmmManager, DWORD remotePid)
-{
-	if(lastRemoteAddressUsed != NULL)
-		resolveOffsets(vmmManager, remotePid, lastRemoteAddressUsed);
-}
-
 BOOL DMAMem::MemoryObject::resolveOffsets(VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress, ULONG64 flags)
 {
 	if (remoteAddress == NULL) {

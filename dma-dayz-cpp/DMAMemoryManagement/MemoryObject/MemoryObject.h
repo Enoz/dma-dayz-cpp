@@ -34,6 +34,5 @@ namespace DMAMem {
 		BOOL resolveOffsets(VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress, ULONG64 flags = VMMDLL_FLAG_NOCACHE);
 		BOOL resolveObject(VmmManager* vmmManager, DWORD remotePid, char* objectData);
 		virtual void postPointerResolution(VmmManager* vmmManager, DWORD remotePid) {};
-		void updateResolution(VmmManager* vmmManager, DWORD remotePid);
 	};
 }

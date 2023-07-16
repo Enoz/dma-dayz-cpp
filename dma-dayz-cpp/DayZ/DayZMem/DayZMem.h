@@ -10,9 +10,10 @@ namespace DayZ {
 		DMAMem::StaticManager staticManager = NULL;
 		QWORD worldAddress;
 		QWORD networkManagerAddress;
+		
 
 	public:
-
+		DMAMem::VmmManager* getVMM();
 		Mem(DMAMem::VmmManager* vmmManager);
 		void fetchBaseAddresses();
 		DWORD getPid();

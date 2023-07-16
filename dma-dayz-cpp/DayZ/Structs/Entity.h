@@ -27,7 +27,7 @@ namespace DayZ {
 		}
 
 		bool isValid() {
-			return EntityTypePtr->ConfigName->length < 1000 && EntityTypePtr->ConfigName->length > 0;
+			return true;
 		}
 	};
 }

@@ -1,5 +1,10 @@
 #include "DayZMem.h"
 
+DMAMem::VmmManager* DayZ::Mem::getVMM()
+{
+	return vmmManager;
+}
+
 DayZ::Mem::Mem(DMAMem::VmmManager* vmmManager)
 {
 	this->staticManager = DMAMem::StaticManager(vmmManager);

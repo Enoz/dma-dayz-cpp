@@ -31,6 +31,7 @@ void DMAMem::MemoryObjectScatterable::populateScatterObjects(VmmManager* vmmMana
 	for (const ResolvedScatterEntry rse : resolvedList) {
 		rse.se.memObj->resolveObject(vmmManager, remotePid, rse.objectData.get());
 	}
+	scatterEntries.empty();
 }
 
 
