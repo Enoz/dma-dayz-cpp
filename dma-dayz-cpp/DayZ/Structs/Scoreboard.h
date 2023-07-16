@@ -3,7 +3,7 @@
 #include "ScoreboardIdentity.h";
 
 namespace DayZ {
-	class Scoreboard : public DMAMem::MemoryObjectScatterable {
+	class Scoreboard : public DMAMem::MemoryObject {
 		QWORD ScoreboardIdentityPointers[60];
 	public:
 		std::vector<std::shared_ptr<ScoreboardIdentity>> resolvedIdentities;

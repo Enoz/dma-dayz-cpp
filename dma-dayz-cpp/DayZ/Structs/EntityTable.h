@@ -5,7 +5,7 @@
 #include <set>
 
 namespace DayZ {
-	class EntityTable : public DMAMem::MemoryObjectScatterable {
+	class EntityTable : public DMAMem::MemoryObject {
 		QWORD EntityPointers[256];
 	public:
 		std::vector<std::shared_ptr<Entity>> resolvedEntities;

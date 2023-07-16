@@ -34,9 +34,9 @@ void Overlay::threadWorker()
 
 		//Update Entity Tables
 		nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), nearEntities->_remoteAddress));
-		farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), farEntities->_remoteAddress));
+		//farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), farEntities->_remoteAddress));
 		slowEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), slowEntities->_remoteAddress, NULL));
-		itemEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), itemEntities->_remoteAddress, NULL));
+		//itemEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), itemEntities->_remoteAddress, NULL));
 
 		//Combine Entity Tables
 		auto combinedEntities = std::vector<DayZ::Entity*>();
@@ -66,17 +66,17 @@ void Overlay::debugDraw(sf::RenderWindow* window, std::vector<DayZ::Entity*>* en
 			continue;
 		}
 
-		//sf::CircleShape entCircle(5.0f);
-		//entCircle.setFillColor(sf::Color::Green);
-		//entCircle.setPosition(screenPos.x, screenPos.y);
+		sf::CircleShape entCircle(5.0f);
+		entCircle.setFillColor(sf::Color::Green);
+		entCircle.setPosition(screenPos.x, screenPos.y);
 
-		sf::Text text;
-		text.setFont(espFont);
-		text.setCharacterSize(16);
-		text.setFillColor(sf::Color::Green);
-		text.setPosition(screenPos.x, screenPos.y);
-		text.setString(ent->EntityTypePtr->ConfigName->value);
-		window->draw(text);
+		//sf::Text text;
+		//text.setFont(espFont);
+		//text.setCharacterSize(16);
+		//text.setFillColor(sf::Color::Green);
+		//text.setPosition(screenPos.x, screenPos.y);
+		//text.setString(ent->EntityTypePtr->ConfigName->value);
+		window->draw(entCircle);
 	}
 }
 

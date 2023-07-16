@@ -137,7 +137,6 @@
     <ClCompile Include="DayZ\Overlay\Overlay.cpp" />
     <ClCompile Include="dma-dayz-cpp.cpp" />
     <ClCompile Include="DMAMemoryManagement\MemoryObject\MemoryObject.cpp" />
-    <ClCompile Include="DMAMemoryManagement\MemoryObject\MemoryObjectScatterable.cpp" />
     <ClCompile Include="DMAMemoryManagement\StaticManager\StaticManager.cpp" />
     <ClCompile Include="DMAMemoryManagement\Utils\Utils.cpp" />
     <ClCompile Include="DMAMemoryManagement\VmmManager\VmmManager.cpp" />
@@ -180,7 +179,6 @@
     <ClInclude Include="DayZ\Structs\Vectors.h" />
     <ClInclude Include="DMAMemoryManagement\includes.h" />
     <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObject.h" />
-    <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObjectScatterable.h" />
     <ClInclude Include="DMAMemoryManagement\MemProcFS\leechcore.h" />
     <ClInclude Include="DMAMemoryManagement\MemProcFS\vmmdll.h" />
     <ClInclude Include="DMAMemoryManagement\StaticManager\StaticManager.h" />

@@ -28,11 +28,27 @@ namespace DMAMem {
 		std::vector<OffsetEntry> offsetVector;
 		std::vector<OffsetPointer> pointerVector;
 
+
+		struct ScatterEntry {
+			MemoryObject* memObj;
+			QWORD remoteAddress;
+		};
+		struct ResolvedScatterEntry {
+			ScatterEntry se;
+			std::shared_ptr<char[]> objectData;
+		};
+		std::vector<ScatterEntry> scatterEntries;
+
+
+
 	public:
 		QWORD _remoteAddress = NULL;
 		int getObjectSize();
 		BOOL resolveOffsets(VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress, ULONG64 flags = VMMDLL_FLAG_NOCACHE);
 		BOOL resolveObject(VmmManager* vmmManager, DWORD remotePid, char* objectData);
+		void initializeScatter();
+		void registerScatterObject(MemoryObject* memObj, QWORD remoteAddress);
+		void populateScatterObjects(VmmManager* vmmManager, DWORD remotePid, ULONG64 flags = VMMDLL_FLAG_NOCACHE | VMMDLL_FLAG_NOPAGING_IO);
 		virtual void postPointerResolution(VmmManager* vmmManager, DWORD remotePid) {};
 	};
 }
