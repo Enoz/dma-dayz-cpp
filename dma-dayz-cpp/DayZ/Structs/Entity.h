@@ -10,6 +10,7 @@ namespace DayZ {
 	public:
 		std::shared_ptr<FutureVisualState> FutureVisualStatePtr;
 		std::shared_ptr<EntityType> EntityTypePtr;
+		uint32_t NetworkID;
 		
 
 		Entity() {
@@ -17,6 +18,7 @@ namespace DayZ {
 			EntityTypePtr = std::shared_ptr<EntityType>(new EntityType());
 			this->registerPointer(0x168, EntityTypePtr.get());
 			this->registerPointer(0x1C0, FutureVisualStatePtr.get());
+			this->registerOffset(0x6DC, &NetworkID, sizeof(uint32_t));
 			this->registerOffset(0x0, &vTablePtr, sizeof(QWORD));
 		}
 
@@ -25,7 +27,7 @@ namespace DayZ {
 		}
 
 		bool isValid() {
-			return EntityTypePtr->TypeName->length < 1000 && EntityTypePtr->TypeName->length > 0;
+			return EntityTypePtr->ConfigName->length < 1000 && EntityTypePtr->ConfigName->length > 0;
 		}
 	};
 }

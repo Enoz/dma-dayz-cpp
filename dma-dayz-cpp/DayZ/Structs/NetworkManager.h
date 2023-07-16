@@ -16,7 +16,7 @@ namespace DayZ {
 		NetworkManager() {
 
 			NetworkClientPtr = std::shared_ptr<NetworkClient>(new NetworkClient());
-			this->registerPointer(0x48, NetworkClientPtr.get());
+			this->registerPointer(0x48, NetworkClientPtr.get(), NULL);
 		}
 
 		NetworkManager(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : NetworkManager() {

@@ -6,14 +6,14 @@
 namespace DayZ {
 	struct NetworkClient : public DMAMem::MemoryObject {
 
-		uint16_t PlayerCount;
+		uint32_t PlayerCount;
 		std::shared_ptr<Scoreboard> scoreboardPtr;
 
 		NetworkClient() {
-			this->registerOffset(0x18, &PlayerCount, sizeof(uint16_t));
+			this->registerOffset(0x18, &PlayerCount, sizeof(uint32_t));
 
 			scoreboardPtr = std::shared_ptr<Scoreboard>(new Scoreboard());
-			this->registerPointer(0x10, scoreboardPtr.get());
+			this->registerPointer(0x10, scoreboardPtr.get(), NULL);
 		}
 
 		NetworkClient(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress) : NetworkClient() {

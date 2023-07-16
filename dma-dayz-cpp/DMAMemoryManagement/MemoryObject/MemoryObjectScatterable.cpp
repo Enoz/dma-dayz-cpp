@@ -13,9 +13,9 @@ void DMAMem::MemoryObjectScatterable::registerScatterObject(MemoryObject* memObj
 	scatterEntries.push_back(se);
 }
 
-void DMAMem::MemoryObjectScatterable::populateScatterObjects(VmmManager* vmmManager, DWORD remotePid)
+void DMAMem::MemoryObjectScatterable::populateScatterObjects(VmmManager* vmmManager, DWORD remotePid, ULONG64 flags)
 {
-	VMMDLL_SCATTER_HANDLE scatterHandle = VMMDLL_Scatter_Initialize(vmmManager->getVmm(), remotePid, VMMDLL_FLAG_NOCACHE | VMMDLL_FLAG_NOPAGING_IO);
+	VMMDLL_SCATTER_HANDLE scatterHandle = VMMDLL_Scatter_Initialize(vmmManager->getVmm(), remotePid, flags);
 	auto resolvedList = std::vector<ResolvedScatterEntry>();
 	for (ScatterEntry se : scatterEntries) {
 		ResolvedScatterEntry rse;

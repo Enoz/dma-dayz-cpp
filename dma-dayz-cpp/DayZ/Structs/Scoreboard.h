@@ -25,7 +25,7 @@ namespace DayZ {
 					resolvedIdentities.push_back(ident);
 				}
 			}
-			this->populateScatterObjects(vmmManager, remotePid);
+			this->populateScatterObjects(vmmManager, remotePid, NULL);
 		}
 	};
 }

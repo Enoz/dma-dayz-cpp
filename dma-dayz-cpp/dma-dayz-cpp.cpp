@@ -17,23 +17,24 @@ int main()
     std::cout << "NetworkManager At " << std::hex << baseModule.pvmEntry->vaBase + 0xee7a88 << std::endl;
     auto nm = DayZ::NetworkManager(vmm, pid, baseModule.pvmEntry->vaBase + 0xee7a88);
     std::cout << "Player Count" << std::dec << nm.NetworkClientPtr->PlayerCount << std::endl;
-    //for (const auto ident : nm.NetworkClientPtr->scoreboardPtr->resolvedIdentities) {
-    //    std::cout << ident->PlayerName->value << std::endl;
-    //}
+    for (const auto ident : nm.NetworkClientPtr->scoreboardPtr->resolvedIdentities) {
+        std::cout << ident->PlayerName->value << ": " << ident->NetworkID << std::endl;
+    }
 
     auto wrld = DayZ::WorldPointer(vmm, pid, baseModule.pvmEntry->vaBase + 0x413B418);
     for (auto const ent : wrld.WorldPtr->SlowEntityTable->resolvedEntities) {
-        std::cout << ent->EntityTypePtr->ConfigName->value << " -- " << ent->EntityTypePtr->ConfigName->length << std::endl;
+        std::cout << ent->EntityTypePtr->ConfigName->value << " -- " << ent->NetworkID << std::endl;
     }
     for (auto const ent : wrld.WorldPtr->FarEntityTable->resolvedEntities) {
-        std::cout << ent->EntityTypePtr->ConfigName->value << " -- " << ent->EntityTypePtr->ConfigName->length << std::endl;
+        std::cout << ent->EntityTypePtr->ConfigName->value << " -- " << ent->NetworkID << std::endl;
     }
     for (auto const ent : wrld.WorldPtr->NearEntityTable->resolvedEntities) {
-        std::cout << ent->EntityTypePtr->ConfigName->value << " -- " << ent->EntityTypePtr->ConfigName->length << std::endl;
+        std::cout << ent->EntityTypePtr->ConfigName->value << " -- " << ent->NetworkID << std::endl;
     }
     for (auto const ent : wrld.WorldPtr->ItemTable->resolvedEntities) {
-        std::cout << ent->EntityTypePtr->ConfigName->value << " -- " << ent->EntityTypePtr->ConfigName->length << std::endl;
+        std::cout << ent->EntityTypePtr->ConfigName->value << " -- " << ent->NetworkID << std::endl;
     }
+
     std::cout << "Done!" << std::endl;
     return 1;
 }

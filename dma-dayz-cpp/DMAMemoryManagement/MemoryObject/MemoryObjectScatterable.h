@@ -16,7 +16,7 @@ namespace DMAMem {
 	public:
 		void initializeScatter();
 		void registerScatterObject(MemoryObject* memObj, QWORD remoteAddress);
-		void populateScatterObjects(VmmManager* vmmManager, DWORD remotePid);
+		void populateScatterObjects(VmmManager* vmmManager, DWORD remotePid, ULONG64 flags = VMMDLL_FLAG_NOCACHE | VMMDLL_FLAG_NOPAGING_IO);
 
 	};
 }
