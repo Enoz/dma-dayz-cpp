@@ -19,16 +19,16 @@ void DMAMem::MemoryObject::registerPointer(int offset, MemoryObject* destination
 	pointerVector->push_back(op);
 }
 
-std::vector<DMAMem::MemoryObject::ResolutionRequest>* DMAMem::MemoryObject::getRequestedResolutions(QWORD baseAddress)
+std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> DMAMem::MemoryObject::getRequestedResolutions(QWORD baseAddress)
 {
 	return generateDefaultResolutions(baseAddress);
 }
 
-std::vector<DMAMem::MemoryObject::ResolutionRequest>* DMAMem::MemoryObject::generateDefaultResolutions(QWORD baseAddress)
+std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> DMAMem::MemoryObject::generateDefaultResolutions(QWORD baseAddress)
 {
 	std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
 	if (baseAddress == NULL)
-		return requestVec.get();
+		return requestVec;
 	_lastAddressUsed = baseAddress;
 	if (!_isBaseResolved) {
 		for (const auto offEntry : *offsetVector) {
@@ -50,12 +50,12 @@ std::vector<DMAMem::MemoryObject::ResolutionRequest>* DMAMem::MemoryObject::gene
 		for (const auto ptrEntry : *pointerVector) {
 			auto ptrResolutions = ptrEntry->destination->getRequestedResolutions(ptrEntry->resolvedAddress);
 			if (ptrResolutions->size() > 0) {
-				DMAUtils::concatVectors<ResolutionRequest>(requestVec.get(), ptrResolutions);
+				DMAUtils::concatVectors<ResolutionRequest>(requestVec.get(), ptrResolutions.get());
 			}
 		}
 	}
 	_isBaseResolved = true;
-	return requestVec.get();
+	return requestVec;
 }
 
 void DMAMem::MemoryObject::readResolutions(VmmManager* manager, DWORD pid, std::vector<ResolutionRequest>* resolutionRequests)
@@ -73,7 +73,7 @@ void DMAMem::MemoryObject::resolveObject(VmmManager* manager, DWORD pid, QWORD a
 {
 	auto resolutions = this->getRequestedResolutions(address);
 	while (resolutions->size() > 0) {
-		readResolutions(manager, pid, resolutions);
-		auto resolutions = this->getRequestedResolutions(address);
+		readResolutions(manager, pid, resolutions.get());
+		resolutions = this->getRequestedResolutions(address);
 	}
 }

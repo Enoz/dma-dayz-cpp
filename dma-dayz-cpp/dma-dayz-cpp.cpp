@@ -42,12 +42,15 @@ int main()
     auto vmm = new DMAMem::VmmManager();
     auto game = new DayZ::Mem(vmm);
 
+    auto wrld = game->getWorld();
 
-    auto world = game->getWorld();
-    auto nm = game->getNetworkManager();
-    
-    Overlay o(game);
-    o.run();
+
+
+    //auto world = game->getWorld();
+    //auto nm = game->getNetworkManager();
+    //
+    //Overlay o(game);
+    //o.run();
 
     while (true) {}
 

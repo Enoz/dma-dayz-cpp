@@ -37,7 +37,7 @@ namespace DMAMem {
 		bool _isBaseResolved = false;
 
 
-		std::vector<ResolutionRequest>* generateDefaultResolutions(QWORD baseAddress);
+		std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> generateDefaultResolutions(QWORD baseAddress);
 
 	private:
 		std::shared_ptr<std::vector<OffsetEntry>> offsetVector = std::shared_ptr<std::vector<OffsetEntry>>(new std::vector<OffsetEntry>());
@@ -49,6 +49,6 @@ namespace DMAMem {
 	public:
 		GAME_POINTER_TYPE _lastAddressUsed = NULL;
 		void resolveObject(VmmManager* manager, DWORD pid, QWORD address);
-		virtual std::vector<ResolutionRequest>* getRequestedResolutions(QWORD baseAddress);
+		virtual std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> getRequestedResolutions(QWORD baseAddress);
 	};
 }
