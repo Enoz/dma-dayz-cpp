@@ -18,6 +18,11 @@ namespace DayZ {
 			this->postPointerResolution(vmmManager, remotePid);
 		}
 
+		EntityTable(DMAMem::VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress, ULONG64 flags) : EntityTable() {
+			this->resolveOffsets(vmmManager, remotePid, remoteAddress, flags);
+			this->postPointerResolution(vmmManager, remotePid);
+		}
+
 		void postPointerResolution(DMAMem::VmmManager* vmmManager, DWORD remotePid) {
 			auto resolvedEntitiesTemp = std::vector<std::shared_ptr<Entity>>();
 			std::set<QWORD> vecEntityPointers(std::begin(EntityPointers), std::end(EntityPointers));

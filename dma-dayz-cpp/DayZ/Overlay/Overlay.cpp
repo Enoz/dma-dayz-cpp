@@ -1,12 +1,24 @@
 #include "Overlay.h"
 
+
 void Overlay::threadWorker()
 {
-	std::shared_ptr<DayZ::Camera> camera = game->getWorld().WorldPtr->camera;
+	auto initialWorld = game->getWorld();
 
-	sf::RenderWindow overlayWindow(sf::VideoMode(camera->ViewPortSize.x*2, camera->ViewPortSize.y*2), "DayZ DMA Overlay");
-	sf::RectangleShape rectBackground(sf::Vector2f(camera->ViewPortSize.x*2, camera->ViewPortSize.y*2));
+	//Camera
+	std::shared_ptr<DayZ::Camera> camera = initialWorld.WorldPtr->camera;
+
+	//Window + Background
+	sf::RenderWindow overlayWindow(sf::VideoMode(camera->ViewPortSize.x * 2, camera->ViewPortSize.y * 2), "DayZ DMA Overlay", sf::Style::None);
+	sf::RectangleShape rectBackground(sf::Vector2f(camera->ViewPortSize.x * 2, camera->ViewPortSize.y * 2));
 	rectBackground.setFillColor(sf::Color::Black);
+
+
+	//Entity Tables
+	auto nearEntities = initialWorld.WorldPtr->NearEntityTable;
+	auto farEntities = initialWorld.WorldPtr->FarEntityTable;
+	auto slowEntities = initialWorld.WorldPtr->SlowEntityTable;
+	auto itemEntities = initialWorld.WorldPtr->ItemTable;
 
 	std::shared_ptr<DayZ::EntityTable> nearItems = game->getWorld().WorldPtr->ItemTable;
 	while (overlayWindow.isOpen()) {
@@ -18,27 +30,53 @@ void Overlay::threadWorker()
 		}
 		overlayWindow.clear();
 		overlayWindow.draw(rectBackground);
-		camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera(game->getVMM(), game->getPid(), camera->lastRemoteAddressUsed));
-		//nearItems = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), nearItems->lastRemoteAddressUsed));
-		//std::shared_ptr<DayZ::EntityTable> nearItems = game->getWorld().WorldPtr->NearEntityTable;
-		for (auto ent : nearItems->resolvedEntities) {
-			DayZ::Vector3 pos = ent->FutureVisualStatePtr->position;
-			DayZ::Vector3 screenPos = WorldToScreen(camera.get(), pos);
-			if (screenPos.z <= 0 && screenPos.x <= 0 && screenPos.y <= 0) {
-				continue;
-			}
+		camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera(game->getVMM(), game->getPid(), camera->_remoteAddress));
 
-			sf::CircleShape entCircle(5.0f);
-			entCircle.setFillColor(sf::Color::Green);
-			entCircle.setPosition(screenPos.x, screenPos.y);
-			overlayWindow.draw(entCircle);
-			
-		}
+		//Update Entity Tables
+		nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), nearEntities->_remoteAddress));
+		farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), farEntities->_remoteAddress));
+		slowEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), slowEntities->_remoteAddress, NULL));
+		itemEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), itemEntities->_remoteAddress, NULL));
+
+		//Combine Entity Tables
+		auto combinedEntities = std::vector<DayZ::Entity*>();
+		for (const auto& ent : nearEntities->resolvedEntities)
+			combinedEntities.push_back(ent.get());
+		for (const auto& ent : farEntities->resolvedEntities)
+			combinedEntities.push_back(ent.get());
+		for (const auto& ent : slowEntities->resolvedEntities)
+			combinedEntities.push_back(ent.get());
+		for (const auto& ent : itemEntities->resolvedEntities)
+			combinedEntities.push_back(ent.get());
+
+		debugDraw(&overlayWindow, &combinedEntities, camera.get());
 
 
 		overlayWindow.display();
 
 
+	}
+}
+
+void Overlay::debugDraw(sf::RenderWindow* window, std::vector<DayZ::Entity*>* entities, DayZ::Camera* camera) {
+	for (auto ent : *entities) {
+		DayZ::Vector3 pos = ent->FutureVisualStatePtr->position;
+		DayZ::Vector3 screenPos = WorldToScreen(camera, pos);
+		if (screenPos.z <= 0 && screenPos.x <= 0 && screenPos.y <= 0) {
+			continue;
+		}
+
+		//sf::CircleShape entCircle(5.0f);
+		//entCircle.setFillColor(sf::Color::Green);
+		//entCircle.setPosition(screenPos.x, screenPos.y);
+
+		sf::Text text;
+		text.setFont(espFont);
+		text.setCharacterSize(16);
+		text.setFillColor(sf::Color::Green);
+		text.setPosition(screenPos.x, screenPos.y);
+		text.setString(ent->EntityTypePtr->ConfigName->value);
+		window->draw(text);
 	}
 }
 
@@ -72,6 +110,10 @@ DayZ::Vector3 Overlay::WorldToScreen(DayZ::Camera* camera, DayZ::Vector3 positio
 Overlay::Overlay(DayZ::Mem* game)
 {
 	this->game = game;
+
+	sf::Font font;
+	font.loadFromFile("C:/Windows/Fonts/Arial.ttf");
+	espFont = font;
 }
 
 void Overlay::run()

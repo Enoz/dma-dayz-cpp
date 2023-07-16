@@ -29,7 +29,7 @@ namespace DMAMem {
 		std::vector<OffsetPointer> pointerVector;
 
 	public:
-		QWORD lastRemoteAddressUsed = NULL;
+		QWORD _remoteAddress = NULL;
 		int getObjectSize();
 		BOOL resolveOffsets(VmmManager* vmmManager, DWORD remotePid, QWORD remoteAddress, ULONG64 flags = VMMDLL_FLAG_NOCACHE);
 		BOOL resolveObject(VmmManager* vmmManager, DWORD remotePid, char* objectData);

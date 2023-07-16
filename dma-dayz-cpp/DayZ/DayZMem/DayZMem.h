@@ -10,7 +10,6 @@ namespace DayZ {
 		DMAMem::StaticManager staticManager = NULL;
 		QWORD worldAddress;
 		QWORD networkManagerAddress;
-		
 
 	public:
 		DMAMem::VmmManager* getVMM();

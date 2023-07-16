@@ -48,7 +48,7 @@ BOOL DMAMem::MemoryObject::resolveOffsets(VmmManager* vmmManager, DWORD remotePi
 	if (remoteAddress == NULL) {
 		return FALSE;
 	}
-	lastRemoteAddressUsed = remoteAddress;
+	_remoteAddress = remoteAddress;
 	int memReadSize = getObjectSize();
 	std::shared_ptr<char[]> objectData(new char[memReadSize]);
 

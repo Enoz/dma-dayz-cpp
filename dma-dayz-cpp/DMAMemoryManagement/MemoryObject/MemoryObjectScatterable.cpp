@@ -9,7 +9,7 @@ void DMAMem::MemoryObjectScatterable::registerScatterObject(MemoryObject* memObj
 {
 	ScatterEntry se;
 	se.memObj = memObj;
-	se.memObj->lastRemoteAddressUsed = remoteAddress;
+	se.memObj->_remoteAddress = remoteAddress;
 	se.remoteAddress = remoteAddress;
 	scatterEntries.push_back(se);
 }
