@@ -3,6 +3,7 @@
 #include <thread>
 #include "../DayZMem/DayZMem.h"
 #include "../Structs/Vectors.h"
+#include "../../DMAMemoryManagement/Utils/Utils.h"
 
 class Overlay {
 	void threadWorker();

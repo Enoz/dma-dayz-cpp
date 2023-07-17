@@ -42,19 +42,19 @@ int main()
     auto vmm = new DMAMem::VmmManager();
     auto game = new DayZ::Mem(vmm);
 
-    auto wrld = game->getWorld();
-    std::cout << "Success?" << std::endl;
-    auto nm = game->getNetworkManager();
-    for (const auto id : nm.NetworkClientPtr->scoreboardPtr->resolvedIdentities) {
-        std::cout << id->PlayerName->value << std::endl;
-    }
-
-
-    //auto world = game->getWorld();
+    //auto wrld = game->getWorld();
+    //std::cout << "Success?" << std::endl;
     //auto nm = game->getNetworkManager();
-    //
-    //Overlay o(game);
-    //o.run();
+    //for (const auto id : nm.NetworkClientPtr->scoreboardPtr->resolvedIdentities) {
+    //    std::cout << id->PlayerName->value << std::endl;
+    //}
+
+
+    ////auto world = game->getWorld();
+    ////auto nm = game->getNetworkManager();
+    ////
+    Overlay o(game);
+    o.run();
 
     while (true) {}
 

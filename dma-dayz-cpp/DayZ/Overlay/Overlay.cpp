@@ -6,11 +6,11 @@ void Overlay::threadWorker()
 	auto initialWorld = game->getWorld();
 
 	//Camera
-	std::shared_ptr<DayZ::Camera> camera = initialWorld.WorldPtr->camera;
+	std::shared_ptr<DayZ::Camera> initCamera = initialWorld.WorldPtr->camera;
 
 	//Window + Background
-	sf::RenderWindow overlayWindow(sf::VideoMode(camera->ViewPortSize.x * 2, camera->ViewPortSize.y * 2), "DayZ DMA Overlay", sf::Style::None);
-	sf::RectangleShape rectBackground(sf::Vector2f(camera->ViewPortSize.x * 2, camera->ViewPortSize.y * 2));
+	sf::RenderWindow overlayWindow(sf::VideoMode(initCamera->ViewPortSize.x * 2, initCamera->ViewPortSize.y * 2), "DayZ DMA Overlay", sf::Style::None);
+	sf::RectangleShape rectBackground(sf::Vector2f(initCamera->ViewPortSize.x * 2, initCamera->ViewPortSize.y * 2));
 	rectBackground.setFillColor(sf::Color::Black);
 
 
@@ -30,28 +30,22 @@ void Overlay::threadWorker()
 		}
 		overlayWindow.clear();
 		overlayWindow.draw(rectBackground);
-		QWORD oldCam = camera->_lastAddressUsed;
-		camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera());
-		camera->resolveObject(game->getVMM(), game->getPid(), oldCam);
 
-		//Update Entity Tables
-		//nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), nearEntities->_remoteAddress));
-		//farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), farEntities->_remoteAddress));
-		//slowEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), slowEntities->_remoteAddress, NULL));
-		//itemEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable(game->getVMM(), game->getPid(), itemEntities->_remoteAddress, NULL));
+		auto world = game->getWorld();
+
 
 		//Combine Entity Tables
 		auto combinedEntities = std::vector<DayZ::Entity*>();
-		for (const auto& ent : nearEntities->resolvedEntities)
+		for (const auto& ent : world.WorldPtr->NearEntityTable->resolvedEntities)
 			combinedEntities.push_back(ent.get());
-		for (const auto& ent : farEntities->resolvedEntities)
+		for (const auto& ent : world.WorldPtr->FarEntityTable->resolvedEntities)
 			combinedEntities.push_back(ent.get());
-		for (const auto& ent : slowEntities->resolvedEntities)
+		for (const auto& ent : world.WorldPtr->SlowEntityTable->resolvedEntities)
 			combinedEntities.push_back(ent.get());
-		for (const auto& ent : itemEntities->resolvedEntities)
+		for (const auto& ent : world.WorldPtr->ItemTable->resolvedEntities)
 			combinedEntities.push_back(ent.get());
 
-		debugDraw(&overlayWindow, &combinedEntities, camera.get());
+		debugDraw(&overlayWindow, &combinedEntities, world.WorldPtr->camera.get());
 
 
 		overlayWindow.display();
