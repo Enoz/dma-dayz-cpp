@@ -24,13 +24,13 @@ void Overlay::threadWorker()
 	auto camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera());
 	auto nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
 	auto farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
-	auto slowEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
-	auto itemEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
+	auto slowEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
+	auto itemEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
 	auto scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
 	scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress, NULL);
 	itemEntities->resolveObject(game->getVMM(), game->getPid(), itemAddress, NULL);
 
-	std::shared_ptr<DayZ::EntityTable> nearItems = game->getWorld().WorldPtr->ItemTable;
+	std::shared_ptr<DayZ::EntityTableSlowItem> nearItems = game->getWorld().WorldPtr->ItemTable;
 	unsigned int frame = 0;
 	while (overlayWindow.isOpen()) {
 		sf::Event event;
@@ -65,10 +65,10 @@ void Overlay::threadWorker()
 
 
 		if (frame % 440 == 0) {
-			slowEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
+			slowEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
 			slowEntities->resolveObject(game->getVMM(), game->getPid(), slowAddress, NULL);
 
-			itemEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
+			itemEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
 			itemEntities->resolveObject(game->getVMM(), game->getPid(), itemAddress, NULL);
 		}
 
@@ -110,6 +110,9 @@ void Overlay::debugDraw(sf::RenderWindow* window, std::vector<DayZ::Entity*>* en
 			continue;
 		}
 
+		if (!ent->isValid())
+			continue;
+
 		//if (!ent->isAnimal() && !ent->isPlayer() && !ent->isZombie())
 		//	continue;
 
@@ -144,7 +147,12 @@ void Overlay::debugDraw(sf::RenderWindow* window, std::vector<DayZ::Entity*>* en
 		window->draw(drawText);
 		curOffset += 12;
 
-		if (ent->isPlayer() || ent->isZombie()) {
+		drawText.setPosition(screenPos.x, screenPos.y + curOffset);
+		drawText.setString(std::to_string(ent->EntityTypePtr->CleanName->length));
+		window->draw(drawText);
+		curOffset += 12;
+
+		if (ent->isPlayer()) {
 
 			drawText.setPosition(screenPos.x, screenPos.y + curOffset);
 			drawText.setString("IsPlayer");
@@ -156,13 +164,6 @@ void Overlay::debugDraw(sf::RenderWindow* window, std::vector<DayZ::Entity*>* en
 			drawText.setString("Dist: " + std::to_string(ent->FutureVisualStatePtr->position.Dist(camera->InvertedViewTranslation)));
 			window->draw(drawText);
 			curOffset += 12;
-
-			drawText.setPosition(screenPos.x, screenPos.y + curOffset);
-			drawText.setString("isDead: " + std::to_string(ent->isDead));
-			window->draw(drawText);
-			curOffset += 12;
-
-
 		}
 
 
@@ -238,7 +239,7 @@ void Overlay::drawLoot(sf::RenderWindow* window, std::vector<DayZ::Entity*>* ent
 {
 	for (auto ent : *entities) {
 		if (
-			!(ent->isInventoryItem()) &&
+			!(ent->isGroundItem()) &&
 			!(ent->isPlayer() && ent->isDead) &&
 			!(ent->isZombie() && ent->isDead) &&
 			!(ent->isAnimal() && ent->isDead)
@@ -246,7 +247,7 @@ void Overlay::drawLoot(sf::RenderWindow* window, std::vector<DayZ::Entity*>* ent
 			continue;
 		}
 
-		sf::Color col = sf::Color::Yellow;
+		sf::Color col;
 		float maxDist = 10000;
 		if (ent->isPlayer()) {
 			col = sf::Color::Red;
@@ -260,9 +261,9 @@ void Overlay::drawLoot(sf::RenderWindow* window, std::vector<DayZ::Entity*>* ent
 			col = sf::Color::Yellow;
 			maxDist = 50;
 		}
-		if (ent->isInventoryItem()) {
-			col = sf::Color::Green;
-			maxDist = 400;
+		if (ent->isGroundItem()) {
+			col = sf::Color::White;
+			maxDist = 90;
 		}
 
 		DayZ::Vector3 screenPos = WorldToScreen(camera, ent->FutureVisualStatePtr->position);
@@ -271,14 +272,22 @@ void Overlay::drawLoot(sf::RenderWindow* window, std::vector<DayZ::Entity*>* ent
 			continue;
 		if (screenPos.x == 0 && screenPos.y == 0 && screenPos.z == 0)
 			continue;
-		float size = 10;
+		float size = 100 / dist;
+		if (size < 12) {
+			size = 12;
+		}
 
-		sf::CircleShape itemDot;
-		itemDot.setRadius(size);
-		itemDot.setPosition(screenPos.x, screenPos.y);
-		itemDot.setFillColor(col);
+		//sf::CircleShape itemDot;
+		//itemDot.setRadius(size);
+		//itemDot.setPosition(screenPos.x, screenPos.y);
+		//itemDot.setFillColor(col);
 
-		window->draw(itemDot);
+		std::shared_ptr<DayZ::ArmaString> displayText = ent->EntityTypePtr->getBestString();
+		if (displayText != nullptr) {
+			drawText(window, DayZ::Vector3(screenPos.x, screenPos.y - size, screenPos.z), col, size, displayText->value);
+		}
+
+		//window->draw(itemDot);
 
 
 

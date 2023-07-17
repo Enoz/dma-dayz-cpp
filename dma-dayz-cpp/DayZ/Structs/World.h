@@ -1,6 +1,7 @@
 #pragma once
 #include "../../DMAMemoryManagement/includes.h";
 #include "EntityTable.h";
+#include "EntityTableSlowItem.h"
 #include "Camera.h";
 //
 //class World
@@ -32,10 +33,10 @@ namespace DayZ {
 		int32_t NearEntityTableCount;
 		std::shared_ptr<EntityTable> FarEntityTable;
 		int32_t FarEntityTableCount;
-		std::shared_ptr<EntityTable> SlowEntityTable;
+		std::shared_ptr<EntityTableSlowItem> SlowEntityTable;
 		int32_t SlowEntityCountMax;
 		int32_t SlowEntityCount;
-		std::shared_ptr<EntityTable> ItemTable;
+		std::shared_ptr<EntityTableSlowItem> ItemTable;
 		int32_t ItemTableCountMax;
 		int32_t ItemTableCount;
 		std::shared_ptr<Camera> camera;
@@ -43,8 +44,8 @@ namespace DayZ {
 		World() {
 			NearEntityTable = std::shared_ptr<EntityTable>(new EntityTable());
 			FarEntityTable = std::shared_ptr<EntityTable>(new EntityTable());
-			SlowEntityTable = std::shared_ptr<EntityTable>(new EntityTable());
-			ItemTable = std::shared_ptr<EntityTable>(new EntityTable());
+			SlowEntityTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem());
+			ItemTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem());
 			camera = std::shared_ptr<Camera>(new Camera());
 
 			this->registerPointer(0x1B8, camera.get());

@@ -169,6 +169,7 @@
     <ClInclude Include="DayZ\Structs\Camera.h" />
     <ClInclude Include="DayZ\Structs\Entity.h" />
     <ClInclude Include="DayZ\Structs\EntityTable.h" />
+    <ClInclude Include="DayZ\Structs\EntityTableSlowItem.h" />
     <ClInclude Include="DayZ\Structs\EntityType.h" />
     <ClInclude Include="DayZ\Structs\FutureVisualState.h" />
     <ClInclude Include="DayZ\Structs\WorldPointer.h" />
