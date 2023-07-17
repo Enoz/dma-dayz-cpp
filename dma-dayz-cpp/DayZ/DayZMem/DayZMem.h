@@ -18,6 +18,6 @@ namespace DayZ {
 		DWORD getPid();
 		WorldPointer getWorld();
 		NetworkManager getNetworkManager();
-		std::shared_ptr<std::vector<std::shared_ptr<DayZ::Entity>>> getAllUniqueEntities();
+		std::vector<std::shared_ptr<DayZ::Entity>> getAllUniqueEntities();
 	};
 };

@@ -41,31 +41,31 @@ DayZ::NetworkManager DayZ::Mem::getNetworkManager()
 	return nm;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<DayZ::Entity>>> DayZ::Mem::getAllUniqueEntities()
+std::vector<std::shared_ptr<DayZ::Entity>> DayZ::Mem::getAllUniqueEntities()
 {
 	auto map = std::map < QWORD, std::shared_ptr<DayZ::Entity>>();
 	auto world = this->getWorld().WorldPtr;
-	auto tempSet = std::unique_ptr<std::set<QWORD>>(new std::set<QWORD>());
+	auto tempSet =  std::set<QWORD>();
 	for (const auto ent : world->NearEntityTable->resolvedEntities) {
-		tempSet->insert(ent->_remoteAddress);
+		tempSet.insert(ent->_remoteAddress);
 		map[ent->_remoteAddress] = ent;
 	}
 	for (const auto ent : world->FarEntityTable->resolvedEntities) {
-		tempSet->insert(ent->_remoteAddress);
+		tempSet.insert(ent->_remoteAddress);
 		map[ent->_remoteAddress] = ent;
 	}
 	for (const auto ent : world->SlowEntityTable->resolvedEntities) {
-		tempSet->insert(ent->_remoteAddress);
+		tempSet.insert(ent->_remoteAddress);
 		map[ent->_remoteAddress] = ent;
 	}
 	for (const auto ent : world->ItemTable->resolvedEntities) {
-		tempSet->insert(ent->_remoteAddress);
+		tempSet.insert(ent->_remoteAddress);
 		map[ent->_remoteAddress] = ent;
 	}
 	
-	auto returnSet = std::shared_ptr < std::vector<std::shared_ptr<DayZ::Entity>>>(new std::vector<std::shared_ptr<DayZ::Entity>>());
-	for (const auto entry : *tempSet) {
-		returnSet->push_back(map[entry]);
+	auto returnSet = std::vector<std::shared_ptr<DayZ::Entity>>();
+	for (const auto entry : tempSet) {
+		returnSet.push_back(map[entry]);
 	}
 	return returnSet;
 }

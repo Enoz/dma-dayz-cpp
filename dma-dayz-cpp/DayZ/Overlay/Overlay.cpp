@@ -69,7 +69,7 @@ void Overlay::threadWorker()
 }
 
 void Overlay::debugDraw(sf::RenderWindow* window, DayZ::Camera* camera) {
-	auto ents = *game->getAllUniqueEntities();
+	auto ents = game->getAllUniqueEntities();
 	for (auto ent : ents) {
 		DayZ::Vector3 pos = ent->FutureVisualStatePtr->position;
 		DayZ::Vector3 screenPos = WorldToScreen(camera, pos);

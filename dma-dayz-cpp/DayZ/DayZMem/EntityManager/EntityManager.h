@@ -10,10 +10,10 @@ namespace DayZ {
 		DMAMem::VmmManager* manager;
 		DWORD pid;
 	public:
-		EntityManager(DMAMem::VmmManager* manager, DWORD pid, std::shared_ptr<std::vector<std::shared_ptr<DayZ::Entity>>> ents) {
+		EntityManager(DMAMem::VmmManager* manager, DWORD pid, std::vector<std::shared_ptr<DayZ::Entity>> ents) {
 			this->manager = manager;
 			this->pid = pid;
-			for (auto const ent : *ents) {
+			for (auto const ent : ents) {
 
 				if (ent->isPlayer() || ent->isAnimal() || ent->isZombie()) {
 					if (ent->isDead) {
