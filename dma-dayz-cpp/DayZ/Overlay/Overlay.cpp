@@ -15,22 +15,14 @@ void Overlay::threadWorker()
 
 
 	QWORD cameraAddress = initialWorld.WorldPtr->camera->_remoteAddress;
-	QWORD nearAddress = initialWorld.WorldPtr->NearEntityTable->_remoteAddress;
-	QWORD farAddress = initialWorld.WorldPtr->FarEntityTable->_remoteAddress;
-	QWORD slowAddress = initialWorld.WorldPtr->SlowEntityTable->_remoteAddress;
-	QWORD itemAddress = initialWorld.WorldPtr->ItemTable->_remoteAddress;
 	QWORD scoreboardAddress = game->getNetworkManager().NetworkClientPtr->scoreboardPtr->_remoteAddress;
 
 	auto camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera());
-	auto nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
-	auto farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
-	auto slowEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
-	auto itemEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
 	auto scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
 	scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress, NULL);
-	itemEntities->resolveObject(game->getVMM(), game->getPid(), itemAddress, NULL);
 
-	std::shared_ptr<DayZ::EntityTableSlowItem> nearItems = game->getWorld().WorldPtr->ItemTable;
+	DayZ::EntityManager entManager(game->getVMM(), game->getPid(), game->getAllUniqueEntities());
+
 	unsigned int frame = 0;
 	while (overlayWindow.isOpen()) {
 		sf::Event event;
@@ -41,62 +33,37 @@ void Overlay::threadWorker()
 		}
 
 		frame++;
-		if (frame > 10000) {
+		if (frame > 15000) {
 			frame = 0;
 		}
 
 		overlayWindow.clear();
 		overlayWindow.draw(rectBackground);
 
-		camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera());
+		//camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera());
+		camera->setUnresolved();
 		camera->resolveObject(game->getVMM(), game->getPid(), cameraAddress);
 
 
-		//nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
-		//nearEntities->resolveObject(game->getVMM(), game->getPid(), nearAddress);
 
 
+		if (frame % 14999 == 0) {
+			scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
+			scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress, NULL);
+		}
 
-		//if (frame % 7 == 0) {
-		//	farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
-		//	farEntities->resolveObject(game->getVMM(), game->getPid(), farAddress, NULL);
-		//}
-
-
-
-		//if (frame % 440 == 0) {
-		//	slowEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
-		//	slowEntities->resolveObject(game->getVMM(), game->getPid(), slowAddress, NULL);
-
-		//	itemEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
-		//	itemEntities->resolveObject(game->getVMM(), game->getPid(), itemAddress, NULL);
-		//}
-
-		//if (frame % 1000 == 0) {
-		//	scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
-		//	scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress, NULL);
-		//}
+		if (frame % 2000 == 0) {
+			entManager = DayZ::EntityManager(game->getVMM(), game->getPid(), game->getAllUniqueEntities());
+		}
+		if (frame % 500 == 0) {
+			entManager.refreshGroundItems();
+		}
+		entManager.refreshCharacters();
+		
 
 
-
-
-
-		////Combine Entity Tables
-		//auto combinedEntities = std::vector<DayZ::Entity*>();
-		//for (const auto& ent : nearEntities->resolvedEntities)
-		//	combinedEntities.push_back(ent.get());
-		//for (const auto& ent : farEntities->resolvedEntities)
-		//	combinedEntities.push_back(ent.get());
-		//for (const auto& ent : slowEntities->resolvedEntities)
-		//	combinedEntities.push_back(ent.get());
-		//for (const auto& ent : itemEntities->resolvedEntities)
-		//	combinedEntities.push_back(ent.get());
-
-		//debugDraw(&overlayWindow, &combinedEntities, camera.get());
-
-		std::shared_ptr<std::vector<std::shared_ptr<DayZ::Entity>>> combinedEntities = game->getAllUniqueEntities();
-		drawAliveEntities(&overlayWindow, combinedEntities.get(), camera.get(), scoreBoard.get());
-		drawLoot(&overlayWindow, combinedEntities.get(), camera.get());
+		drawAliveEntities(&overlayWindow, entManager.getCharacters(), camera.get(), scoreBoard.get());
+		drawLoot(&overlayWindow, entManager.getGroundItems(), camera.get());
 
 		overlayWindow.display();
 
@@ -104,8 +71,8 @@ void Overlay::threadWorker()
 	}
 }
 
-void Overlay::debugDraw(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>>* entities, DayZ::Camera* camera) {
-	for (auto ent : *entities) {
+void Overlay::debugDraw(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>> entities, DayZ::Camera* camera) {
+	for (auto ent : entities) {
 		DayZ::Vector3 pos = ent->FutureVisualStatePtr->position;
 		DayZ::Vector3 screenPos = WorldToScreen(camera, pos);
 		if (screenPos.z <= 0 && screenPos.x <= 0 && screenPos.y <= 0) {
@@ -172,9 +139,9 @@ void Overlay::debugDraw(sf::RenderWindow* window, std::vector<std::shared_ptr<Da
 	}
 }
 
-void Overlay::drawAliveEntities(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>>* entities, DayZ::Camera* camera, DayZ::Scoreboard* scoreboard)
+void Overlay::drawAliveEntities(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>> entities, DayZ::Camera* camera, DayZ::Scoreboard* scoreboard)
 {
-	for (auto ent : *entities) {
+	for (auto ent : entities) {
 		if (ent->isDead)
 			continue;
 		if (!ent->isAnimal() && !ent->isPlayer() && !ent->isZombie())
@@ -237,9 +204,9 @@ void Overlay::drawAliveEntities(sf::RenderWindow* window, std::vector<std::share
 	}
 }
 
-void Overlay::drawLoot(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>>* entities, DayZ::Camera* camera)
+void Overlay::drawLoot(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>> entities, DayZ::Camera* camera)
 {
-	for (auto ent : *entities) {
+	for (auto ent : entities) {
 		if (
 			!(ent->isGroundItem()) &&
 			!(ent->isPlayer() && ent->isDead) &&

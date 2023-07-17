@@ -2,6 +2,8 @@
 #include "../../DMAMemoryManagement/includes.h";
 #include "FutureVisualState.h";
 #include "EntityType.h"
+#include "Scoreboard.h"
+#include "ScoreboardIdentity.h"
 
 
 namespace DayZ {
@@ -28,15 +30,30 @@ namespace DayZ {
 		void categorizeEntity() {
 			if (_entityType == ENTITY_TYPE::NONE) {
 				if (!strcmp("dayzplayer", this->EntityTypePtr->ConfigName->value)) {
-					_entityType = ENTITY_TYPE::PLAYER;
+					if (this->isDead) {
+						_entityType = ENTITY_TYPE::GROUNDITEM;
+					}
+					else {
+						_entityType = ENTITY_TYPE::PLAYER;
+					}
 					return;
 				}
 				if (!strcmp("dayzinfected", this->EntityTypePtr->ConfigName->value)) {
-					_entityType = ENTITY_TYPE::ZOMBIE;
+					if (this->isDead) {
+						_entityType = ENTITY_TYPE::GROUNDITEM;
+					}
+					else {
+						_entityType = ENTITY_TYPE::ZOMBIE;
+					}
 					return;
 				}
 				if (!strcmp("dayzanimal", this->EntityTypePtr->ConfigName->value)) {
-					_entityType = ENTITY_TYPE::ANIMAL;
+					if (this->isDead) {
+						_entityType = ENTITY_TYPE::GROUNDITEM;
+					}
+					else {
+						_entityType = ENTITY_TYPE::ANIMAL;
+					}
 					return;
 				}
 				for (auto const whiteListEntry : InventoryItemWhitelist) {

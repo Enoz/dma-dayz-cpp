@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="DayZ\DayZMem\DayZMem.h" />
     <ClInclude Include="DayZ\DayzUtil.h" />
+    <ClInclude Include="DayZ\DayZMem\EntityManager\EntityManager.h" />
     <ClInclude Include="DayZ\Overlay\Overlay.h" />
     <ClInclude Include="DayZ\Structs\ArmaString.h" />
     <ClInclude Include="DayZ\Structs\Camera.h" />

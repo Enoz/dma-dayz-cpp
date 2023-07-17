@@ -113,6 +113,9 @@
     <ClInclude Include="DayZ\Structs\EntityTableSlowItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DayZ\DayZMem\EntityManager\EntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="vmm.dll" />

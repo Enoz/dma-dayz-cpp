@@ -49,5 +49,6 @@ namespace DMAMem {
 		GAME_POINTER_TYPE _remoteAddress = NULL;
 		void resolveObject(VmmManager* manager, DWORD pid, QWORD address, ULONG64 flags = VMMDLL_FLAG_NOCACHE);
 		virtual std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> getRequestedResolutions(QWORD baseAddress);
+		void setUnresolved();
 	};
 }

@@ -23,6 +23,14 @@ std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> DMAMem::Me
 	return generateDefaultResolutions(baseAddress);
 }
 
+void DMAMem::MemoryObject::setUnresolved()
+{
+	this->_isBaseResolved = false;
+	for (const auto ptrEntry : *pointerVector) {
+		ptrEntry->destination->setUnresolved();
+	}
+}
+
 std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> DMAMem::MemoryObject::generateDefaultResolutions(QWORD baseAddress)
 {
 	std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
