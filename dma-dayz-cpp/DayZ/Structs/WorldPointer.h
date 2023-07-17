@@ -8,7 +8,7 @@ namespace DayZ {
 
 		WorldPointer() {
 			WorldPtr = std::shared_ptr<World>(new World());
-			this->registerPointer(0x0, WorldPtr.get(), NULL);
+			this->registerPointer(0x0, WorldPtr.get());
 		}
 	};
 }

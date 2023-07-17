@@ -9,12 +9,11 @@ void DMAMem::MemoryObject::registerOffset(int offset, void* destination, int typ
 	offsetVector->push_back(oe);
 }
 
-void DMAMem::MemoryObject::registerPointer(int offset, MemoryObject* destination, ULONG64 flags)
+void DMAMem::MemoryObject::registerPointer(int offset, MemoryObject* destination)
 {
 	std::shared_ptr<OffsetPointer> op(new OffsetPointer());
 	op->offset = offset;
 	op->destination = destination;
-	op->flags = flags;
 	op->resolvedAddress = NULL;
 	pointerVector->push_back(op);
 }
@@ -58,9 +57,9 @@ std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> DMAMem::Me
 	return requestVec;
 }
 
-void DMAMem::MemoryObject::readResolutions(VmmManager* manager, DWORD pid, std::vector<ResolutionRequest>* resolutionRequests)
+void DMAMem::MemoryObject::readResolutions(VmmManager* manager, DWORD pid, std::vector<ResolutionRequest>* resolutionRequests, ULONG64 flags)
 {
-	VMMDLL_SCATTER_HANDLE scatterHandle = manager->initializeScatter(pid);
+	VMMDLL_SCATTER_HANDLE scatterHandle = manager->initializeScatter(pid, flags);
 	for (const auto res : *resolutionRequests) {
 		manager->addScatterRead(scatterHandle, res.address, res.size, res.destination);
 	}
@@ -69,11 +68,11 @@ void DMAMem::MemoryObject::readResolutions(VmmManager* manager, DWORD pid, std::
 
 
 
-void DMAMem::MemoryObject::resolveObject(VmmManager* manager, DWORD pid, QWORD address)
+void DMAMem::MemoryObject::resolveObject(VmmManager* manager, DWORD pid, QWORD address, ULONG64 flags)
 {
 	auto resolutions = this->getRequestedResolutions(address);
 	while (resolutions->size() > 0) {
-		readResolutions(manager, pid, resolutions.get());
+		readResolutions(manager, pid, resolutions.get(), flags);
 		resolutions = this->getRequestedResolutions(address);
 	}
 }

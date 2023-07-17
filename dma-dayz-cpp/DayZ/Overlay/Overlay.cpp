@@ -9,16 +9,16 @@ void Overlay::threadWorker()
 	std::shared_ptr<DayZ::Camera> initCamera = initialWorld.WorldPtr->camera;
 
 	//Window + Background
-	sf::RenderWindow overlayWindow(sf::VideoMode(initCamera->ViewPortSize.x * 2, initCamera->ViewPortSize.y * 2), "DayZ DMA Overlay", sf::Style::None);
-	sf::RectangleShape rectBackground(sf::Vector2f(initCamera->ViewPortSize.x * 2, initCamera->ViewPortSize.y * 2));
+	sf::RenderWindow overlayWindow(sf::VideoMode(initialWorld.WorldPtr->camera->ViewPortSize.x * 2, initialWorld.WorldPtr->camera->ViewPortSize.y * 2), "DayZ DMA Overlay", sf::Style::None);
+	sf::RectangleShape rectBackground(sf::Vector2f(initialWorld.WorldPtr->camera->ViewPortSize.x * 2, initialWorld.WorldPtr->camera->ViewPortSize.y * 2));
 	rectBackground.setFillColor(sf::Color::Black);
 
 
-	//Entity Tables
-	auto nearEntities = initialWorld.WorldPtr->NearEntityTable;
-	auto farEntities = initialWorld.WorldPtr->FarEntityTable;
-	auto slowEntities = initialWorld.WorldPtr->SlowEntityTable;
-	auto itemEntities = initialWorld.WorldPtr->ItemTable;
+	QWORD cameraAddress = initialWorld.WorldPtr->camera->_lastAddressUsed;
+	QWORD nearAddress = initialWorld.WorldPtr->NearEntityTable->_lastAddressUsed;
+	QWORD farAddress = initialWorld.WorldPtr->FarEntityTable->_lastAddressUsed;
+	QWORD slowAddress = initialWorld.WorldPtr->SlowEntityTable->_lastAddressUsed;
+	QWORD itemAddress = initialWorld.WorldPtr->ItemTable->_lastAddressUsed;
 
 	std::shared_ptr<DayZ::EntityTable> nearItems = game->getWorld().WorldPtr->ItemTable;
 	while (overlayWindow.isOpen()) {
@@ -31,21 +31,36 @@ void Overlay::threadWorker()
 		overlayWindow.clear();
 		overlayWindow.draw(rectBackground);
 
-		auto world = game->getWorld();
+		auto camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera());
+		camera->resolveObject(game->getVMM(), game->getPid(), cameraAddress);
+
+		auto nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
+		nearEntities->resolveObject(game->getVMM(), game->getPid(), nearAddress);
+
+		auto farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
+		farEntities->resolveObject(game->getVMM(), game->getPid(), farAddress, NULL);
+
+		auto slowEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
+		slowEntities->resolveObject(game->getVMM(), game->getPid(), slowAddress, NULL);
+
+		auto itemEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
+		itemEntities->resolveObject(game->getVMM(), game->getPid(), itemAddress, NULL);
+
+
 
 
 		//Combine Entity Tables
 		auto combinedEntities = std::vector<DayZ::Entity*>();
-		for (const auto& ent : world.WorldPtr->NearEntityTable->resolvedEntities)
+		//for (const auto& ent : nearEntities->resolvedEntities)
+		//	combinedEntities.push_back(ent.get());
+		//for (const auto& ent : farEntities->resolvedEntities)
+		//	combinedEntities.push_back(ent.get());
+		for (const auto& ent : slowEntities->resolvedEntities)
 			combinedEntities.push_back(ent.get());
-		for (const auto& ent : world.WorldPtr->FarEntityTable->resolvedEntities)
-			combinedEntities.push_back(ent.get());
-		for (const auto& ent : world.WorldPtr->SlowEntityTable->resolvedEntities)
-			combinedEntities.push_back(ent.get());
-		for (const auto& ent : world.WorldPtr->ItemTable->resolvedEntities)
-			combinedEntities.push_back(ent.get());
+		//for (const auto& ent : itemEntities->resolvedEntities)
+		//	combinedEntities.push_back(ent.get());
 
-		debugDraw(&overlayWindow, &combinedEntities, world.WorldPtr->camera.get());
+		debugDraw(&overlayWindow, &combinedEntities, camera.get());
 
 
 		overlayWindow.display();
@@ -62,17 +77,17 @@ void Overlay::debugDraw(sf::RenderWindow* window, std::vector<DayZ::Entity*>* en
 			continue;
 		}
 
-		sf::CircleShape entCircle(5.0f);
-		entCircle.setFillColor(sf::Color::Green);
-		entCircle.setPosition(screenPos.x, screenPos.y);
+		//sf::CircleShape entCircle(5.0f);
+		//entCircle.setFillColor(sf::Color::Green);
+		//entCircle.setPosition(screenPos.x, screenPos.y);
 
-		//sf::Text text;
-		//text.setFont(espFont);
-		//text.setCharacterSize(16);
-		//text.setFillColor(sf::Color::Green);
-		//text.setPosition(screenPos.x, screenPos.y);
-		//text.setString(ent->EntityTypePtr->ConfigName->value);
-		window->draw(entCircle);
+		sf::Text text;
+		text.setFont(espFont);
+		text.setCharacterSize(16);
+		text.setFillColor(sf::Color::Green);
+		text.setPosition(screenPos.x, screenPos.y);
+		text.setString(ent->EntityTypePtr->ConfigName->value);
+		window->draw(text);
 	}
 }
 

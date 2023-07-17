@@ -13,10 +13,10 @@ namespace DayZ {
 			ModelName = std::shared_ptr<ArmaString>(new ArmaString());
 			ConfigName = std::shared_ptr<ArmaString>(new ArmaString());
 			CleanName = std::shared_ptr<ArmaString>(new ArmaString());
-			this->registerPointer(0x70, TypeName.get(), NULL);
-			this->registerPointer(0x88, ModelName.get(), NULL);
-			this->registerPointer(0xA8, ConfigName.get(), NULL);
-			this->registerPointer(0x4E8, CleanName.get(), NULL);
+			this->registerPointer(0x70, TypeName.get());
+			this->registerPointer(0x88, ModelName.get());
+			this->registerPointer(0xA8, ConfigName.get());
+			this->registerPointer(0x4E8, CleanName.get());
 		}
 	};
 }
