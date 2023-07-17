@@ -34,7 +34,7 @@ namespace DayZ {
 		}
 
 		bool isInventoryItem() {
-			return !strcmp("inventoryitem", this->EntityTypePtr->ConfigName->value);
+			return !strcmp("InventoryItem", this->EntityTypePtr->ConfigName->value);
 		}
 
 		std::shared_ptr<ScoreboardIdentity> getPlayerIdentity(DayZ::Scoreboard* scoreboard) {
