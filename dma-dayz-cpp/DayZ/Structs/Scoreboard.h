@@ -34,6 +34,7 @@ namespace DayZ {
 					resolvedIdentities.push_back(ent);
 				}
 			}
+			return requestVec;
 		}
 	};
 }

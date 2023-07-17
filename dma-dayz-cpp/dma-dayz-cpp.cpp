@@ -43,7 +43,11 @@ int main()
     auto game = new DayZ::Mem(vmm);
 
     auto wrld = game->getWorld();
-
+    std::cout << "Success?" << std::endl;
+    auto nm = game->getNetworkManager();
+    for (const auto id : nm.NetworkClientPtr->scoreboardPtr->resolvedIdentities) {
+        std::cout << id->PlayerName->value << std::endl;
+    }
 
 
     //auto world = game->getWorld();

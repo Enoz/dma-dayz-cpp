@@ -49,7 +49,7 @@ std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> DMAMem::Me
 	else {
 		for (const auto ptrEntry : *pointerVector) {
 			auto ptrResolutions = ptrEntry->destination->getRequestedResolutions(ptrEntry->resolvedAddress);
-			if (ptrResolutions->size() > 0) {
+			if (ptrResolutions != nullptr && ptrResolutions->size() > 0) {
 				DMAUtils::concatVectors<ResolutionRequest>(requestVec.get(), ptrResolutions.get());
 			}
 		}
