@@ -309,7 +309,6 @@ std::shared_ptr<DayZ::EntityManager> Overlay::getEntityManager()
 
 void Overlay::refreshEntityManager()
 {
-	std::cout << "Refreshing" << std::endl;
 	entityManager = std::shared_ptr<DayZ::EntityManager>(new DayZ::EntityManager(game->getVMM(), game->getPid(), game->getAllUniqueEntities()));
 }
 
