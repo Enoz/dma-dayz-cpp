@@ -20,6 +20,8 @@ namespace DayZ {
 
 		ENTITY_TYPE _entityType = ENTITY_TYPE::NONE;
 		bool _isEntityTypeChecked = false;
+		bool _isValid = false;
+		bool _isValidChecked = false;
 
 	public:
 
@@ -72,7 +74,11 @@ namespace DayZ {
 		
 
 		bool isValid() {
-			return this->EntityTypePtr->TypeName->length < 400 && this->EntityTypePtr->TypeName->length > 0;
+			if (!_isValidChecked) {
+				_isValid = this->EntityTypePtr->TypeName->length < 400 && this->EntityTypePtr->TypeName->length > 0;
+				_isValidChecked = true;
+			}
+			return _isValid;
 		}
 
 		bool isPlayer() {

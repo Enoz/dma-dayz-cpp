@@ -10,13 +10,14 @@ namespace DayZ {
 		DMAMem::StaticManager staticManager = NULL;
 		QWORD worldAddress;
 		QWORD networkManagerAddress;
+		void fetchBaseAddresses();
 
 	public:
-		DMAMem::VmmManager* getVMM();
 		Mem(DMAMem::VmmManager* vmmManager);
-		void fetchBaseAddresses();
+		DMAMem::VmmManager* getVMM();
 		DWORD getPid();
 		WorldPointer getWorld();
 		NetworkManager getNetworkManager();
+		std::shared_ptr<std::vector<std::shared_ptr<DayZ::Entity>>> getAllUniqueEntities();
 	};
 };

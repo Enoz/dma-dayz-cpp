@@ -14,12 +14,12 @@ void Overlay::threadWorker()
 	rectBackground.setFillColor(sf::Color::Black);
 
 
-	QWORD cameraAddress = initialWorld.WorldPtr->camera->_lastAddressUsed;
-	QWORD nearAddress = initialWorld.WorldPtr->NearEntityTable->_lastAddressUsed;
-	QWORD farAddress = initialWorld.WorldPtr->FarEntityTable->_lastAddressUsed;
-	QWORD slowAddress = initialWorld.WorldPtr->SlowEntityTable->_lastAddressUsed;
-	QWORD itemAddress = initialWorld.WorldPtr->ItemTable->_lastAddressUsed;
-	QWORD scoreboardAddress = game->getNetworkManager().NetworkClientPtr->scoreboardPtr->_lastAddressUsed;
+	QWORD cameraAddress = initialWorld.WorldPtr->camera->_remoteAddress;
+	QWORD nearAddress = initialWorld.WorldPtr->NearEntityTable->_remoteAddress;
+	QWORD farAddress = initialWorld.WorldPtr->FarEntityTable->_remoteAddress;
+	QWORD slowAddress = initialWorld.WorldPtr->SlowEntityTable->_remoteAddress;
+	QWORD itemAddress = initialWorld.WorldPtr->ItemTable->_remoteAddress;
+	QWORD scoreboardAddress = game->getNetworkManager().NetworkClientPtr->scoreboardPtr->_remoteAddress;
 
 	auto camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera());
 	auto nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
@@ -52,49 +52,51 @@ void Overlay::threadWorker()
 		camera->resolveObject(game->getVMM(), game->getPid(), cameraAddress);
 
 
-		nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
-		nearEntities->resolveObject(game->getVMM(), game->getPid(), nearAddress);
+		//nearEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
+		//nearEntities->resolveObject(game->getVMM(), game->getPid(), nearAddress);
 
 
 
-		if (frame % 7 == 0) {
-			farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
-			farEntities->resolveObject(game->getVMM(), game->getPid(), farAddress, NULL);
-		}
+		//if (frame % 7 == 0) {
+		//	farEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
+		//	farEntities->resolveObject(game->getVMM(), game->getPid(), farAddress, NULL);
+		//}
 
 
 
-		if (frame % 440 == 0) {
-			slowEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
-			slowEntities->resolveObject(game->getVMM(), game->getPid(), slowAddress, NULL);
+		//if (frame % 440 == 0) {
+		//	slowEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
+		//	slowEntities->resolveObject(game->getVMM(), game->getPid(), slowAddress, NULL);
 
-			itemEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
-			itemEntities->resolveObject(game->getVMM(), game->getPid(), itemAddress, NULL);
-		}
+		//	itemEntities = std::shared_ptr<DayZ::EntityTableSlowItem>(new DayZ::EntityTableSlowItem());
+		//	itemEntities->resolveObject(game->getVMM(), game->getPid(), itemAddress, NULL);
+		//}
 
-		if (frame % 1000 == 0) {
-			scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
-			scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress, NULL);
-		}
-
-
+		//if (frame % 1000 == 0) {
+		//	scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
+		//	scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress, NULL);
+		//}
 
 
 
-		//Combine Entity Tables
-		auto combinedEntities = std::vector<DayZ::Entity*>();
-		for (const auto& ent : nearEntities->resolvedEntities)
-			combinedEntities.push_back(ent.get());
-		for (const auto& ent : farEntities->resolvedEntities)
-			combinedEntities.push_back(ent.get());
-		for (const auto& ent : slowEntities->resolvedEntities)
-			combinedEntities.push_back(ent.get());
-		for (const auto& ent : itemEntities->resolvedEntities)
-			combinedEntities.push_back(ent.get());
+
+
+		////Combine Entity Tables
+		//auto combinedEntities = std::vector<DayZ::Entity*>();
+		//for (const auto& ent : nearEntities->resolvedEntities)
+		//	combinedEntities.push_back(ent.get());
+		//for (const auto& ent : farEntities->resolvedEntities)
+		//	combinedEntities.push_back(ent.get());
+		//for (const auto& ent : slowEntities->resolvedEntities)
+		//	combinedEntities.push_back(ent.get());
+		//for (const auto& ent : itemEntities->resolvedEntities)
+		//	combinedEntities.push_back(ent.get());
 
 		//debugDraw(&overlayWindow, &combinedEntities, camera.get());
-		drawAliveEntities(&overlayWindow, &combinedEntities, camera.get(), scoreBoard.get());
-		drawLoot(&overlayWindow, &combinedEntities, camera.get());
+
+		std::shared_ptr<std::vector<std::shared_ptr<DayZ::Entity>>> combinedEntities = game->getAllUniqueEntities();
+		drawAliveEntities(&overlayWindow, combinedEntities.get(), camera.get(), scoreBoard.get());
+		drawLoot(&overlayWindow, combinedEntities.get(), camera.get());
 
 		overlayWindow.display();
 
@@ -102,7 +104,7 @@ void Overlay::threadWorker()
 	}
 }
 
-void Overlay::debugDraw(sf::RenderWindow* window, std::vector<DayZ::Entity*>* entities, DayZ::Camera* camera) {
+void Overlay::debugDraw(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>>* entities, DayZ::Camera* camera) {
 	for (auto ent : *entities) {
 		DayZ::Vector3 pos = ent->FutureVisualStatePtr->position;
 		DayZ::Vector3 screenPos = WorldToScreen(camera, pos);
@@ -170,7 +172,7 @@ void Overlay::debugDraw(sf::RenderWindow* window, std::vector<DayZ::Entity*>* en
 	}
 }
 
-void Overlay::drawAliveEntities(sf::RenderWindow* window, std::vector<DayZ::Entity*>* entities, DayZ::Camera* camera, DayZ::Scoreboard* scoreboard)
+void Overlay::drawAliveEntities(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>>* entities, DayZ::Camera* camera, DayZ::Scoreboard* scoreboard)
 {
 	for (auto ent : *entities) {
 		if (ent->isDead)
@@ -235,7 +237,7 @@ void Overlay::drawAliveEntities(sf::RenderWindow* window, std::vector<DayZ::Enti
 	}
 }
 
-void Overlay::drawLoot(sf::RenderWindow* window, std::vector<DayZ::Entity*>* entities, DayZ::Camera* camera)
+void Overlay::drawLoot(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>>* entities, DayZ::Camera* camera)
 {
 	for (auto ent : *entities) {
 		if (

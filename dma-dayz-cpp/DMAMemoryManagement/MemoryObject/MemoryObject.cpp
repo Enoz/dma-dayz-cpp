@@ -28,7 +28,7 @@ std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> DMAMem::Me
 	std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
 	if (baseAddress == NULL)
 		return requestVec;
-	_lastAddressUsed = baseAddress;
+	_remoteAddress = baseAddress;
 	if (!_isBaseResolved) {
 		for (const auto offEntry : *offsetVector) {
 			ResolutionRequest resReq;

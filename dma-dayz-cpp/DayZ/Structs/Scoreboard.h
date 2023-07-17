@@ -21,7 +21,7 @@ namespace DayZ {
 			if (resolvedIdentities.size() > 0) {
 				std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
 				for (auto const ident : resolvedIdentities) {
-					DMAUtils::concatVectors(requestVec.get(), ident->getRequestedResolutions(ident->_lastAddressUsed).get());
+					DMAUtils::concatVectors(requestVec.get(), ident->getRequestedResolutions(ident->_remoteAddress).get());
 				}
 				return requestVec;
 			}
