@@ -20,7 +20,6 @@ void Overlay::threadWorker()
 	auto scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
 	scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress, NULL);
 
-	DayZ::EntityManager entManager(game->getVMM(), game->getPid(), game->getAllUniqueEntities());
 
 	unsigned int frame = 0;
 	while (overlayWindow.isOpen()) {
@@ -51,17 +50,17 @@ void Overlay::threadWorker()
 		}
 
 		if (frame % 2000 == 0) {
-			entManager = DayZ::EntityManager(game->getVMM(), game->getPid(), game->getAllUniqueEntities());
+			refreshEntityManager();
 		}
 		if (frame % 500 == 0) {
-			entManager.refreshGroundItems();
+			getEntityManager()->refreshGroundItems();
 		}
-		entManager.refreshCharacters();
+		getEntityManager()->refreshCharacters();
 		
 
-		//debugDraw(&overlayWindow, *game->getAllUniqueEntities(), camera.get());
-		drawAliveEntities(&overlayWindow, entManager.getCharacters(), camera.get(), scoreBoard.get());
-		drawLoot(&overlayWindow, entManager.getGroundItems(), camera.get());
+		//debugDraw(&overlayWindow, camera.get());
+		drawAliveEntities(&overlayWindow, camera.get(), scoreBoard.get());
+		drawLoot(&overlayWindow, camera.get());
 
 		overlayWindow.display();
 
@@ -69,8 +68,9 @@ void Overlay::threadWorker()
 	}
 }
 
-void Overlay::debugDraw(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>> entities, DayZ::Camera* camera) {
-	for (auto ent : entities) {
+void Overlay::debugDraw(sf::RenderWindow* window, DayZ::Camera* camera) {
+	auto ents = *game->getAllUniqueEntities();
+	for (auto ent : ents) {
 		DayZ::Vector3 pos = ent->FutureVisualStatePtr->position;
 		DayZ::Vector3 screenPos = WorldToScreen(camera, pos);
 		if (screenPos.z <= 0 && screenPos.x <= 0 && screenPos.y <= 0) {
@@ -137,10 +137,12 @@ void Overlay::debugDraw(sf::RenderWindow* window, std::vector<std::shared_ptr<Da
 	}
 }
 
-void Overlay::drawAliveEntities(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>> entities, DayZ::Camera* camera, DayZ::Scoreboard* scoreboard)
+void Overlay::drawAliveEntities(sf::RenderWindow* window, DayZ::Camera* camera, DayZ::Scoreboard* scoreboard)
 {
-	for (auto ent : entities) {
+	for (auto ent : this->getEntityManager()->getCharacters()) {
 		float distance = ent->FutureVisualStatePtr->position.Dist(camera->InvertedViewTranslation);
+		if (ent->isDead)
+			this->refreshEntityManager();
 
 		if (distance < 5.0f)
 			continue;
@@ -175,8 +177,8 @@ void Overlay::drawAliveEntities(sf::RenderWindow* window, std::vector<std::share
 
 		float textPadding = 8.0f;
 		float textSize = boxWidth;
-		if (textSize < 12.0f)
-			textSize = 12.0f;
+		if (textSize < 16.0f)
+			textSize = 16.0f;
 		if (textSize > 24.0f)
 			textSize = 24.0f;
 
@@ -198,9 +200,9 @@ void Overlay::drawAliveEntities(sf::RenderWindow* window, std::vector<std::share
 	}
 }
 
-void Overlay::drawLoot(sf::RenderWindow* window, std::vector<std::shared_ptr<DayZ::Entity>> entities, DayZ::Camera* camera)
+void Overlay::drawLoot(sf::RenderWindow* window, DayZ::Camera* camera)
 {
-	for (auto ent : entities) {
+	for (auto ent : this->getEntityManager()->getGroundItems()) {
 		if (
 			!(ent->isGroundItem()) &&
 			!(ent->isPlayer() && ent->isDead) &&
@@ -300,6 +302,19 @@ void Overlay::drawText(sf::RenderWindow* window, DayZ::Vector3 screenPos, sf::Co
 	window->draw(drawText);
 }
 
+std::shared_ptr<DayZ::EntityManager> Overlay::getEntityManager()
+{
+	return this->entityManager;
+}
+
+void Overlay::refreshEntityManager()
+{
+	std::cout << "Refreshing" << std::endl;
+	entityManager = std::shared_ptr<DayZ::EntityManager>(new DayZ::EntityManager(game->getVMM(), game->getPid(), game->getAllUniqueEntities()));
+}
+
+
+
 //https://github.com/uNitx1337/DayZ-External-Tool/blob/master/EnfusionEngine.h EnfusionEngine::WorldToScreen (Thank You!!)
 DayZ::Vector3 Overlay::WorldToScreen(DayZ::Camera* camera, DayZ::Vector3 position)
 {
@@ -330,6 +345,7 @@ DayZ::Vector3 Overlay::WorldToScreen(DayZ::Camera* camera, DayZ::Vector3 positio
 Overlay::Overlay(DayZ::Mem* game)
 {
 	this->game = game;
+	this->refreshEntityManager();
 
 	sf::Font font;
 	font.loadFromFile("C:/Windows/Fonts/Arial.ttf");
