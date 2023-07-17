@@ -22,6 +22,10 @@ namespace DayZ {
 		float Dot(const Vector3& vec) {
 			return x * vec.x + y * vec.y + z * vec.z;
 		}
+
+		float Dist(const Vector3& vec) {
+			return abs(sqrt(pow(this->x - vec.x, 2) + pow(this->y - vec.y, 2) + pow(this->z - vec.z, 2)));
+		}
 	};
 
 	struct Vector2 {

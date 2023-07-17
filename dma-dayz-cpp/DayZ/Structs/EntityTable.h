@@ -6,7 +6,7 @@
 
 namespace DayZ {
 	class EntityTable : public DMAMem::MemoryObject {
-		QWORD EntityPointers[256];
+		QWORD EntityPointers[512];
 	public:
 		std::vector<std::shared_ptr<Entity>> resolvedEntities;
 		EntityTable() {

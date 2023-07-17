@@ -51,14 +51,14 @@ void Overlay::threadWorker()
 
 		//Combine Entity Tables
 		auto combinedEntities = std::vector<DayZ::Entity*>();
-		//for (const auto& ent : nearEntities->resolvedEntities)
-		//	combinedEntities.push_back(ent.get());
-		//for (const auto& ent : farEntities->resolvedEntities)
-		//	combinedEntities.push_back(ent.get());
+		for (const auto& ent : nearEntities->resolvedEntities)
+			combinedEntities.push_back(ent.get());
+		for (const auto& ent : farEntities->resolvedEntities)
+			combinedEntities.push_back(ent.get());
 		for (const auto& ent : slowEntities->resolvedEntities)
 			combinedEntities.push_back(ent.get());
-		//for (const auto& ent : itemEntities->resolvedEntities)
-		//	combinedEntities.push_back(ent.get());
+		for (const auto& ent : itemEntities->resolvedEntities)
+			combinedEntities.push_back(ent.get());
 
 		debugDraw(&overlayWindow, &combinedEntities, camera.get());
 
@@ -77,17 +77,66 @@ void Overlay::debugDraw(sf::RenderWindow* window, std::vector<DayZ::Entity*>* en
 			continue;
 		}
 
+		if (!ent->isAnimal() && !ent->isPlayer() && !ent->isZombie())
+			continue;
+
 		//sf::CircleShape entCircle(5.0f);
 		//entCircle.setFillColor(sf::Color::Green);
 		//entCircle.setPosition(screenPos.x, screenPos.y);
 
-		sf::Text text;
-		text.setFont(espFont);
-		text.setCharacterSize(16);
-		text.setFillColor(sf::Color::Green);
-		text.setPosition(screenPos.x, screenPos.y);
-		text.setString(ent->EntityTypePtr->ConfigName->value);
-		window->draw(text);
+		float curOffset = 0;
+
+		sf::Text drawText;
+		drawText.setFont(espFont);
+		drawText.setFillColor(sf::Color::Green);
+		drawText.setCharacterSize(12);
+
+		//CleanName
+		drawText.setPosition(screenPos.x, screenPos.y + curOffset);
+		drawText.setString(ent->EntityTypePtr->CleanName->value);
+		window->draw(drawText);
+		curOffset += 12;
+
+		//ConfigName
+		drawText.setPosition(screenPos.x, screenPos.y + curOffset);
+		drawText.setString(ent->EntityTypePtr->ConfigName->value);
+		window->draw(drawText);
+		curOffset += 12;
+
+		//ModelName
+		drawText.setPosition(screenPos.x, screenPos.y + curOffset);
+		drawText.setString(ent->EntityTypePtr->ModelName->value);
+		window->draw(drawText);
+		curOffset += 12;
+
+		//TypeName
+		drawText.setPosition(screenPos.x, screenPos.y + curOffset);
+		drawText.setString(ent->EntityTypePtr->TypeName->value);
+		window->draw(drawText);
+		curOffset += 12;
+
+		if (ent->isPlayer() || ent->isZombie()) {
+
+			drawText.setPosition(screenPos.x, screenPos.y + curOffset);
+			drawText.setString("IsPlayer");
+			window->draw(drawText);
+			curOffset += 12;
+
+
+			drawText.setPosition(screenPos.x, screenPos.y + curOffset);
+			drawText.setString("Dist: " + std::to_string(ent->FutureVisualStatePtr->position.Dist(camera->InvertedViewTranslation)));
+			window->draw(drawText);
+			curOffset += 12;
+
+			drawText.setPosition(screenPos.x, screenPos.y + curOffset);
+			drawText.setString("isDead: " + std::to_string(ent->isDead));
+			window->draw(drawText);
+			curOffset += 12;
+
+
+		}
+
+
 	}
 }
 
