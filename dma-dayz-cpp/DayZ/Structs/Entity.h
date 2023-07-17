@@ -30,30 +30,15 @@ namespace DayZ {
 		void categorizeEntity() {
 			if (_entityType == ENTITY_TYPE::NONE) {
 				if (!strcmp("dayzplayer", this->EntityTypePtr->ConfigName->value)) {
-					if (this->isDead) {
-						_entityType = ENTITY_TYPE::GROUNDITEM;
-					}
-					else {
-						_entityType = ENTITY_TYPE::PLAYER;
-					}
+					_entityType = ENTITY_TYPE::PLAYER;
 					return;
 				}
 				if (!strcmp("dayzinfected", this->EntityTypePtr->ConfigName->value)) {
-					if (this->isDead) {
-						_entityType = ENTITY_TYPE::GROUNDITEM;
-					}
-					else {
-						_entityType = ENTITY_TYPE::ZOMBIE;
-					}
+					_entityType = ENTITY_TYPE::ZOMBIE;
 					return;
 				}
 				if (!strcmp("dayzanimal", this->EntityTypePtr->ConfigName->value)) {
-					if (this->isDead) {
-						_entityType = ENTITY_TYPE::GROUNDITEM;
-					}
-					else {
-						_entityType = ENTITY_TYPE::ANIMAL;
-					}
+					_entityType = ENTITY_TYPE::ANIMAL;
 					return;
 				}
 				for (auto const whiteListEntry : InventoryItemWhitelist) {

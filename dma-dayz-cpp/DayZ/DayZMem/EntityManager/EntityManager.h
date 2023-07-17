@@ -16,6 +16,10 @@ namespace DayZ {
 			for (auto const ent : *ents) {
 
 				if (ent->isPlayer() || ent->isAnimal() || ent->isZombie()) {
+					if (ent->isDead) {
+						groundItems.push_back(ent);
+						continue;
+					}
 					characters.push_back(ent);
 					continue;
 				}
