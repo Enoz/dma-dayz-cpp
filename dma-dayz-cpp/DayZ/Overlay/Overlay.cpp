@@ -19,6 +19,7 @@ void Overlay::threadWorker()
 	QWORD farAddress = initialWorld.WorldPtr->FarEntityTable->_lastAddressUsed;
 	QWORD slowAddress = initialWorld.WorldPtr->SlowEntityTable->_lastAddressUsed;
 	QWORD itemAddress = initialWorld.WorldPtr->ItemTable->_lastAddressUsed;
+	QWORD scoreboardAddress = game->getNetworkManager().NetworkClientPtr->scoreboardPtr->_lastAddressUsed;
 
 	std::shared_ptr<DayZ::EntityTable> nearItems = game->getWorld().WorldPtr->ItemTable;
 	while (overlayWindow.isOpen()) {
@@ -46,6 +47,9 @@ void Overlay::threadWorker()
 		auto itemEntities = std::shared_ptr<DayZ::EntityTable>(new DayZ::EntityTable());
 		itemEntities->resolveObject(game->getVMM(), game->getPid(), itemAddress, NULL);
 
+		auto scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
+		scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress, NULL);
+
 
 
 
@@ -60,7 +64,8 @@ void Overlay::threadWorker()
 		for (const auto& ent : itemEntities->resolvedEntities)
 			combinedEntities.push_back(ent.get());
 
-		debugDraw(&overlayWindow, &combinedEntities, camera.get());
+		//debugDraw(&overlayWindow, &combinedEntities, camera.get());
+		drawAliveEntities(&overlayWindow, &combinedEntities, camera.get(), scoreBoard.get());
 
 
 		overlayWindow.display();
@@ -138,6 +143,105 @@ void Overlay::debugDraw(sf::RenderWindow* window, std::vector<DayZ::Entity*>* en
 
 
 	}
+}
+
+void Overlay::drawAliveEntities(sf::RenderWindow* window, std::vector<DayZ::Entity*>* entities, DayZ::Camera* camera, DayZ::Scoreboard* scoreboard)
+{
+	for (auto ent : *entities) {
+		if (ent->isDead)
+			continue;
+		if (!ent->isAnimal() && !ent->isPlayer() && !ent->isZombie())
+			continue;
+
+		float distance = ent->FutureVisualStatePtr->position.Dist(camera->InvertedViewTranslation);
+
+		if (distance < 5.0f)
+			continue;
+
+
+		DayZ::Vector3 pos = ent->FutureVisualStatePtr->position;
+		DayZ::Vector3 screenPos = WorldToScreen(camera, pos);
+
+		sf::Color drawColor;
+		if (ent->isAnimal()) {
+			drawColor = sf::Color::Green;
+		}
+		if (ent->isPlayer()) {
+			drawColor = sf::Color::Red;
+		}
+		if (ent->isZombie()) {
+			drawColor = sf::Color::Yellow;
+		}
+
+		auto bottomW2S = WorldToScreen(camera, pos);
+		auto topW2S = WorldToScreen(camera, DayZ::Vector3(pos.x, pos.y + 1.8, pos.z));
+		auto boxWidth = (bottomW2S.y - topW2S.y) / 1.8f;
+
+		float textPadding = 8.0f;
+		float textSize = boxWidth;
+		if (textSize < 15.0f)
+			textSize = 15.0f;
+		if (textSize > 48.0f)
+			textSize = 48.0f;
+
+		if (ent->isPlayer()) {
+			auto ident = ent->getPlayerIdentity(scoreboard);
+			if (ident != NULL) {
+				drawText(window, DayZ::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y, 0), drawColor, textSize, ident->PlayerName->value);
+			}
+		}
+
+		if (ent->isAnimal()) {
+			drawText(window, DayZ::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y, 0), drawColor, textSize, ent->EntityTypePtr->CleanName->value);
+		}
+
+
+		drawBox(window, bottomW2S, topW2S, boxWidth, drawColor);
+
+	}
+}
+
+void Overlay::drawLoot(sf::RenderWindow* window, std::vector<DayZ::Entity*>* entities, DayZ::Camera* camera)
+{
+
+}
+
+void Overlay::drawBox(sf::RenderWindow* window, DayZ::Vector3 bottom, DayZ::Vector3 top, float width, sf::Color color)
+{
+
+	std::vector<sf::Vector2f> lineOrder {
+		sf::Vector2f(top.x + width / 2, top.y),
+		sf::Vector2f(bottom.x + width / 2, bottom.y),
+		sf::Vector2f(bottom.x - width / 2, bottom.y),
+		sf::Vector2f(top.x - width / 2, top.y),
+		sf::Vector2f(top.x + width / 2, top.y)
+	};
+	for (int i = 0; i < lineOrder.size() - 1; i++) {
+		sf::VertexArray line(sf::Lines, 2);
+		line[0].position = lineOrder[i];
+		line[1].position = lineOrder[i + 1];
+
+		line[0].color = color;
+		line[1].color = color;
+
+		window->draw(line);
+	}
+
+
+}
+
+void Overlay::drawText(sf::RenderWindow* window, DayZ::Vector3 screenPos, sf::Color color, int size, std::string text)
+{
+	if (size > 50 || size < 2)
+		return;
+	sf::Text drawText;
+	drawText.setFont(espFont);
+	drawText.setFillColor(color);
+	drawText.setString(text);
+	drawText.setPosition(screenPos.x, screenPos.y);
+	drawText.setCharacterSize(size);
+
+	window->draw(drawText);
 }
 
 //https://github.com/uNitx1337/DayZ-External-Tool/blob/master/EnfusionEngine.h EnfusionEngine::WorldToScreen (Thank You!!)

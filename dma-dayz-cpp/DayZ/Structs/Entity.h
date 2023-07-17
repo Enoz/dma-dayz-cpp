@@ -37,5 +37,13 @@ namespace DayZ {
 			return !strcmp("inventoryitem", this->EntityTypePtr->ConfigName->value);
 		}
 
+		std::shared_ptr<ScoreboardIdentity> getPlayerIdentity(DayZ::Scoreboard* scoreboard) {
+			for (const auto ident : scoreboard->resolvedIdentities) {
+				if (ident->NetworkID == this->NetworkID)
+					return ident;
+			}
+			return NULL;
+		}
+
 	};
 }
