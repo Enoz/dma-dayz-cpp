@@ -13,24 +13,26 @@ namespace DayZ {
 			this->registerOffset(0x0, &ScoreboardIdentityPointers, sizeof(QWORD[60]));
 		}
 
-		std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> getRequestedResolutions(QWORD baseAddress) override {
+		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
 			if (!_isBaseResolved) {
 				return generateDefaultResolutions(baseAddress);
 			}
 
 			if (resolvedIdentities.size() > 0) {
-				std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
+				std::vector<ResolutionRequest> requestVec;
 				for (auto const ident : resolvedIdentities) {
-					DMAUtils::concatVectors(requestVec.get(), ident->getRequestedResolutions(ident->_remoteAddress).get());
+					auto entRes = ident->getRequestedResolutions(ident->_remoteAddress);
+					DMAUtils::concatVectors(&requestVec, &entRes);
 				}
 				return requestVec;
 			}
-			std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
+			std::vector<ResolutionRequest> requestVec;
 			std::set<QWORD> vecEntityPointers(std::begin(ScoreboardIdentityPointers), std::end(ScoreboardIdentityPointers));
 			for (QWORD identityPtr : vecEntityPointers) {
 				if (DayZUtil::isPointerValid(identityPtr)) {
 					auto ent = std::shared_ptr<ScoreboardIdentity>(new ScoreboardIdentity());
-					DMAUtils::concatVectors(requestVec.get(), ent->getRequestedResolutions(identityPtr).get());
+					auto entRes = ent->getRequestedResolutions(identityPtr);
+					DMAUtils::concatVectors(&requestVec, &entRes);
 					resolvedIdentities.push_back(ent);
 				}
 			}

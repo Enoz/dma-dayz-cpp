@@ -67,24 +67,24 @@ namespace DayZ {
 		}
 
 
-		std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> getRequestedResolutions(QWORD baseAddress) override {
-			std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
+		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
+			std::vector<ResolutionRequest> requestVec;
 			for (const auto ent : groundItems) {
-				auto resolutions = *ent->getRequestedResolutions(ent->_remoteAddress);
+				auto resolutions = ent->getRequestedResolutions(ent->_remoteAddress);
 				for (const auto& resReq : resolutions) {
-					requestVec->push_back(resReq);
+					requestVec.push_back(resReq);
 				}
 			}
 			for (const auto ent : characters) {
-				auto resolutions = *ent->getRequestedResolutions(ent->_remoteAddress);
+				auto resolutions = ent->getRequestedResolutions(ent->_remoteAddress);
 				for (const auto& resReq : resolutions) {
-					requestVec->push_back(resReq);
+					requestVec.push_back(resReq);
 				}
 			}
 			for (const auto ent : uncategorized) {
-				auto resolutions = *ent->getRequestedResolutions(ent->_remoteAddress);
+				auto resolutions = ent->getRequestedResolutions(ent->_remoteAddress);
 				for (const auto& resReq : resolutions) {
-					requestVec->push_back(resReq);
+					requestVec.push_back(resReq);
 				}
 			}
 			return requestVec;

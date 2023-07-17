@@ -29,23 +29,25 @@ namespace DayZ {
 			this->registerOffset(0x0, &EntityPointers, sizeof(SlowItemStruct[512]));
 		}
 
-		std::shared_ptr<std::vector<DMAMem::MemoryObject::ResolutionRequest>> getRequestedResolutions(QWORD baseAddress) override {
+		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
 			if (!_isBaseResolved) {
 				return generateDefaultResolutions(baseAddress);
 			}
 			if (resolvedEntities.size() > 0) {
-				std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
+				std::vector<ResolutionRequest> requestVec;
 				for (auto const ent : resolvedEntities) {
-					DMAUtils::concatVectors(requestVec.get(), ent->getRequestedResolutions(ent->_remoteAddress).get());
+					auto entRes = ent->getRequestedResolutions(ent->_remoteAddress);
+					DMAUtils::concatVectors(&requestVec, &entRes);
 				}
 				return requestVec;
 			}
-			std::shared_ptr< std::vector<ResolutionRequest>> requestVec(new std::vector<ResolutionRequest>());
+			std::vector<ResolutionRequest> requestVec;
 			auto resolvedEntitiesTemp = std::vector<std::shared_ptr<Entity>>();
-			for (auto entityPtr : EntityPointers) {
+			for (const auto entityPtr : EntityPointers) {
 				if (DayZUtil::isPointerValid(entityPtr.EntityPointer)) {
 					auto ent = std::shared_ptr<Entity>(new Entity());
-					DMAUtils::concatVectors(requestVec.get(), ent->getRequestedResolutions(entityPtr.EntityPointer).get());
+					auto entRes = ent->getRequestedResolutions(entityPtr.EntityPointer);
+					DMAUtils::concatVectors(&requestVec, &entRes);
 					resolvedEntities.push_back(ent);
 				}
 			}
