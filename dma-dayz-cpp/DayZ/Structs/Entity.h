@@ -4,6 +4,7 @@
 #include "EntityType.h"
 #include "Scoreboard.h"
 #include "ScoreboardIdentity.h"
+#include "EntityInventory.h"
 
 
 namespace DayZ {
@@ -60,6 +61,7 @@ namespace DayZ {
 
 		std::shared_ptr<FutureVisualState> FutureVisualStatePtr;
 		std::shared_ptr<EntityType> EntityTypePtr;
+		std::shared_ptr<EntityInventory> InventoryPtr;
 		uint32_t NetworkID;
 		bool isDead;
 		
@@ -67,8 +69,10 @@ namespace DayZ {
 		Entity() {
 			FutureVisualStatePtr = std::shared_ptr<FutureVisualState>(new FutureVisualState());
 			EntityTypePtr = std::shared_ptr<EntityType>(new EntityType());
+			InventoryPtr = std::shared_ptr<EntityInventory>(new EntityInventory());
 			this->registerPointer(0x168, EntityTypePtr.get());
 			this->registerPointer(0x1C0, FutureVisualStatePtr.get());
+			this->registerPointer(0x658, InventoryPtr.get());
 			this->registerOffset(0x6DC, &NetworkID, sizeof(uint32_t));
 			this->registerOffset(0x17D, &isDead, sizeof(bool));
 		}

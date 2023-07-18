@@ -188,6 +188,11 @@ void Overlay::drawAliveEntities(sf::RenderWindow* window, DayZ::Camera* camera, 
 				drawText(window, DayZ::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y, 0), drawColor, textSize, ident->PlayerName->value);
 				drawText(window, DayZ::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y-textSize, 0), drawColor, textSize, std::to_string((int)floor(distance)));
 			}
+			auto handItemArmaStr = ent->InventoryPtr->handItem->EntityTypePtr->getBestString();
+			if (handItemArmaStr != nullptr) {
+				drawText(window, DayZ::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y - (textSize*2), 0), drawColor, textSize, ent->InventoryPtr->handItem->EntityTypePtr->getBestString()->value);
+			}
+			
 		}
 
 		if (ent->isAnimal()) {
