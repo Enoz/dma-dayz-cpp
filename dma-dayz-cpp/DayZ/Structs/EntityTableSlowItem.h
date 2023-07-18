@@ -22,11 +22,11 @@ namespace DayZ {
 			QWORD EntityPointer; //0x0008
 			QWORD Junk; //0x0010
 		};
-		SlowItemStruct EntityPointers[512];
+		SlowItemStruct EntityPointers[256];
 	public:
 		std::vector<std::shared_ptr<Entity>> resolvedEntities;
 		EntityTableSlowItem() {
-			this->registerOffset(0x0, &EntityPointers, sizeof(SlowItemStruct[512]));
+			this->registerOffset(0x0, &EntityPointers, sizeof(SlowItemStruct[256]));
 		}
 
 		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
