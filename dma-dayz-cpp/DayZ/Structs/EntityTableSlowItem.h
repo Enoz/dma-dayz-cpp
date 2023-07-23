@@ -8,7 +8,7 @@
 class WeirdTable
 {
 public:
-	uint16_t flag; //0x0000
+	uint16_t validItemFlag; //0x0000
 	char pad_0002[6]; //0x0002
 	QWORD WeirdPtr; //0x0008
 	QWORD Junk; //0x0010
