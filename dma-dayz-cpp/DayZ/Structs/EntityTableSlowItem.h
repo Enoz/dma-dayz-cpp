@@ -57,6 +57,8 @@ namespace DayZ {
 					auto entRes = ent->getRequestedResolutions(entityPtr.EntityPointer);
 					DMAUtils::concatVectors(&requestVec, &entRes);
 					resolvedEntities.push_back(ent);
+					if (resolvedEntities.size() == validSize)
+						break;
 				}
 			}
 			return requestVec;
