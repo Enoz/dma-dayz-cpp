@@ -50,7 +50,7 @@ void Overlay::threadWorker()
 		drawLoot(&overlayWindow, wrld.camera.get(), wrld.SlowEntityTable->resolvedEntities);
 		drawLoot(&overlayWindow, wrld.camera.get(), wrld.ItemTable->resolvedEntities);
 
-		debugDraw(&overlayWindow, wrld.camera.get(), wrld.ItemTable->resolvedEntities);
+		//debugDraw(&overlayWindow, wrld.camera.get(), wrld.ItemTable->resolvedEntities);
 
 		if (frame % 14999 == 0) {
 			scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
@@ -316,15 +316,6 @@ void Overlay::drawText(sf::RenderWindow* window, DayZ::Vector3 screenPos, sf::Co
 	window->draw(drawText);
 }
 
-//std::shared_ptr<DayZ::EntityManager> Overlay::getEntityManager()
-//{
-//	return this->entityManager;
-//}
-//
-//void Overlay::refreshEntityManager()
-//{
-//	entityManager = std::shared_ptr<DayZ::EntityManager>(new DayZ::EntityManager(game->getVMM(), game->getPid(), game->getAllUniqueEntities()));
-//}
 
 
 
@@ -358,7 +349,6 @@ DayZ::Vector3 Overlay::WorldToScreen(DayZ::Camera* camera, DayZ::Vector3 positio
 Overlay::Overlay(DayZ::Mem* game)
 {
 	this->game = game;
-	//this->refreshEntityManager();
 
 	sf::Font font;
 	font.loadFromFile("C:/Windows/Fonts/Arial.ttf");

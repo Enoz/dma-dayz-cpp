@@ -165,7 +165,6 @@
   <ItemGroup>
     <ClInclude Include="DayZ\DayZMem\DayZMem.h" />
     <ClInclude Include="DayZ\DayzUtil.h" />
-    <ClInclude Include="DayZ\DayZMem\EntityManager\EntityManager.h" />
     <ClInclude Include="DayZ\Overlay\Overlay.h" />
     <ClInclude Include="DayZ\Structs\ArmaString.h" />
     <ClInclude Include="DayZ\Structs\EntityFilterList.h" />
@@ -177,6 +176,7 @@
     <ClInclude Include="DayZ\Structs\EntityType.h" />
     <ClInclude Include="DayZ\Structs\FutureVisualState.h" />
     <ClInclude Include="DayZ\Structs\InventoryItem.h" />
+    <ClInclude Include="DayZ\Structs\WorldNoLists.h" />
     <ClInclude Include="DayZ\Structs\WorldPointer.h" />
     <ClInclude Include="DayZ\Structs\World.h" />
     <ClInclude Include="DayZ\Structs\NetworkClient.h" />
