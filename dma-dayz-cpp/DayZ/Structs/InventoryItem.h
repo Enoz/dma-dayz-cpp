@@ -5,7 +5,7 @@
 #include "Scoreboard.h"
 #include "ScoreboardIdentity.h"
 #include "EntityInventory.h"
-#include "Blacklists.h"
+#include "EntityFilterList.h"
 
 
 namespace DayZ {
