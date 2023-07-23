@@ -9,7 +9,13 @@
 
 namespace DayZ {
 
+	const std::vector<std::string> inventoryItemBlacklist {"AreaDamageTriggerBase"};
+
 	class InventoryItem : public DMAMem::MemoryObject {
+
+		bool _isValid = false;
+		bool _isValidChecked = false;
+
 	public:
 
 		std::shared_ptr<EntityType> EntityTypePtr;
@@ -18,6 +24,22 @@ namespace DayZ {
 		InventoryItem() {
 			EntityTypePtr = std::shared_ptr<EntityType>(new EntityType());
 			this->registerPointer(0x168, EntityTypePtr.get());
+		}
+
+		bool isValid() {
+
+			if (!_isValidChecked) {
+				for (auto blacklistItem : inventoryItemBlacklist) {
+					if (!strcmp(blacklistItem.c_str(), this->EntityTypePtr->TypeName->value)) {
+						_isValid = false;
+						_isValidChecked = true;
+						return _isValid;
+					}
+				}
+				_isValid = this->EntityTypePtr->TypeName->length < 400 && this->EntityTypePtr->TypeName->length > 0;
+				_isValidChecked = true;
+			}
+			return _isValid;
 		}
 
 	};

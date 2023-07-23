@@ -10,6 +10,9 @@
 namespace DayZ {
 
 	const std::vector<std::string> InventoryItemWhitelist {"inventoryItem", "item", "clothing", "ProxyMagazines", "Weapon", "itemoptics"};
+	const std::vector<std::string> itemBlacklist {"AreaDamageTriggerBase", "ClutterCutter6x6", "GardenPlotPolytunnel"};
+
+	
 
 	enum ENTITY_TYPE {
 		NONE,
@@ -80,7 +83,15 @@ namespace DayZ {
 		
 
 		bool isValid() {
+
 			if (!_isValidChecked) {
+				for (auto blacklistItem : itemBlacklist) {
+					if (!strcmp(blacklistItem.c_str(), this->EntityTypePtr->TypeName->value)) {
+						_isValid = false;
+						_isValidChecked = true;
+						return _isValid;
+					}
+				}
 				_isValid = this->EntityTypePtr->TypeName->length < 400 && this->EntityTypePtr->TypeName->length > 0;
 				_isValidChecked = true;
 			}
