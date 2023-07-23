@@ -22,11 +22,16 @@ namespace DayZ {
 			QWORD EntityPointer; //0x0008
 			QWORD Junk; //0x0010
 		};
-		SlowItemStruct EntityPointers[256];
+		std::shared_ptr<SlowItemStruct[]> EntityPointers;
+		int allocSize;
+		int validSize;
 	public:
 		std::vector<std::shared_ptr<Entity>> resolvedEntities;
-		EntityTableSlowItem() {
-			this->registerOffset(0x0, &EntityPointers, sizeof(SlowItemStruct[256]));
+		EntityTableSlowItem(int allocSize, int validSize) {
+			this->validSize = validSize;
+			this->allocSize = allocSize;
+			EntityPointers = std::shared_ptr<SlowItemStruct[]>(new SlowItemStruct[allocSize]);
+			this->registerOffset(0x0, EntityPointers.get(), sizeof(SlowItemStruct) * allocSize);
 		}
 
 		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
@@ -41,10 +46,13 @@ namespace DayZ {
 				}
 				return requestVec;
 			}
+
+
 			std::vector<ResolutionRequest> requestVec;
-			auto resolvedEntitiesTemp = std::vector<std::shared_ptr<Entity>>();
-			for (const auto entityPtr : EntityPointers) {
-				if (DayZUtil::isPointerValid(entityPtr.EntityPointer)) {
+
+			for (int i = 0; i < allocSize; i++) {
+				SlowItemStruct entityPtr = EntityPointers[i];
+				if (entityPtr.flag == 1) {
 					auto ent = std::shared_ptr<Entity>(new Entity());
 					auto entRes = ent->getRequestedResolutions(entityPtr.EntityPointer);
 					DMAUtils::concatVectors(&requestVec, &entRes);

@@ -51,8 +51,8 @@ namespace DayZ {
 			if (!resolvedTables) {
 				NearEntityTable = std::shared_ptr<EntityTable>(new EntityTable(this->NearEntityTableCount));
 				FarEntityTable = std::shared_ptr<EntityTable>(new EntityTable(this->FarEntityTableCount));
-				SlowEntityTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem());
-				ItemTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem());
+				SlowEntityTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem(this->SlowEntityCountAlloc, this->SlowEntityValidCount));
+				ItemTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem(this->ItemTableCountAlloc, this->ItemTableCount));
 				camera = std::shared_ptr<Camera>(new Camera());
 
 				this->registerPointer(0xEB8, NearEntityTable.get());
