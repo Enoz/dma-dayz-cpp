@@ -122,6 +122,9 @@
     <ClInclude Include="DayZ\Structs\InventoryItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DayZ\Structs\Blacklists.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="vmm.dll" />

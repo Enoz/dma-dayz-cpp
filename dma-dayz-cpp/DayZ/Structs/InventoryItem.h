@@ -5,11 +5,11 @@
 #include "Scoreboard.h"
 #include "ScoreboardIdentity.h"
 #include "EntityInventory.h"
+#include "Blacklists.h"
 
 
 namespace DayZ {
 
-	const std::vector<std::string> inventoryItemBlacklist {"AreaDamageTriggerBase"};
 
 	class InventoryItem : public DMAMem::MemoryObject {
 
@@ -29,7 +29,7 @@ namespace DayZ {
 		bool isValid() {
 
 			if (!_isValidChecked) {
-				for (auto blacklistItem : inventoryItemBlacklist) {
+				for (auto blacklistItem : itemBlacklist) {
 					if (!strcmp(blacklistItem.c_str(), this->EntityTypePtr->TypeName->value)) {
 						_isValid = false;
 						_isValidChecked = true;

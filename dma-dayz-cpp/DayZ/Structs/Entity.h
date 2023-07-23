@@ -5,14 +5,11 @@
 #include "Scoreboard.h"
 #include "ScoreboardIdentity.h"
 #include "EntityInventory.h"
+#include "Blacklists.h"
 
 
 namespace DayZ {
 
-	const std::vector<std::string> InventoryItemWhitelist {"inventoryItem", "item", "clothing", "ProxyMagazines", "Weapon", "itemoptics"};
-	const std::vector<std::string> itemBlacklist {"AreaDamageTriggerBase", "ClutterCutter6x6", "GardenPlotPolytunnel"};
-
-	
 
 	enum ENTITY_TYPE {
 		NONE,
