@@ -176,7 +176,6 @@
     <ClInclude Include="DayZ\Structs\EntityType.h" />
     <ClInclude Include="DayZ\Structs\FutureVisualState.h" />
     <ClInclude Include="DayZ\Structs\InventoryItem.h" />
-    <ClInclude Include="DayZ\Structs\WorldNoLists.h" />
     <ClInclude Include="DayZ\Structs\WorldPointer.h" />
     <ClInclude Include="DayZ\Structs\World.h" />
     <ClInclude Include="DayZ\Structs\NetworkClient.h" />

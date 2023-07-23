@@ -31,6 +31,14 @@ void DMAMem::MemoryObject::setUnresolved()
 	}
 }
 
+void DMAMem::MemoryObject::refreshObject(VmmManager* manager, DWORD pid)
+{
+	if (!_remoteAddress)
+		return;
+	this->setUnresolved();
+	this->resolveObject(manager, pid, _remoteAddress);
+}
+
 std::vector<DMAMem::MemoryObject::ResolutionRequest> DMAMem::MemoryObject::generateDefaultResolutions(QWORD baseAddress)
 {
 	std::vector<ResolutionRequest> requestVec;;
