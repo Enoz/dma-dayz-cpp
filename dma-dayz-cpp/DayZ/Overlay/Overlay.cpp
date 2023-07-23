@@ -65,7 +65,7 @@ void Overlay::threadWorker()
 		drawLoot(&overlayWindow, camera.get(), em.SlowEntityTable->resolvedEntities);
 		drawLoot(&overlayWindow, camera.get(), em.ItemTable->resolvedEntities);
 
-		//debugDraw(&overlayWindow, wrld.camera.get(), wrld.ItemTable->resolvedEntities);
+		//debugDraw(&overlayWindow, camera.get(), em.FarEntityTable->resolvedEntities);
 
 		if (frame % 14999 == 0) {
 			scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
