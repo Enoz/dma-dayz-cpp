@@ -4,6 +4,7 @@
 #include "../DayZMem/DayZMem.h"
 #include "../Structs/Vectors.h"
 #include "../../DMAMemoryManagement/Utils/Utils.h"
+#include "../DayZMem/EntityManager/EntityManager.h"
 
 class Overlay {
 	void threadWorker();

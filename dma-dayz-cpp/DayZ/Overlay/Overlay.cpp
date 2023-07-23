@@ -20,6 +20,9 @@ void Overlay::threadWorker()
 	auto scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
 	scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress, NULL);
 
+	DayZ::EntityManager em(initialWorld.WorldPtr->_remoteAddress, game->getVMM(), game->getPid());
+	em.refreshAll();
+
 
 
 	unsigned int frame = 0;
@@ -41,14 +44,26 @@ void Overlay::threadWorker()
 		overlayWindow.clear();
 		overlayWindow.draw(rectBackground);
 
-		DayZ::World wrld = DayZ::World();
-		wrld.resolveObject(game->getVMM(), game->getPid(), initialWorld.WorldPtr->_remoteAddress);
+		camera = std::shared_ptr<DayZ::Camera>(new DayZ::Camera());
+		camera->resolveObject(game->getVMM(), game->getPid(), initialWorld.WorldPtr->camera->_remoteAddress);
+
+		if (frame % 1000 == 0) {
+			em.refreshItem();
+		}
+		if (frame % 1400 == 0) {
+			em.refreshSlow();
+		}
+		em.refreshNear();
+		em.refreshFar();
+
+		//DayZ::World wrld = DayZ::World();
+		//wrld.resolveObject(game->getVMM(), game->getPid(), initialWorld.WorldPtr->_remoteAddress);
 
 
-		drawAliveEntities(&overlayWindow, wrld.camera.get(), scoreBoard.get(), wrld.NearEntityTable->resolvedEntities);
-		drawAliveEntities(&overlayWindow, wrld.camera.get(), scoreBoard.get(), wrld.FarEntityTable->resolvedEntities);
-		drawLoot(&overlayWindow, wrld.camera.get(), wrld.SlowEntityTable->resolvedEntities);
-		drawLoot(&overlayWindow, wrld.camera.get(), wrld.ItemTable->resolvedEntities);
+		drawAliveEntities(&overlayWindow, camera.get(), scoreBoard.get(), em.NearEntityTable->resolvedEntities);
+		drawAliveEntities(&overlayWindow, camera.get(), scoreBoard.get(), em.FarEntityTable->resolvedEntities);
+		drawLoot(&overlayWindow, camera.get(), em.SlowEntityTable->resolvedEntities);
+		drawLoot(&overlayWindow, camera.get(), em.ItemTable->resolvedEntities);
 
 		//debugDraw(&overlayWindow, wrld.camera.get(), wrld.ItemTable->resolvedEntities);
 

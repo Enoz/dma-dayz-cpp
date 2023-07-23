@@ -9,11 +9,13 @@ namespace DayZ {
 		QWORD worldAddress;
 		DMAMem::VmmManager* manager;
 		DWORD pid;
+
+	public:
+
 		std::shared_ptr<EntityTable> NearEntityTable;
 		std::shared_ptr<EntityTable> FarEntityTable;
 		std::shared_ptr<EntityTableSlowItem> SlowEntityTable;
 		std::shared_ptr<EntityTableSlowItem> ItemTable;
-	public:
 		EntityManager(QWORD worldAddress, DMAMem::VmmManager* manager, DWORD pid) {
 			this->worldAddress = worldAddress;
 			this->manager = manager;
@@ -41,17 +43,17 @@ namespace DayZ {
 		void refreshFar() {
 			auto wnl = getWNL();
 			FarEntityTable = std::shared_ptr<EntityTable>(new EntityTable(wnl.FarEntityTableCount));
-			NearEntityTable->resolveObject(manager, pid, wnl.FarTableAddress);
+			FarEntityTable->resolveObject(manager, pid, wnl.FarTableAddress);
 		}
 		void refreshSlow() {
 			auto wnl = getWNL();
 			SlowEntityTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem(wnl.SlowEntityCountAlloc, wnl.SlowEntityValidCount));
-			NearEntityTable->resolveObject(manager, pid, wnl.SlowTableAddress);
+			SlowEntityTable->resolveObject(manager, pid, wnl.SlowTableAddress);
 		}
 		void refreshItem() {
 			auto wnl = getWNL();
 			ItemTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem(wnl.ItemTableCountAlloc, wnl.ItemTableCount));
-			NearEntityTable->resolveObject(manager, pid, wnl.ItemTableAddress);
+			ItemTable->resolveObject(manager, pid, wnl.ItemTableAddress);
 		}
 
 

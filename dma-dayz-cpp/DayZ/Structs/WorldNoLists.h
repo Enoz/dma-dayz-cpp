@@ -23,7 +23,7 @@ namespace DayZ {
 			this->registerOffset(0x1FD8, &ItemTableCountAlloc, sizeof(int32_t));
 			this->registerOffset(0x1FE0, &ItemTableCount, sizeof(int32_t));
 
-			this->registerOffset(0xED8, &NearTableAddress, sizeof(QWORD));
+			this->registerOffset(0xEB8, &NearTableAddress, sizeof(QWORD));
 			this->registerOffset(0x1000, &FarTableAddress, sizeof(QWORD));
 			this->registerOffset(0x1F80, &SlowTableAddress, sizeof(QWORD));
 			this->registerOffset(0x1FD0, &ItemTableAddress, sizeof(QWORD));
