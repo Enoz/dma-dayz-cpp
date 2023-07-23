@@ -6,11 +6,15 @@
 
 namespace DayZ {
 	class EntityTable : public DMAMem::MemoryObject {
-		QWORD EntityPointers[256];
+		//QWORD EntityPointers[256];
+		std::shared_ptr<QWORD[]> EntityPointers;
+		int tableSize;
 	public:
 		std::vector<std::shared_ptr<Entity>> resolvedEntities;
-		EntityTable() {
-			this->registerOffset(0x0, &EntityPointers, sizeof(QWORD[256]));
+		EntityTable(int size) {
+			tableSize = size;
+			EntityPointers = std::shared_ptr<QWORD[]>(new QWORD[tableSize]);
+			this->registerOffset(0x0, EntityPointers.get(), sizeof(QWORD) * tableSize);
 		}
 
 		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
@@ -25,17 +29,28 @@ namespace DayZ {
 				}
 				return requestVec;
 			}
+			//std::vector<ResolutionRequest> requestVec;
+			//auto resolvedEntitiesTemp = std::vector<std::shared_ptr<Entity>>();
+			//std::set<QWORD> vecEntityPointers(std::begin(EntityPointers), std::end(EntityPointers));
+
+
 			std::vector<ResolutionRequest> requestVec;
-			auto resolvedEntitiesTemp = std::vector<std::shared_ptr<Entity>>();
-			std::set<QWORD> vecEntityPointers(std::begin(EntityPointers), std::end(EntityPointers));
-			for (QWORD entityPtr : vecEntityPointers) {
-				if (DayZUtil::isPointerValid(entityPtr)) {
-					auto ent = std::shared_ptr<Entity>(new Entity());
-					auto entRes = ent->getRequestedResolutions(entityPtr);
-					DMAUtils::concatVectors(&requestVec, &entRes);
-					resolvedEntities.push_back(ent);
-				}
+			for (int i = 0; i < tableSize; i++) {
+				QWORD entityPtr = EntityPointers[i];
+				auto ent = std::shared_ptr<Entity>(new Entity());
+				auto entRes = ent->getRequestedResolutions(entityPtr);
+				DMAUtils::concatVectors(&requestVec, &entRes);
+				resolvedEntities.push_back(ent);
 			}
+
+			//for (QWORD entityPtr : vecEntityPointers) {
+			//	if (DayZUtil::isPointerValid(entityPtr)) {
+			//		auto ent = std::shared_ptr<Entity>(new Entity());
+			//		auto entRes = ent->getRequestedResolutions(entityPtr);
+			//		DMAUtils::concatVectors(&requestVec, &entRes);
+			//		resolvedEntities.push_back(ent);
+			//	}
+			//}
 			return requestVec;
 		}
 	};
