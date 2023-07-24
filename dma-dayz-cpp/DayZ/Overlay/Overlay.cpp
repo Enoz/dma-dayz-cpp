@@ -56,9 +56,6 @@ void Overlay::threadWorker()
 		em.refreshNear();
 		em.refreshFar();
 
-		//DayZ::World wrld = DayZ::World();
-		//wrld.resolveObject(game->getVMM(), game->getPid(), initialWorld.WorldPtr->_remoteAddress);
-
 
 		drawAliveEntities(&overlayWindow, camera.get(), scoreBoard.get(), em.NearEntityTable->resolvedEntities);
 		drawAliveEntities(&overlayWindow, camera.get(), scoreBoard.get(), em.FarEntityTable->resolvedEntities);
@@ -67,13 +64,10 @@ void Overlay::threadWorker()
 
 		//debugDraw(&overlayWindow, camera.get(), em.FarEntityTable->resolvedEntities);
 
-		if (frame % 14999 == 0) {
+		if (frame % 3000 == 0) {
 			scoreBoard = std::shared_ptr<DayZ::Scoreboard>(new DayZ::Scoreboard());
-			scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress, NULL);
+			scoreBoard->resolveObject(game->getVMM(), game->getPid(), scoreboardAddress);
 		}
-		////debugDraw(&overlayWindow, camera.get());
-		//drawAliveEntities(&overlayWindow, camera.get(), scoreBoard.get());
-		//drawLoot(&overlayWindow, camera.get());
 
 		overlayWindow.display();
 
