@@ -1,5 +1,5 @@
 #pragma once
-#include "../../DMAMemoryManagement/includes.h";
+#include "DMAMemoryManagement/includes.h";
 #include "FutureVisualState.h";
 #include "EntityType.h"
 #include "Scoreboard.h"

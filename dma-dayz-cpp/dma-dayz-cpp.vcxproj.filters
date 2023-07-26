@@ -18,22 +18,10 @@
     <ClCompile Include="dma-dayz-cpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DMAMemoryManagement\MemoryObject\MemoryObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DMAMemoryManagement\StaticManager\StaticManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DMAMemoryManagement\VmmManager\VmmManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DayZ\DayZMem\DayZMem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DayZ\Overlay\Overlay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DMAMemoryManagement\Utils\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DayZ\DayzUtil.cpp">
@@ -41,27 +29,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DMAMemoryManagement\MemProcFS\leechcore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DMAMemoryManagement\MemProcFS\vmmdll.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DMAMemoryManagement\StaticManager\StaticManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DMAMemoryManagement\Utils\Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DMAMemoryManagement\VmmManager\VmmManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DMAMemoryManagement\includes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DayZ\Structs\ArmaString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -122,13 +89,14 @@
     <ClInclude Include="DayZ\Structs\EntityFilterList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DayZ\DayZMem\EntityManager\EntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Structs\WorldNoLists.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="vmm.dll" />
-    <CopyFileToFolders Include="leechcore.lib" />
-    <CopyFileToFolders Include="FTD3XX.dll" />
-    <CopyFileToFolders Include="leechcore.dll" />
-    <CopyFileToFolders Include="vmm.lib" />
     <CopyFileToFolders Include="SMFLbins\openal32.dll" />
     <CopyFileToFolders Include="SMFLbins\sfml-graphics-2.dll" />
     <CopyFileToFolders Include="SMFLbins\sfml-system-2.dll" />

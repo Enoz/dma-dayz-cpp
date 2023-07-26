@@ -1,5 +1,5 @@
 #pragma once
-#include "../../DMAMemoryManagement/includes.h";
+#include "DMAMemoryManagement/includes.h";
 #include "EntityTable.h";
 #include "EntityTableSlowItem.h"
 #include "Camera.h";

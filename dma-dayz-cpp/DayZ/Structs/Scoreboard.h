@@ -1,5 +1,5 @@
 #pragma once
-#include "../../DMAMemoryManagement/includes.h";
+#include "DMAMemoryManagement/includes.h";
 #include "ScoreboardIdentity.h";
 #include <set>;
 #include "../DayzUtil.h";

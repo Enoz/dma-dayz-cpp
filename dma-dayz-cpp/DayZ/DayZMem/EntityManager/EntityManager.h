@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../DMAMemoryManagement/includes.h"
+#include "DMAMemoryManagement/includes.h"
 #include "../../Structs/EntityTable.h"
 #include "../../Structs/EntityTableSlowItem.h"
 #include "../../Structs/WorldNoLists.h"

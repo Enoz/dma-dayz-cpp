@@ -104,12 +104,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\SFML\SFML-2.6.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\repos\DMALib\includes;D:\SFML\SFML-2.6.0\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\SFML\SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\repos\DMALib\libs;D:\SFML\SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\SFML\SFML-2.6.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\repos\DMALib\includes;D:\SFML\SFML-2.6.0\include</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
@@ -129,7 +129,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\SFML\SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\repos\DMALib\libs;D:\SFML\SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -138,29 +138,6 @@
     <ClCompile Include="DayZ\DayzUtil.cpp" />
     <ClCompile Include="DayZ\Overlay\Overlay.cpp" />
     <ClCompile Include="dma-dayz-cpp.cpp" />
-    <ClCompile Include="DMAMemoryManagement\MemoryObject\MemoryObject.cpp" />
-    <ClCompile Include="DMAMemoryManagement\StaticManager\StaticManager.cpp" />
-    <ClCompile Include="DMAMemoryManagement\Utils\Utils.cpp" />
-    <ClCompile Include="DMAMemoryManagement\VmmManager\VmmManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="FTD3XX.dll">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="leechcore.dll">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="vmm.dll">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="leechcore.lib">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="vmm.lib">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DayZ\DayZMem\DayZMem.h" />
@@ -185,13 +162,6 @@
     <ClInclude Include="DayZ\Structs\Scoreboard.h" />
     <ClInclude Include="DayZ\Structs\ScoreboardIdentity.h" />
     <ClInclude Include="DayZ\Structs\Vectors.h" />
-    <ClInclude Include="DMAMemoryManagement\includes.h" />
-    <ClInclude Include="DMAMemoryManagement\MemoryObject\MemoryObject.h" />
-    <ClInclude Include="DMAMemoryManagement\MemProcFS\leechcore.h" />
-    <ClInclude Include="DMAMemoryManagement\MemProcFS\vmmdll.h" />
-    <ClInclude Include="DMAMemoryManagement\StaticManager\StaticManager.h" />
-    <ClInclude Include="DMAMemoryManagement\Utils\Utils.h" />
-    <ClInclude Include="DMAMemoryManagement\VmmManager\VmmManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />
@@ -218,6 +188,11 @@
     <CopyFileToFolders Include="SMFLbins\sfml-window-d-2.dll">
       <FileType>Document</FileType>
     </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DMALib\DMALib.vcxproj">
+      <Project>{387d38d2-6ad1-4118-ab1d-9e817040136e}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
