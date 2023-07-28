@@ -50,8 +50,9 @@ void DayZ::OverlayAdapter::createFonts()
 	config.OversampleH = 3;
 	config.OversampleV = 1;
 	config.GlyphExtraSpacing.x = 1.0f;
-	lootFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 14, &config);
-	playerFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 16, &config);
+	lootFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 14, &config);
+	lootFontFar = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 12, &config);
+	playerFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 16, &config);
 }
 
 void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::vector<std::shared_ptr<DayZ::Entity>>& entities, DayZ::Scoreboard* scoreboard)
@@ -73,6 +74,10 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 		auto topPos = originPos + DMARender::Vector3(0, 1.8, 0);
 
 		DMARender::Vector2 originW2S, topW2S;
+		float dist = camera->InvertedViewTranslation.Dist(ent->FutureVisualStatePtr->position);
+		if (dist < 3)
+			continue;
+
 		if (!WorldToScreen(camera, originPos, originW2S))
 			continue;
 		if (!WorldToScreen(camera, topPos, topW2S))
@@ -81,22 +86,27 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 		DMARender::Utils::drawBoundingBox(topW2S, originW2S, width, boxColor);
 
 		std::vector<std::string> infoText;
-		if (!ent->isZombie())
-			infoText.push_back(ent->EntityTypePtr->getBestString()->value);
+		if (!ent->isZombie()) {
+			auto entBestStr = ent->EntityTypePtr->getBestString();
+			if (entBestStr) {
+				auto entName = std::string(ent->EntityTypePtr->getBestString()->value);
+				infoText.push_back(entName);
+			}
+
+		}
 		if (ent->isPlayer()) {
 			auto ident = ent->getPlayerIdentity(scoreboard);
-			infoText.push_back(ident->PlayerName->value);
+			if (ident && ident->PlayerName) {
+				infoText.push_back(ident->PlayerName->value);
+			}
+
 			if (ent->InventoryPtr->handItem->isValid()) {
 				if (ent->InventoryPtr->isHandItemValid) {
-					try {
-						infoText.push_back(ent->InventoryPtr->handItem->EntityTypePtr->getBestString()->value);
-					}
-					catch (...) {
-
-					}
+					infoText.push_back(ent->InventoryPtr->handItem->EntityTypePtr->getBestString()->value);
 				}
 			}
 		}
+
 
 
 
@@ -106,7 +116,7 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 }
 
 void DayZ::OverlayAdapter::drawLoot(DayZ::Camera* camera, const std::vector<std::shared_ptr<DayZ::Entity>>& entities) {
-	ImGui::PushFont(lootFont);
+
 
 	for (auto const item : entities) {
 		if (!item->isValid())
@@ -149,12 +159,24 @@ void DayZ::OverlayAdapter::drawLoot(DayZ::Camera* camera, const std::vector<std:
 		float dist = camera->InvertedViewTranslation.Dist(item->FutureVisualStatePtr->position);
 		if (dist > maxDist)
 			continue;
+		if (dist > 50) {
+			ImGui::PushFont(lootFontFar);
+		} else {
+			ImGui::PushFont(lootFont);
+		}
+
+	
 		//float size = 100 / dist;
 		//if (size < 12) {
 		//	size = 12;
 		//}
-		DMARender::Utils::drawText(item->EntityTypePtr->getBestString()->value + postFix, screenPos, ImGui::GetFontSize(), textCol);
+		try {
+			DMARender::Utils::drawText(item->EntityTypePtr->getBestString()->value + postFix, screenPos, ImGui::GetFontSize(), textCol);
+		}
+		catch (...) {
+
+		}
+		ImGui::PopFont();
 		
 	}
-	ImGui::PopFont();
 }

@@ -10,6 +10,7 @@ namespace DayZ {
 		void drawAliveEntities(DayZ::Camera* camera, const std::vector<std::shared_ptr<DayZ::Entity>>& entities, Scoreboard* scoreboard);
 		//Fonts
 		ImFont* lootFont;
+		ImFont* lootFontFar;
 		ImFont* playerFont;
 	public:
 		OverlayAdapter(DayZ::MemoryUpdater* memUpdater);
