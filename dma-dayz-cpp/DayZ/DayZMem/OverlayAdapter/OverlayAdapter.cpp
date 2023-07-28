@@ -88,7 +88,12 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 			infoText.push_back(ident->PlayerName->value);
 			if (ent->InventoryPtr->handItem->isValid()) {
 				if (ent->InventoryPtr->isHandItemValid) {
-					infoText.push_back(ent->InventoryPtr->handItem->EntityTypePtr->getBestString()->value);
+					try {
+						infoText.push_back(ent->InventoryPtr->handItem->EntityTypePtr->getBestString()->value);
+					}
+					catch (...) {
+
+					}
 				}
 			}
 		}
