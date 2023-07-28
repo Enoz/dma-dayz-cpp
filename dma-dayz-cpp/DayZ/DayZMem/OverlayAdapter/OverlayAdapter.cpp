@@ -52,7 +52,7 @@ void DayZ::OverlayAdapter::createFonts()
 	config.GlyphExtraSpacing.x = 1.0f;
 	lootFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 14, &config);
 	lootFontFar = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 12, &config);
-	playerFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 16, &config);
+	playerFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Calibri.ttf", 12, &config);
 }
 
 void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::vector<std::shared_ptr<DayZ::Entity>>& entities, DayZ::Scoreboard* scoreboard)
@@ -75,7 +75,9 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 
 		DMARender::Vector2 originW2S, topW2S;
 		float dist = camera->InvertedViewTranslation.Dist(ent->FutureVisualStatePtr->position);
-		if (dist < 3)
+		if (dist < 3.5)
+			continue;
+		if (ent->isZombie() && dist > 100)
 			continue;
 
 		if (!WorldToScreen(camera, originPos, originW2S))
@@ -86,7 +88,7 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 		DMARender::Utils::drawBoundingBox(topW2S, originW2S, width, boxColor);
 
 		std::vector<std::string> infoText;
-		if (!ent->isZombie()) {
+		if (ent->isAnimal()) {
 			auto entBestStr = ent->EntityTypePtr->getBestString();
 			if (entBestStr) {
 				auto entName = std::string(ent->EntityTypePtr->getBestString()->value);
@@ -105,6 +107,8 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 					infoText.push_back(ent->InventoryPtr->handItem->EntityTypePtr->getBestString()->value);
 				}
 			}
+			
+			infoText.push_back(std::format("{:.1f}", dist));
 		}
 
 
