@@ -9,6 +9,7 @@ namespace DayZ {
 		bool threadRunning = false;
 
 		QWORD worldAddress;
+		QWORD cameraAddress;
 
 		DayZ::Mem* mem;
 		std::mutex slowMutex;
@@ -44,6 +45,7 @@ namespace DayZ {
 		std::shared_ptr<EntityTableSlowItem> getSlowEntityTable();
 		std::shared_ptr<EntityTableSlowItem> getItemTable();
 		std::shared_ptr<DayZ::Scoreboard> getScoreboard();
+		std::shared_ptr<DayZ::Camera> getCamera();
 
 
 	};

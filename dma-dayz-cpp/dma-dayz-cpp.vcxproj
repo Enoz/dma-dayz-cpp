@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DMALib\includes;D:\SFML\SFML-2.6.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DMALib\includes;D:\SFML\SFML-2.6.0\include;$(SolutionDir)DMALib\imgui;$(SolutionDir)DMALib\imgui\backends;$(SolutionDir)DMALib\imgui\misc\cpp</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClCompile Include="DayZ\DayZMem\DayZMem.cpp" />
     <ClCompile Include="DayZ\DayZMem\MemoryUpdater\MemoryUpdater.cpp" />
+    <ClCompile Include="DayZ\DayZMem\OverlayAdapter\OverlayAdapter.cpp" />
     <ClCompile Include="DayZ\DayzUtil.cpp" />
     <ClCompile Include="DayZ\Overlay\Overlay.cpp" />
     <ClCompile Include="dma-dayz-cpp.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="DayZ\DayZMem\DayZMem.h" />
     <ClInclude Include="DayZ\DayZMem\EntityManager\EntityManager.h" />
     <ClInclude Include="DayZ\DayZMem\MemoryUpdater\MemoryUpdater.h" />
+    <ClInclude Include="DayZ\DayZMem\OverlayAdapter\OverlayAdapter.h" />
     <ClInclude Include="DayZ\DayzUtil.h" />
     <ClInclude Include="DayZ\Overlay\Overlay.h" />
     <ClInclude Include="DayZ\Structs\ArmaString.h" />

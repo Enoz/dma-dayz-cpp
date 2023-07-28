@@ -66,7 +66,9 @@ DayZ::WorldNoLists DayZ::MemoryUpdater::getWNL()
 DayZ::MemoryUpdater::MemoryUpdater(DayZ::Mem* mem)
 {
 	this->mem = mem;
-	this->worldAddress = this->mem->getWorld().WorldPtr->_remoteAddress;
+	auto wrld = this->mem->getWorld().WorldPtr;
+	this->worldAddress = wrld->_remoteAddress;
+	this->cameraAddress = wrld->camera->_remoteAddress;
 }
 
 void DayZ::MemoryUpdater::beginUpdateLoop()
@@ -123,4 +125,11 @@ std::shared_ptr<DayZ::Scoreboard> DayZ::MemoryUpdater::getScoreboard()
 {
 	const std::lock_guard<std::mutex> lock(scoreboardMutex);
 	return this->scoreboard;
+}
+
+std::shared_ptr<DayZ::Camera> DayZ::MemoryUpdater::getCamera()
+{
+	std::shared_ptr<DayZ::Camera> camera(new DayZ::Camera());
+	camera->resolveObject(mem->getVMM(), mem->getPid(), cameraAddress);
+	return camera;
 }
