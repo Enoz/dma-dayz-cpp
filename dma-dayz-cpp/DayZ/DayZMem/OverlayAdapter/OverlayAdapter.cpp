@@ -47,15 +47,16 @@ void DayZ::OverlayAdapter::DrawOverlay()
 void DayZ::OverlayAdapter::createFonts()
 {
 	ImFontConfig config;
-	config.OversampleH = 2;
+	config.OversampleH = 3;
 	config.OversampleV = 1;
 	config.GlyphExtraSpacing.x = 1.0f;
-	lootFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 64, &config);
-	playerFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 64, &config);
+	lootFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 14, &config);
+	playerFont = ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Arial.ttf", 16, &config);
 }
 
 void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::vector<std::shared_ptr<DayZ::Entity>>& entities, DayZ::Scoreboard* scoreboard)
 {
+	ImGui::PushFont(playerFont);
 	for (const auto& ent : entities) {
 		//Draw Bounding Box
 		ImU32 boxColor;
@@ -78,7 +79,25 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 			continue;
 		float width = (originW2S.y - topW2S.y) / 1.8;
 		DMARender::Utils::drawBoundingBox(topW2S, originW2S, width, boxColor);
+
+		std::vector<std::string> infoText;
+		if (!ent->isZombie())
+			infoText.push_back(ent->EntityTypePtr->getBestString()->value);
+		if (ent->isPlayer()) {
+			auto ident = ent->getPlayerIdentity(scoreboard);
+			infoText.push_back(ident->PlayerName->value);
+			if (ent->InventoryPtr->handItem->isValid()) {
+				if (ent->InventoryPtr->isHandItemValid) {
+					infoText.push_back(ent->InventoryPtr->handItem->EntityTypePtr->getBestString()->value);
+				}
+			}
+		}
+
+
+
+		DMARender::Utils::drawTextList(infoText, DMARender::Vector2(topW2S.x + width, topW2S.y), ImGui::GetFontSize(), boxColor);
 	}
+	ImGui::PopFont();
 }
 
 void DayZ::OverlayAdapter::drawLoot(DayZ::Camera* camera, const std::vector<std::shared_ptr<DayZ::Entity>>& entities) {
@@ -125,11 +144,12 @@ void DayZ::OverlayAdapter::drawLoot(DayZ::Camera* camera, const std::vector<std:
 		float dist = camera->InvertedViewTranslation.Dist(item->FutureVisualStatePtr->position);
 		if (dist > maxDist)
 			continue;
-		float size = 100 / dist;
-		if (size < 12) {
-			size = 12;
-		}
-		DMARender::Utils::drawText(item->EntityTypePtr->getBestString()->value + postFix, screenPos, size, textCol);
+		//float size = 100 / dist;
+		//if (size < 12) {
+		//	size = 12;
+		//}
+		DMARender::Utils::drawText(item->EntityTypePtr->getBestString()->value + postFix, screenPos, ImGui::GetFontSize(), textCol);
+		
 	}
 	ImGui::PopFont();
 }
