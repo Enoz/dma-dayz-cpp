@@ -104,14 +104,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DMALib\includes;D:\SFML\SFML-2.6.0\include;$(SolutionDir)DMALib\imgui;$(SolutionDir)DMALib\imgui\backends;$(SolutionDir)DMALib\imgui\misc\cpp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DMALib\includes;$(SolutionDir)DMALib\imgui;$(SolutionDir)DMALib\imgui\backends;$(SolutionDir)DMALib\imgui\misc\cpp</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)DMALib\libs;D:\SFML\SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)DMALib\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DMALib\includes;D:\SFML\SFML-2.6.0\include;$(SolutionDir)DMALib\imgui;$(SolutionDir)DMALib\imgui\backends;$(SolutionDir)DMALib\imgui\misc\cpp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DMALib\includes;$(SolutionDir)DMALib\imgui;$(SolutionDir)DMALib\imgui\backends;$(SolutionDir)DMALib\imgui\misc\cpp</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -131,8 +131,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)DMALib\libs;D:\SFML\SFML-2.6.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)DMALib\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -140,16 +140,13 @@
     <ClCompile Include="DayZ\DayZMem\MemoryUpdater\MemoryUpdater.cpp" />
     <ClCompile Include="DayZ\DayZMem\OverlayAdapter\OverlayAdapter.cpp" />
     <ClCompile Include="DayZ\DayzUtil.cpp" />
-    <ClCompile Include="DayZ\Overlay\Overlay.cpp" />
     <ClCompile Include="dma-dayz-cpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DayZ\DayZMem\DayZMem.h" />
-    <ClInclude Include="DayZ\DayZMem\EntityManager\EntityManager.h" />
     <ClInclude Include="DayZ\DayZMem\MemoryUpdater\MemoryUpdater.h" />
     <ClInclude Include="DayZ\DayZMem\OverlayAdapter\OverlayAdapter.h" />
     <ClInclude Include="DayZ\DayzUtil.h" />
-    <ClInclude Include="DayZ\Overlay\Overlay.h" />
     <ClInclude Include="DayZ\Structs\ArmaString.h" />
     <ClInclude Include="DayZ\Structs\EntityFilterList.h" />
     <ClInclude Include="DayZ\Structs\Camera.h" />
@@ -170,29 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="SMFLbins\openal32.dll">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="SMFLbins\sfml-graphics-2.dll">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="SMFLbins\sfml-graphics-d-2.dll">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="SMFLbins\sfml-system-2.dll">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="SMFLbins\sfml-system-d-2.dll">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="SMFLbins\sfml-window-2.dll">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="SMFLbins\sfml-window-d-2.dll">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DMALib\DMALib.vcxproj">

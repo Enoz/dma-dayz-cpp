@@ -21,9 +21,6 @@
     <ClCompile Include="DayZ\DayZMem\DayZMem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DayZ\Overlay\Overlay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DayZ\DayzUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -74,9 +71,6 @@
     <ClInclude Include="DayZ\Structs\World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DayZ\Overlay\Overlay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DayZ\DayZMem\DayZMem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -92,9 +86,6 @@
     <ClInclude Include="DayZ\Structs\EntityFilterList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DayZ\DayZMem\EntityManager\EntityManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DayZ\Structs\WorldNoLists.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -104,15 +95,6 @@
     <ClInclude Include="DayZ\DayZMem\OverlayAdapter\OverlayAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="SMFLbins\openal32.dll" />
-    <CopyFileToFolders Include="SMFLbins\sfml-graphics-2.dll" />
-    <CopyFileToFolders Include="SMFLbins\sfml-system-2.dll" />
-    <CopyFileToFolders Include="SMFLbins\sfml-window-2.dll" />
-    <CopyFileToFolders Include="SMFLbins\sfml-graphics-d-2.dll" />
-    <CopyFileToFolders Include="SMFLbins\sfml-system-d-2.dll" />
-    <CopyFileToFolders Include="SMFLbins\sfml-window-d-2.dll" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />
