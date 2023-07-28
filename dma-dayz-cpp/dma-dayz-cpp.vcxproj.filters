@@ -68,9 +68,6 @@
     <ClInclude Include="DayZ\Structs\World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DayZ\Structs\Vectors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DayZ\Overlay\Overlay.h">
       <Filter>Header Files</Filter>
     </ClInclude>

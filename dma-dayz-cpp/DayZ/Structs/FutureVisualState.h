@@ -1,13 +1,13 @@
 #pragma once
 #include "DMAMemoryManagement/includes.h";
-#include "Vectors.h";
+#include "DMARender/includes.h"
 
 namespace DayZ {
 	struct FutureVisualState : public DMAMem::MemoryObject {
-		Vector3 position;
+		DMARender::Vector3 position;
 
 		FutureVisualState() {
-			this->registerOffset(0x2c, &position, sizeof(Vector3));
+			this->registerOffset(0x2c, &position, sizeof(DMARender::Vector3));
 		}
 
 	};

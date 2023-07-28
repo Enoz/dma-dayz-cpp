@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DMALib\includes;D:\SFML\SFML-2.6.0\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -121,8 +122,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DMALib\includes;D:\SFML\SFML-2.6.0\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DMALib\includes;D:\SFML\SFML-2.6.0\include;$(SolutionDir)DMALib\imgui;$(SolutionDir)DMALib\imgui\backends;$(SolutionDir)DMALib\imgui\misc\cpp</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -161,7 +163,6 @@
     <ClInclude Include="DayZ\Structs\NetworkManager.h" />
     <ClInclude Include="DayZ\Structs\Scoreboard.h" />
     <ClInclude Include="DayZ\Structs\ScoreboardIdentity.h" />
-    <ClInclude Include="DayZ\Structs\Vectors.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />

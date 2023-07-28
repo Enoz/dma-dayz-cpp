@@ -1,4 +1,5 @@
 #include "Overlay.h"
+#include "DMARender/includes.h"
 
 
 void Overlay::threadWorker()
@@ -79,8 +80,8 @@ void Overlay::debugDraw(sf::RenderWindow* window, DayZ::Camera* camera, std::vec
 	for (auto ent : entities) {
 		if (!ent->isValid())
 			return;
-		DayZ::Vector3 pos = ent->FutureVisualStatePtr->position;
-		DayZ::Vector3 screenPos = WorldToScreen(camera, pos);
+		DMARender::Vector3 pos = ent->FutureVisualStatePtr->position;
+		DMARender::Vector3 screenPos = WorldToScreen(camera, pos);
 		if (screenPos.z <= 0 && screenPos.x <= 0 && screenPos.y <= 0) {
 			continue;
 		}
@@ -164,7 +165,7 @@ void Overlay::drawAliveEntities(sf::RenderWindow* window, DayZ::Camera* camera, 
 			continue;
 
 
-		DayZ::Vector3 pos = ent->FutureVisualStatePtr->position;
+		DMARender::Vector3 pos = ent->FutureVisualStatePtr->position;
 
 		sf::Color drawColor;
 		if (ent->isAnimal()) {
@@ -179,7 +180,7 @@ void Overlay::drawAliveEntities(sf::RenderWindow* window, DayZ::Camera* camera, 
 
 
 		auto bottomW2S = WorldToScreen(camera, pos);
-		auto topW2S = WorldToScreen(camera, DayZ::Vector3(pos.x, pos.y + 1.8, pos.z));
+		auto topW2S = WorldToScreen(camera, DMARender::Vector3(pos.x, pos.y + 1.8, pos.z));
 
 		if (bottomW2S.x == 0 && bottomW2S.y == 0 && bottomW2S.z == 0)
 			continue;
@@ -199,12 +200,12 @@ void Overlay::drawAliveEntities(sf::RenderWindow* window, DayZ::Camera* camera, 
 		if (ent->isPlayer()) {
 			auto ident = ent->getPlayerIdentity(scoreboard);
 			if (ident != NULL) {
-				drawText(window, DayZ::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y, 0), drawColor, textSize, ident->PlayerName->value);
-				drawText(window, DayZ::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y-textSize, 0), drawColor, textSize, std::to_string((int)floor(distance)));
+				drawText(window, DMARender::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y, 0), drawColor, textSize, ident->PlayerName->value);
+				drawText(window, DMARender::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y-textSize, 0), drawColor, textSize, std::to_string((int)floor(distance)));
 			}
 			if (ent->InventoryPtr->handItem->isValid()) {
 				if (ent->InventoryPtr->isHandItemValid) {
-					drawText(window, DayZ::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y - (textSize * 2), 0), drawColor, textSize, ent->InventoryPtr->handItem->EntityTypePtr->getBestString()->value);
+					drawText(window, DMARender::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y - (textSize * 2), 0), drawColor, textSize, ent->InventoryPtr->handItem->EntityTypePtr->getBestString()->value);
 				}
 			}
 
@@ -212,7 +213,7 @@ void Overlay::drawAliveEntities(sf::RenderWindow* window, DayZ::Camera* camera, 
 		}
 
 		if (ent->isAnimal()) {
-			drawText(window, DayZ::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y, 0), drawColor, textSize, ent->EntityTypePtr->CleanName->value);
+			drawText(window, DMARender::Vector3(topW2S.x + (boxWidth / 2) + textPadding, topW2S.y, 0), drawColor, textSize, ent->EntityTypePtr->CleanName->value);
 		}
 
 
@@ -258,7 +259,7 @@ void Overlay::drawLoot(sf::RenderWindow* window, DayZ::Camera* camera, std::vect
 			maxDist = 2000;
 		}
 
-		DayZ::Vector3 screenPos = WorldToScreen(camera, ent->FutureVisualStatePtr->position);
+		DMARender::Vector3 screenPos = WorldToScreen(camera, ent->FutureVisualStatePtr->position);
 		float dist = camera->InvertedViewTranslation.Dist(ent->FutureVisualStatePtr->position);
 		if (dist > maxDist)
 			continue;
@@ -276,7 +277,7 @@ void Overlay::drawLoot(sf::RenderWindow* window, DayZ::Camera* camera, std::vect
 
 		std::shared_ptr<DayZ::ArmaString> displayText = ent->EntityTypePtr->getBestString();
 		if (displayText != nullptr) {
-			drawText(window, DayZ::Vector3(screenPos.x, screenPos.y - size, screenPos.z), col, size, std::string(displayText->value) + " " + postFix);
+			drawText(window, DMARender::Vector3(screenPos.x, screenPos.y - size, screenPos.z), col, size, std::string(displayText->value) + " " + postFix);
 		}
 
 		//window->draw(itemDot);
@@ -287,7 +288,7 @@ void Overlay::drawLoot(sf::RenderWindow* window, DayZ::Camera* camera, std::vect
 	}
 }
 
-void Overlay::drawBox(sf::RenderWindow* window, DayZ::Vector3 bottom, DayZ::Vector3 top, float width, sf::Color color)
+void Overlay::drawBox(sf::RenderWindow* window, DMARender::Vector3 bottom, DMARender::Vector3 top, float width, sf::Color color)
 {
 
 	std::vector<sf::Vector2f> lineOrder {
@@ -311,7 +312,7 @@ void Overlay::drawBox(sf::RenderWindow* window, DayZ::Vector3 bottom, DayZ::Vect
 
 }
 
-void Overlay::drawText(sf::RenderWindow* window, DayZ::Vector3 screenPos, sf::Color color, int size, std::string text)
+void Overlay::drawText(sf::RenderWindow* window, DMARender::Vector3 screenPos, sf::Color color, int size, std::string text)
 {
 	if (size > 50 || size < 2)
 		return;
@@ -329,14 +330,14 @@ void Overlay::drawText(sf::RenderWindow* window, DayZ::Vector3 screenPos, sf::Co
 
 
 //https://github.com/uNitx1337/DayZ-External-Tool/blob/master/EnfusionEngine.h EnfusionEngine::WorldToScreen (Thank You!!)
-DayZ::Vector3 Overlay::WorldToScreen(DayZ::Camera* camera, DayZ::Vector3 position)
+DMARender::Vector3 Overlay::WorldToScreen(DayZ::Camera* camera, DMARender::Vector3 position)
 {
 	//convert world cords to screen cords :)
 
 	if (!camera)
-		return DayZ::Vector3();
+		return DMARender::Vector3();
 
-	DayZ::Vector3 temp = DayZ::Vector3(position.x - camera->InvertedViewTranslation.x,
+	DMARender::Vector3 temp = DMARender::Vector3(position.x - camera->InvertedViewTranslation.x,
 		position.y - camera->InvertedViewTranslation.y,
 		position.z - camera->InvertedViewTranslation.z
 		);
@@ -346,10 +347,10 @@ DayZ::Vector3 Overlay::WorldToScreen(DayZ::Camera* camera, DayZ::Vector3 positio
 	float z = temp.Dot(camera->InvertedViewForward);
 
 	if (z < 0.65f) {
-		return DayZ::Vector3();
+		return DMARender::Vector3();
 	}
 
-	return DayZ::Vector3(
+	return DMARender::Vector3(
 		camera->ViewPortSize.x * (1 + (x / camera->GetProjectionD1.x / z)),
 		camera->ViewPortSize.y * (1 - (y / camera->GetProjectionD2.y / z)),
 		z);
