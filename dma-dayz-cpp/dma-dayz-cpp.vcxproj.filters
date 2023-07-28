@@ -27,6 +27,9 @@
     <ClCompile Include="DayZ\DayzUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DayZ\DayZMem\MemoryUpdater\MemoryUpdater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DayZ\Structs\ArmaString.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DayZ\Structs\WorldNoLists.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\DayZMem\MemoryUpdater\MemoryUpdater.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

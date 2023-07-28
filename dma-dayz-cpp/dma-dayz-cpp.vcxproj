@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DayZ\DayZMem\DayZMem.cpp" />
+    <ClCompile Include="DayZ\DayZMem\MemoryUpdater\MemoryUpdater.cpp" />
     <ClCompile Include="DayZ\DayzUtil.cpp" />
     <ClCompile Include="DayZ\Overlay\Overlay.cpp" />
     <ClCompile Include="dma-dayz-cpp.cpp" />
@@ -144,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="DayZ\DayZMem\DayZMem.h" />
     <ClInclude Include="DayZ\DayZMem\EntityManager\EntityManager.h" />
+    <ClInclude Include="DayZ\DayZMem\MemoryUpdater\MemoryUpdater.h" />
     <ClInclude Include="DayZ\DayzUtil.h" />
     <ClInclude Include="DayZ\Overlay\Overlay.h" />
     <ClInclude Include="DayZ\Structs\ArmaString.h" />
