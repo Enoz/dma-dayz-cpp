@@ -8,6 +8,7 @@ namespace DayZ {
 		bool WorldToScreenDayZ(DayZ::Camera* camera, const DMARender::Vector3& position, DMARender::Vector2& outVector);
 		void drawLoot(DayZ::Camera* camera, const std::vector<std::shared_ptr<DayZ::Entity>>& entities);
 		void drawAliveEntities(DayZ::Camera* camera, const std::vector<std::shared_ptr<DayZ::Entity>>& entities, Scoreboard* scoreboard);
+		void drawDebugInformation(DayZ::Camera* camera, const std::vector<std::shared_ptr<DayZ::Entity>>& entities);
 		//Fonts
 		ImFont* lootFont;
 		ImFont* lootFontFar;
