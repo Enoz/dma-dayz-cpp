@@ -2,6 +2,43 @@
 
 void DayZ::RadarAdapter::drawLoot(DMARender::IGameMap* curMap, const DMARender::MapTransform& mTransform, const std::vector<std::shared_ptr<DayZ::Entity>>& entities)
 {
+	for (auto const item : entities) {
+		if (!item->isValid())
+			continue;
+		if (
+			!(item->isGroundItem()) &&
+			!(item->isPlayer() && item->isDead) &&
+			//!(item->isZombie() && item->isDead) &&
+			!(item->isAnimal() && item->isDead)
+			) {
+			continue;
+		}
+		std::string postFix = "";
+		ImU32 textCol;
+		if (item->isPlayer()) {
+			textCol = IM_COL32(0, 255, 255, 255);
+			postFix = " (Dead)";
+		}
+		if (item->isAnimal()) {
+			textCol = IM_COL32(0, 255, 0, 255);
+			postFix = " (Dead)";
+		}
+		if (item->isGroundItem()) {
+			textCol = IM_COL32(255, 255, 255, 255);
+		}
+
+		auto screenPos = WorldToRadar(curMap, mTransform, item->FutureVisualStatePtr->position);
+
+		auto bestName = item->EntityTypePtr->getBestString();
+		if (bestName) {
+			drawBlip(screenPos, 5, textCol, 14, 1, { bestName->value + postFix });
+		}
+
+
+
+		//drawText(item->EntityTypePtr->getBestString()->value + postFix, screenPos, ImGui::GetFontSize(), textCol);
+
+	}
 }
 
 void DayZ::RadarAdapter::drawAliveEntities(DMARender::IGameMap* curMap, const DMARender::MapTransform& mTransform, const std::vector<std::shared_ptr<DayZ::Entity>>& entities, Scoreboard* scoreboard)
