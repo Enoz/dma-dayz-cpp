@@ -9,6 +9,7 @@
 #include "DayZ/DayZMem/MemoryUpdater/MemoryUpdater.h"
 #include "DayZ/DayZMem/OverlayAdapter/OverlayAdapter.h"
 #include "DMARender/includes.h"
+#include "DayZ/Maps/ChernarusPlus.h"
 
 int main()
 {
@@ -24,6 +25,7 @@ int main()
 
     std::shared_ptr<DayZ::OverlayAdapter> overlayAdapter(new DayZ::OverlayAdapter(memUpdater.get()));
     cmd.getBridge()->setOverlay(overlayAdapter);
+    cmd.getBridge()->addMap(std::shared_ptr<DayZ::ChernarusPlus>(new DayZ::ChernarusPlus()));
 
     std::thread gfxThread(&DMARender::RenderWindow::initializeWindow, &cmd);
 
