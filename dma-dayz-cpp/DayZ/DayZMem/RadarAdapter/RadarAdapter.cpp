@@ -34,10 +34,6 @@ void DayZ::RadarAdapter::drawLoot(DMARender::IGameMap* curMap, const DMARender::
 			drawBlip(screenPos, 5, textCol, 14, 1, { bestName->value + postFix });
 		}
 
-
-
-		//drawText(item->EntityTypePtr->getBestString()->value + postFix, screenPos, ImGui::GetFontSize(), textCol);
-
 	}
 }
 
