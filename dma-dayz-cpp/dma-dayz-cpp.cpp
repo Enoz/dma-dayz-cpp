@@ -8,6 +8,7 @@
 #include "DayZ/Structs/WorldPointer.h";
 #include "DayZ/DayZMem/MemoryUpdater/MemoryUpdater.h"
 #include "DayZ/DayZMem/OverlayAdapter/OverlayAdapter.h"
+#include "DayZ/DayZMem/RadarAdapter/RadarAdapter.h"
 #include "DMARender/includes.h"
 #include "DayZ/Maps/ChernarusPlus.h"
 
@@ -23,9 +24,9 @@ int main()
 
     DMARender::RenderWindow cmd = DMARender::RenderWindow();
 
-    std::shared_ptr<DayZ::OverlayAdapter> overlayAdapter(new DayZ::OverlayAdapter(memUpdater.get()));
-    cmd.getBridge()->setOverlay(overlayAdapter);
+    cmd.getBridge()->setOverlay(std::shared_ptr<DayZ::OverlayAdapter>(new DayZ::OverlayAdapter(memUpdater.get())));
     cmd.getBridge()->addMap(std::shared_ptr<DayZ::ChernarusPlus>(new DayZ::ChernarusPlus()));
+    cmd.getBridge()->setRadar(std::shared_ptr<DayZ::RadarAdapter>(new DayZ::RadarAdapter(memUpdater.get())));
 
     std::thread gfxThread(&DMARender::RenderWindow::initializeWindow, &cmd);
 

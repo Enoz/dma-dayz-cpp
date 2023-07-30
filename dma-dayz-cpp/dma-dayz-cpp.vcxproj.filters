@@ -33,6 +33,9 @@
     <ClCompile Include="DayZ\Maps\ChernarusPlus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DayZ\DayZMem\RadarAdapter\RadarAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DayZ\Structs\ArmaString.h">
@@ -99,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DayZ\Maps\ChernarusPlus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\DayZMem\RadarAdapter\RadarAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
