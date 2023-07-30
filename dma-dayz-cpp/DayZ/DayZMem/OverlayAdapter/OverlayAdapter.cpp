@@ -38,10 +38,11 @@ void DayZ::OverlayAdapter::DrawOverlay()
 	auto nearTable = memUpdater->getNearEntityTable();
 	auto farTable = memUpdater->getFarEntityTable();
 	auto scoreboard = memUpdater->getScoreboard();
-	drawAliveEntities(camera.get(), nearTable->resolvedEntities, scoreboard.get());
-	drawAliveEntities(camera.get(), farTable->resolvedEntities, scoreboard.get());
 	drawLoot(camera.get(), itemTable->resolvedEntities);
 	drawLoot(camera.get(), slowTable->resolvedEntities);
+	drawAliveEntities(camera.get(), nearTable->resolvedEntities, scoreboard.get());
+	drawAliveEntities(camera.get(), farTable->resolvedEntities, scoreboard.get());
+
 }
 
 void DayZ::OverlayAdapter::createFonts()
@@ -71,7 +72,8 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 			boxColor = IM_COL32(0, 255, 0, 255);
 		}
 		auto originPos = ent->FutureVisualStatePtr->position;
-		auto topPos = originPos + DMARender::Vector3(0, 1.8, 0);
+		float entHeight = ent->isAnimal() ? 1 : 1.8;
+		auto topPos = originPos + DMARender::Vector3(0, entHeight, 0);
 
 		DMARender::Vector2 originW2S, topW2S;
 		float dist = camera->InvertedViewTranslation.Dist(ent->FutureVisualStatePtr->position);
@@ -84,7 +86,7 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 			continue;
 		if (!WorldToScreen(camera, topPos, topW2S))
 			continue;
-		float width = (originW2S.y - topW2S.y) / 1.8;
+		float width = (originW2S.y - topW2S.y) / entHeight;
 		DMARender::Utils::drawBoundingBox(topW2S, originW2S, width, boxColor);
 
 		std::vector<std::string> infoText;
@@ -102,9 +104,13 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 				infoText.push_back(ident->PlayerName->value);
 			}
 
-			if (ent->InventoryPtr->handItem->isValid()) {
-				if (ent->InventoryPtr->isHandItemValid) {
-					infoText.push_back(ent->InventoryPtr->handItem->EntityTypePtr->getBestString()->value);
+			if (ent->InventoryPtr->isHandItemValid) {
+				auto bestHandStr = ent->InventoryPtr->handItem->EntityTypePtr->getBestString();
+				if (bestHandStr) {
+					infoText.push_back(bestHandStr->value);
+				}
+				else {
+					infoText.push_back("(Unknown)");
 				}
 			}
 			

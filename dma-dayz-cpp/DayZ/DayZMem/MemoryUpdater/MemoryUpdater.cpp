@@ -69,6 +69,12 @@ DayZ::MemoryUpdater::MemoryUpdater(DayZ::Mem* mem)
 	auto wrld = this->mem->getWorld().WorldPtr;
 	this->worldAddress = wrld->_remoteAddress;
 	this->cameraAddress = wrld->camera->_remoteAddress;
+	//Seed to prevent race conditions
+	this->NearEntityTable = wrld->NearEntityTable;
+	this->FarEntityTable = wrld->FarEntityTable;
+	this->SlowEntityTable = wrld->SlowEntityTable;
+	this->ItemTable = wrld->ItemTable;
+	this->scoreboard = this->mem->getNetworkManager().NetworkClientPtr->scoreboardPtr;
 }
 
 void DayZ::MemoryUpdater::beginUpdateLoop()

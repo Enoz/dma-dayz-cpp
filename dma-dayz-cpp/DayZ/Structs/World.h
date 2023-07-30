@@ -84,10 +84,6 @@ namespace DayZ {
 		int32_t ItemTableCountAlloc;
 		int32_t ItemTableCount;
 		std::shared_ptr<Camera> camera;
-
-		World() {
-
-		}
 	};
 
 }

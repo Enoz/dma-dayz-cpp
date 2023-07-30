@@ -7,8 +7,8 @@
 #include "DayZ/Structs/NetworkManager.h";
 #include "DayZ/Structs/WorldPointer.h";
 #include "DayZ/DayZMem/MemoryUpdater/MemoryUpdater.h"
-#include "DMARender/includes.h"
 #include "DayZ/DayZMem/OverlayAdapter/OverlayAdapter.h"
+#include "DMARender/includes.h"
 
 int main()
 {
@@ -20,12 +20,12 @@ int main()
     auto memUpdater = std::shared_ptr<DayZ::MemoryUpdater>(new DayZ::MemoryUpdater(game));
     memUpdater->beginUpdateLoop();
 
-    DMARender::Commander cmd = DMARender::Commander();
+    DMARender::RenderWindow cmd = DMARender::RenderWindow();
 
     std::shared_ptr<DayZ::OverlayAdapter> overlayAdapter(new DayZ::OverlayAdapter(memUpdater.get()));
-    cmd.getAdapter()->setOverlay(overlayAdapter);
+    cmd.getBridge()->setOverlay(overlayAdapter);
 
-    std::thread gfxThread(&DMARender::Commander::initializeWindow, &cmd);
+    std::thread gfxThread(&DMARender::RenderWindow::initializeWindow, &cmd);
 
     gfxThread.join();
     memUpdater->endUpdateLoop();

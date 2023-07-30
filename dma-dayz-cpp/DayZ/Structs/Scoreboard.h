@@ -6,11 +6,11 @@
 
 namespace DayZ {
 	class Scoreboard : public DMAMem::MemoryObject {
-		QWORD ScoreboardIdentityPointers[60];
+		QWORD ScoreboardIdentityPointers[70];
 	public:
 		std::vector<std::shared_ptr<ScoreboardIdentity>> resolvedIdentities;
 		Scoreboard() {
-			this->registerOffset(0x0, &ScoreboardIdentityPointers, sizeof(QWORD[60]));
+			this->registerOffset(0x0, &ScoreboardIdentityPointers, sizeof(QWORD[70]));
 		}
 
 		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
