@@ -77,7 +77,7 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 
 		DMARender::Vector2 originW2S, topW2S;
 		float dist = camera->InvertedViewTranslation.Dist(ent->FutureVisualStatePtr->position);
-		if (dist < 3.5)
+		if (dist < 4)
 			continue;
 		if (ent->isZombie() && dist > 100)
 			continue;
