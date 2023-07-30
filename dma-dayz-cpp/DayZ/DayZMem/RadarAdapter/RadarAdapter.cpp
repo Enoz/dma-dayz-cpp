@@ -40,6 +40,8 @@ void DayZ::RadarAdapter::drawLoot(DMARender::IGameMap* curMap, const DMARender::
 void DayZ::RadarAdapter::drawAliveEntities(DMARender::IGameMap* curMap, const DMARender::MapTransform& mTransform, const std::vector<std::shared_ptr<DayZ::Entity>>& entities, Scoreboard* scoreboard)
 {
 	for (auto ent : entities) {
+		if (!ent->isValid())
+			continue;
 		ImU32 blipColor;
 		float blipSize;
 		if (ent->isPlayer()) {
