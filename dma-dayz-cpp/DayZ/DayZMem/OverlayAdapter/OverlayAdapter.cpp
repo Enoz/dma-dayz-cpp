@@ -1,6 +1,6 @@
 #include "OverlayAdapter.h"
 
-bool DayZ::OverlayAdapter::WorldToScreen(DayZ::Camera* camera, const DMARender::Vector3& position, DMARender::Vector2& outVector)
+bool DayZ::OverlayAdapter::WorldToScreenDayZ(DayZ::Camera* camera, const DMARender::Vector3& position, DMARender::Vector2& outVector)
 {
 	//convert world cords to screen cords :)
 
@@ -82,12 +82,12 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 		if (ent->isZombie() && dist > 100)
 			continue;
 
-		if (!WorldToScreen(camera, originPos, originW2S))
+		if (!WorldToScreenDayZ(camera, originPos, originW2S))
 			continue;
-		if (!WorldToScreen(camera, topPos, topW2S))
+		if (!WorldToScreenDayZ(camera, topPos, topW2S))
 			continue;
 		float width = (originW2S.y - topW2S.y) / entHeight;
-		DMARender::Utils::drawBoundingBox(topW2S, originW2S, width, boxColor);
+		drawBoundingBox(topW2S, originW2S, width, boxColor);
 
 		std::vector<std::string> infoText;
 		if (ent->isAnimal()) {
@@ -120,7 +120,7 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 
 
 
-		DMARender::Utils::drawTextList(infoText, DMARender::Vector2(topW2S.x + width, topW2S.y), ImGui::GetFontSize(), boxColor);
+		drawTextList(infoText, DMARender::Vector2(topW2S.x + width, topW2S.y), ImGui::GetFontSize(), boxColor);
 	}
 	ImGui::PopFont();
 }
@@ -164,7 +164,7 @@ void DayZ::OverlayAdapter::drawLoot(DayZ::Camera* camera, const std::vector<std:
 
 		auto itemPos = item->FutureVisualStatePtr->position;
 		auto screenPos = DMARender::Vector2();
-		if (!WorldToScreen(camera, itemPos, screenPos))
+		if (!WorldToScreenDayZ(camera, itemPos, screenPos))
 			continue;
 		float dist = camera->InvertedViewTranslation.Dist(item->FutureVisualStatePtr->position);
 		if (dist > maxDist)
@@ -181,7 +181,7 @@ void DayZ::OverlayAdapter::drawLoot(DayZ::Camera* camera, const std::vector<std:
 		//	size = 12;
 		//}
 		try {
-			DMARender::Utils::drawText(item->EntityTypePtr->getBestString()->value + postFix, screenPos, ImGui::GetFontSize(), textCol);
+			drawText(item->EntityTypePtr->getBestString()->value + postFix, screenPos, ImGui::GetFontSize(), textCol);
 		}
 		catch (...) {
 
