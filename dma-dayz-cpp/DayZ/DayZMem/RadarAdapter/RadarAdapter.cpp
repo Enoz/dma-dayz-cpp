@@ -1,5 +1,57 @@
 #include "RadarAdapter.h"
 
+void DayZ::RadarAdapter::drawLoot(DMARender::IGameMap* curMap, const DMARender::MapTransform& mTransform, const std::vector<std::shared_ptr<DayZ::Entity>>& entities)
+{
+}
+
+void DayZ::RadarAdapter::drawAliveEntities(DMARender::IGameMap* curMap, const DMARender::MapTransform& mTransform, const std::vector<std::shared_ptr<DayZ::Entity>>& entities, Scoreboard* scoreboard)
+{
+	for (auto ent : entities) {
+		ImU32 blipColor;
+		float blipSize;
+		if (ent->isPlayer()) {
+			blipColor = IM_COL32(255, 0, 0, 255);
+			blipSize = 8;
+		}
+		if (ent->isZombie()) {
+			blipColor = IM_COL32(255, 255, 0, 255);
+			blipSize = 4;
+		}
+		if (ent->isAnimal()) {
+			blipColor = IM_COL32(0, 255, 0, 255);
+			blipSize = 6;
+		}
+
+		std::vector<std::string> infoText;
+		ImVec2 screenPos = WorldToRadar(curMap, mTransform, ent->FutureVisualStatePtr->position);
+		if (ent->isAnimal()) {
+			auto entBestStr = ent->EntityTypePtr->getBestString();
+			if (entBestStr) {
+				auto entName = std::string(ent->EntityTypePtr->getBestString()->value);
+				infoText.push_back(entName);
+			}
+		}
+		if (ent->isPlayer()) {
+			auto ident = ent->getPlayerIdentity(scoreboard);
+			if (ident && ident->PlayerName) {
+				infoText.push_back(ident->PlayerName->value);
+			}
+
+			if (ent->InventoryPtr->isHandItemValid) {
+				auto bestHandStr = ent->InventoryPtr->handItem->EntityTypePtr->getBestString();
+				if (bestHandStr) {
+					infoText.push_back(bestHandStr->value);
+				}
+				else {
+					infoText.push_back("(Unknown)");
+				}
+			}
+		}
+		drawBlip(screenPos, blipSize, blipColor, 16, 1, infoText);
+	}
+
+}
+
 DayZ::RadarAdapter::RadarAdapter(DayZ::MemoryUpdater* memUpdater)
 {
 	this->memUpdater = memUpdater;
@@ -8,15 +60,11 @@ DayZ::RadarAdapter::RadarAdapter(DayZ::MemoryUpdater* memUpdater)
 void DayZ::RadarAdapter::DrawOverlay(DMARender::IGameMap* curMap, const DMARender::MapTransform& mTransform)
 {
 	auto drawList = ImGui::GetBackgroundDrawList();
-	auto nearEnts = this->memUpdater->getNearEntityTable()->resolvedEntities;
 	ImGui::PushFont(radarFont);
-	for (auto ent : nearEnts) {
-		ImVec2 screenPos = WorldToRadar(curMap, mTransform, ent->FutureVisualStatePtr->position);
-		//drawList->AddCircleFilled(screenPos, 10, IM_COL32(255, 0, 0, 255), 10);
-
-		drawBlip(screenPos, 6, IM_COL32(255, 0, 0, 255), 16, 1, {"Test", "One", "Two"});
-
-	}
+	drawLoot(curMap, mTransform, memUpdater->getSlowEntityTable()->resolvedEntities);
+	drawLoot(curMap, mTransform, memUpdater->getItemTable()->resolvedEntities);
+	drawAliveEntities(curMap, mTransform, memUpdater->getFarEntityTable()->resolvedEntities, memUpdater->getScoreboard().get());
+	drawAliveEntities(curMap, mTransform, memUpdater->getNearEntityTable()->resolvedEntities, memUpdater->getScoreboard().get());
 	ImGui::PopFont();
 }
 
