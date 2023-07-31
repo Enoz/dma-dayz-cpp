@@ -97,10 +97,6 @@ DayZ::RadarAdapter::RadarAdapter(DayZ::MemoryUpdater* memUpdater)
 void DayZ::RadarAdapter::DrawOverlay(DMARender::IGameMap* curMap, const DMARender::MapTransform& mTransform)
 {
 
-	ImGui::Begin("Info");
-	ImGui::Text("Player Count: %i", memUpdater->getScoreboard()->resolvedIdentities.size());
-	ImGui::End();
-
 	auto drawList = ImGui::GetBackgroundDrawList();
 	ImGui::PushFont(radarFont);
 	drawLoot(curMap, mTransform, memUpdater->getSlowEntityTable()->resolvedEntities);
