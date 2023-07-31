@@ -97,9 +97,6 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 		drawBoundingBox(topW2S, originW2S, width, boxColor);
 
 		std::vector<std::string> infoText;
-		infoText.push_back(ent->EntityTypePtr->ConfigName->value);
-		infoText.push_back(ent->EntityTypePtr->TypeName->value);
-		infoText.push_back(ent->EntityTypePtr->CleanName->value);
 		if (ent->isAnimal()) {
 			auto entBestStr = ent->EntityTypePtr->getBestString();
 			if (entBestStr) {
