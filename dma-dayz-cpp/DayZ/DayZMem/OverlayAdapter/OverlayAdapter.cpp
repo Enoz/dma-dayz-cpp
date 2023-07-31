@@ -70,12 +70,13 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 		ImU32 boxColor;
 		if (ent->isPlayer()) {
 			boxColor = IM_COL32(255, 0, 0, 255);
-		}
-		if (ent->isZombie()) {
+		} else if (ent->isZombie()) {
 			boxColor = IM_COL32(255, 255, 0, 255);
-		}
-		if (ent->isAnimal()) {
+		} else if (ent->isAnimal()) {
 			boxColor = IM_COL32(0, 255, 0, 255);
+		}
+		else {
+			continue;
 		}
 		auto originPos = ent->FutureVisualStatePtr->position;
 		float entHeight = ent->isAnimal() ? 1 : 1.8;
@@ -96,6 +97,9 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 		drawBoundingBox(topW2S, originW2S, width, boxColor);
 
 		std::vector<std::string> infoText;
+		infoText.push_back(ent->EntityTypePtr->ConfigName->value);
+		infoText.push_back(ent->EntityTypePtr->TypeName->value);
+		infoText.push_back(ent->EntityTypePtr->CleanName->value);
 		if (ent->isAnimal()) {
 			auto entBestStr = ent->EntityTypePtr->getBestString();
 			if (entBestStr) {
@@ -138,6 +142,7 @@ void DayZ::OverlayAdapter::drawDebugInformation(DayZ::Camera* camera, const std:
 		drawText(item->EntityTypePtr->TypeName->value, DMARender::Vector2(screenPos.x, screenPos.y + 40), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));
 		drawText(item->EntityTypePtr->ConfigName->value, DMARender::Vector2(screenPos.x, screenPos.y + 60), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
 		drawText(item->EntityTypePtr->CleanName->value, DMARender::Vector2(screenPos.x, screenPos.y + 80), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
+		drawText(item->EntityTypePtr->ModelName->value, DMARender::Vector2(screenPos.x, screenPos.y + 100), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
 	}
 }
 
@@ -162,20 +167,20 @@ void DayZ::OverlayAdapter::drawLoot(DayZ::Camera* camera, const std::vector<std:
 			textCol = IM_COL32(255, 0, 0, 255);
 			maxDist = 2000;
 			postFix = " (Dead)";
-		}
-		if (item->isAnimal()) {
+		} else if (item->isAnimal()) {
 			textCol = IM_COL32(0, 255, 0, 255);
 			maxDist = 2000;
 			postFix = " (Dead)";
-		}
-		if (item->isZombie()) {
+		}else if (item->isZombie()) {
 			textCol = IM_COL32(255, 255, 0, 255);
 			maxDist = 50;
 			postFix = " (Dead)";
-		}
-		if (item->isGroundItem()) {
+		} else if (item->isGroundItem()) {
 			textCol = IM_COL32(255, 255, 255, 255);
 			maxDist = 2000;
+		}
+		else {
+			continue;
 		}
 
 		auto itemPos = item->FutureVisualStatePtr->position;

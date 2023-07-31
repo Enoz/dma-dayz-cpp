@@ -18,13 +18,14 @@ void DayZ::RadarAdapter::drawLoot(DMARender::IGameMap* curMap, const DMARender::
 		if (item->isPlayer()) {
 			textCol = IM_COL32(0, 255, 255, 255);
 			postFix = " (Dead)";
-		}
-		if (item->isAnimal()) {
+		} else if (item->isAnimal()) {
 			textCol = IM_COL32(0, 255, 0, 255);
 			postFix = " (Dead)";
-		}
-		if (item->isGroundItem()) {
+		} else if (item->isGroundItem()) {
 			textCol = IM_COL32(255, 255, 255, 255);
+		}
+		else {
+			continue;
 		}
 
 		auto screenPos = WorldToRadar(curMap, mTransform, item->FutureVisualStatePtr->position);
@@ -47,14 +48,15 @@ void DayZ::RadarAdapter::drawAliveEntities(DMARender::IGameMap* curMap, const DM
 		if (ent->isPlayer()) {
 			blipColor = IM_COL32(255, 0, 0, 255);
 			blipSize = 8;
-		}
-		if (ent->isZombie()) {
+		} else if (ent->isZombie()) {
 			blipColor = IM_COL32(255, 255, 0, 255);
 			blipSize = 4;
-		}
-		if (ent->isAnimal()) {
+		} else if (ent->isAnimal()) {
 			blipColor = IM_COL32(0, 255, 0, 255);
 			blipSize = 6;
+		}
+		else {
+			continue;
 		}
 
 		std::vector<std::string> infoText;
@@ -94,6 +96,11 @@ DayZ::RadarAdapter::RadarAdapter(DayZ::MemoryUpdater* memUpdater)
 
 void DayZ::RadarAdapter::DrawOverlay(DMARender::IGameMap* curMap, const DMARender::MapTransform& mTransform)
 {
+
+	ImGui::Begin("Info");
+	ImGui::Text("Player Count: %i", memUpdater->getScoreboard()->resolvedIdentities.size());
+	ImGui::End();
+
 	auto drawList = ImGui::GetBackgroundDrawList();
 	ImGui::PushFont(radarFont);
 	drawLoot(curMap, mTransform, memUpdater->getSlowEntityTable()->resolvedEntities);
