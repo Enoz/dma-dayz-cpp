@@ -36,6 +36,9 @@
     <ClCompile Include="DayZ\DayZMem\RadarAdapter\RadarAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DayZ\Maps\Namalsk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DayZ\Structs\ArmaString.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DayZ\DayZMem\RadarAdapter\RadarAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Maps\Namalsk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
