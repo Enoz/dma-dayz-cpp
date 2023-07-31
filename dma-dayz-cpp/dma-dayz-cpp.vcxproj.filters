@@ -111,4 +111,12 @@
   <ItemGroup>
     <Text Include="notes.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="mapcontent\chernarusplus.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="mapcontent\namalsk.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
 </Project>
