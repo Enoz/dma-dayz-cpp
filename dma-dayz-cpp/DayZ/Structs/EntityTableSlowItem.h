@@ -25,19 +25,8 @@ namespace DayZ {
 		std::shared_ptr<SlowItemStruct[]> EntityPointers;
 		int allocSize;
 		int validSize;
-	public:
-		std::vector<std::shared_ptr<Entity>> resolvedEntities;
-		EntityTableSlowItem(int allocSize, int validSize) {
-			this->validSize = validSize;
-			this->allocSize = allocSize;
-			EntityPointers = std::shared_ptr<SlowItemStruct[]>(new SlowItemStruct[allocSize]);
-			this->registerOffset(0x0, EntityPointers.get(), sizeof(SlowItemStruct) * allocSize);
-		}
-
-		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
-			if (!_isBaseResolved) {
-				return generateDefaultResolutions(baseAddress);
-			}
+	protected:
+		std::vector<DMAMem::MemoryObject::ResolutionRequest> postResolveResolutions() override {
 			if (resolvedEntities.size() > 0) {
 				std::vector<ResolutionRequest> requestVec;
 				for (auto const ent : resolvedEntities) {
@@ -46,7 +35,6 @@ namespace DayZ {
 				}
 				return requestVec;
 			}
-
 
 			std::vector<ResolutionRequest> requestVec;
 
@@ -62,6 +50,15 @@ namespace DayZ {
 				}
 			}
 			return requestVec;
+		}
+
+	public:
+		std::vector<std::shared_ptr<Entity>> resolvedEntities;
+		EntityTableSlowItem(int allocSize, int validSize) {
+			this->validSize = validSize;
+			this->allocSize = allocSize;
+			EntityPointers = std::shared_ptr<SlowItemStruct[]>(new SlowItemStruct[allocSize]);
+			this->registerOffset(0x0, EntityPointers.get(), sizeof(SlowItemStruct) * allocSize);
 		}
 	};
 }

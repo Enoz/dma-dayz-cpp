@@ -7,17 +7,8 @@
 namespace DayZ {
 	class Scoreboard : public DMAMem::MemoryObject {
 		QWORD ScoreboardIdentityPointers[120];
-	public:
-		std::vector<std::shared_ptr<ScoreboardIdentity>> resolvedIdentities;
-		Scoreboard() {
-			this->registerOffset(0x0, &ScoreboardIdentityPointers, sizeof(QWORD[120]));
-		}
-
-		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
-			if (!_isBaseResolved) {
-				return generateDefaultResolutions(baseAddress);
-			}
-
+	protected:
+		std::vector<DMAMem::MemoryObject::ResolutionRequest> postResolveResolutions() override {
 			if (resolvedIdentities.size() > 0) {
 				std::vector<ResolutionRequest> requestVec;
 				for (auto const ident : resolvedIdentities) {
@@ -38,5 +29,12 @@ namespace DayZ {
 			}
 			return requestVec;
 		}
+
+	public:
+		std::vector<std::shared_ptr<ScoreboardIdentity>> resolvedIdentities;
+		Scoreboard() {
+			this->registerOffset(0x0, &ScoreboardIdentityPointers, sizeof(QWORD[120]));
+		}
+
 	};
 }
