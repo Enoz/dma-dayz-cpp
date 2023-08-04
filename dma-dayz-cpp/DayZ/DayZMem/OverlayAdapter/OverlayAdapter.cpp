@@ -194,12 +194,7 @@ void DayZ::OverlayAdapter::drawLoot(DayZ::Camera* camera, const std::vector<std:
 		}
 
 
-		try {
-			drawText(item->EntityTypePtr->getBestString()->value + postFix, screenPos, ImGui::GetFontSize(), textCol);
-		}
-		catch (...) {
-
-		}
+		drawText(item->EntityTypePtr->getBestString()->value + postFix, screenPos, ImGui::GetFontSize(), textCol);
 		ImGui::PopFont();
 		
 	}
