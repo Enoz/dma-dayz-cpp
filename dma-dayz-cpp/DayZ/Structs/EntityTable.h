@@ -9,18 +9,8 @@ namespace DayZ {
 		//QWORD EntityPointers[256];
 		std::shared_ptr<QWORD[]> EntityPointers;
 		int tableSize;
-	public:
-		std::vector<std::shared_ptr<Entity>> resolvedEntities;
-		EntityTable(int size) {
-			tableSize = size;
-			EntityPointers = std::shared_ptr<QWORD[]>(new QWORD[tableSize]);
-			this->registerOffset(0x0, EntityPointers.get(), sizeof(QWORD) * tableSize);
-		}
-
-		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
-			if (!_isBaseResolved) {
-				return generateDefaultResolutions(baseAddress);
-			}
+	protected:
+		std::vector<DMAMem::MemoryObject::ResolutionRequest> postResolveResolutions() override {
 			if (resolvedEntities.size() > 0) {
 				std::vector<ResolutionRequest> requestVec;
 				for (auto const ent : resolvedEntities) {
@@ -41,6 +31,13 @@ namespace DayZ {
 			}
 
 			return requestVec;
+		}
+	public:
+		std::vector<std::shared_ptr<Entity>> resolvedEntities;
+		EntityTable(int size) {
+			tableSize = size;
+			EntityPointers = std::shared_ptr<QWORD[]>(new QWORD[tableSize]);
+			this->registerOffset(0x0, EntityPointers.get(), sizeof(QWORD) * tableSize);
 		}
 	};
 }

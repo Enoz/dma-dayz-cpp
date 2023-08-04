@@ -30,60 +30,49 @@
 namespace DayZ {
 	class World : public DMAMem::MemoryObject {
 
-		bool resolvedBase = false;
-		bool resolvedTables = false;
-		std::vector<DMAMem::MemoryObject::ResolutionRequest> getRequestedResolutions(QWORD baseAddress) override {
-			if (!resolvedBase) {
-				this->registerOffset(0xEC0, &NearEntityTableCount, sizeof(int32_t));
-				this->registerOffset(0x1008, &FarEntityTableCount, sizeof(int32_t));
-				this->registerOffset(0x1F88, &SlowEntityCountAlloc, sizeof(int32_t));
-				this->registerOffset(0x1F90, &SlowEntityValidCount, sizeof(int32_t));
-				this->registerOffset(0x1FD8, &ItemTableCountAlloc, sizeof(int32_t));
-				this->registerOffset(0x1FE0, &ItemTableCount, sizeof(int32_t));
-
-
-
-				resolvedBase = true;
-				this->_isBaseResolved = false;
-				return this->generateDefaultResolutions(baseAddress);
-
-			}
-			if (!resolvedTables) {
+	protected:
+		std::vector<DMAMem::MemoryObject::ResolutionRequest> postResolveResolutions() override {
+			if (NearEntityTable == nullptr) {
 				NearEntityTable = std::shared_ptr<EntityTable>(new EntityTable(this->NearEntityTableCount));
 				FarEntityTable = std::shared_ptr<EntityTable>(new EntityTable(this->FarEntityTableCount));
 				SlowEntityTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem(this->SlowEntityCountAlloc, this->SlowEntityValidCount));
 				ItemTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem(this->ItemTableCountAlloc, this->ItemTableCount));
-				camera = std::shared_ptr<Camera>(new Camera());
+				
 
 				this->registerPointer(0xEB8, NearEntityTable.get());
 				this->registerPointer(0x1000, FarEntityTable.get());
 				this->registerPointer(0x1F80, SlowEntityTable.get());
 				this->registerPointer(0x1FD0, ItemTable.get());
-				this->registerPointer(0x1B8, camera.get());
-
-				resolvedTables = true;
-				this->_isBaseResolved = false;
-				return this->generateDefaultResolutions(baseAddress);
-				
+				return this->getRequestedResolutions(_remoteAddress);
 			}
-			auto res = this->generateDefaultResolutions(baseAddress);
-			this->_isBaseResolved = true;
-			return res;
-			
+			return this->getPointerResolutions();
 		}
 
 	public:
-		std::shared_ptr<EntityTable> NearEntityTable;
+
+		World() {
+			this->registerOffset(0xEC0, &NearEntityTableCount, sizeof(int32_t));
+			this->registerOffset(0x1008, &FarEntityTableCount, sizeof(int32_t));
+			this->registerOffset(0x1F88, &SlowEntityCountAlloc, sizeof(int32_t));
+			this->registerOffset(0x1F90, &SlowEntityValidCount, sizeof(int32_t));
+			this->registerOffset(0x1FD8, &ItemTableCountAlloc, sizeof(int32_t));
+			this->registerOffset(0x1FE0, &ItemTableCount, sizeof(int32_t));
+
+			camera = std::shared_ptr<Camera>(new Camera());
+			this->registerPointer(0x1B8, camera.get());
+		}
+		std::shared_ptr<EntityTable> NearEntityTable = nullptr;
+		std::shared_ptr<Camera> camera = nullptr;
+		std::shared_ptr<EntityTable> FarEntityTable = nullptr;
+		std::shared_ptr<EntityTableSlowItem> SlowEntityTable = nullptr;
+		std::shared_ptr<EntityTableSlowItem> ItemTable = nullptr;
 		int32_t NearEntityTableCount;
-		std::shared_ptr<EntityTable> FarEntityTable;
 		int32_t FarEntityTableCount;
-		std::shared_ptr<EntityTableSlowItem> SlowEntityTable;
 		int32_t SlowEntityCountAlloc;
 		int32_t SlowEntityValidCount;
-		std::shared_ptr<EntityTableSlowItem> ItemTable;
 		int32_t ItemTableCountAlloc;
 		int32_t ItemTableCount;
-		std::shared_ptr<Camera> camera;
+
 	};
 
 }
