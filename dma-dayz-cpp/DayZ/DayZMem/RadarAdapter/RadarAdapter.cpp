@@ -84,7 +84,14 @@ void DayZ::RadarAdapter::drawAliveEntities(DMARender::IGameMap* curMap, const DM
 				}
 			}
 		}
-		drawBlip(screenPos, blipSize, blipColor, 16, 1, infoText);
+
+		if (ent->isPlayer()) {
+			drawBlipDirectional(screenPos, blipSize, blipColor, 16, 1, infoText, ent->FutureVisualStatePtr->getRotationCorrected());
+		}
+		else {
+			drawBlip(screenPos, blipSize, blipColor, 16, 1, infoText);
+
+		}
 	}
 
 }
