@@ -39,6 +39,9 @@
     <ClCompile Include="DayZ\Maps\Namalsk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DayZ\Maps\Livonia.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DayZ\Structs\ArmaString.h">
@@ -113,6 +116,9 @@
     <ClInclude Include="DayZ\Maps\Namalsk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DayZ\Maps\Livonia.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />
@@ -122,6 +128,9 @@
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
     <CopyFileToFolders Include="mapcontent\namalsk.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="mapcontent\livonia.png">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
   </ItemGroup>

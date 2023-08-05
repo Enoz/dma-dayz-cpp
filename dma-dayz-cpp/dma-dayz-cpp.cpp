@@ -12,6 +12,7 @@
 #include "DMARender/includes.h"
 #include "DayZ/Maps/ChernarusPlus.h"
 #include "DayZ/Maps/Namalsk.h"
+#include "DayZ/Maps/Livonia.h"
 
 int main()
 {
@@ -28,6 +29,7 @@ int main()
     cmd.getBridge()->setOverlay(std::shared_ptr<DayZ::OverlayAdapter>(new DayZ::OverlayAdapter(memUpdater.get())));
     cmd.getBridge()->addMap(std::shared_ptr<DayZ::ChernarusPlus>(new DayZ::ChernarusPlus()));
     cmd.getBridge()->addMap(std::shared_ptr<DayZ::Namalsk>(new DayZ::Namalsk()));
+    cmd.getBridge()->addMap(std::shared_ptr<DayZ::Livonia>(new DayZ::Livonia()));
 
     cmd.getBridge()->setRadar(std::shared_ptr<DayZ::RadarAdapter>(new DayZ::RadarAdapter(memUpdater.get())));
 
