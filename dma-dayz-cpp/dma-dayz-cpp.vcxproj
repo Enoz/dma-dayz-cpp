@@ -142,6 +142,7 @@
     <ClCompile Include="DayZ\DayZMem\RadarAdapter\RadarAdapter.cpp" />
     <ClCompile Include="DayZ\DayzUtil.cpp" />
     <ClCompile Include="DayZ\Maps\ChernarusPlus.cpp" />
+    <ClCompile Include="DayZ\Maps\Livonia.cpp" />
     <ClCompile Include="DayZ\Maps\Namalsk.cpp" />
     <ClCompile Include="dma-dayz-cpp.cpp" />
   </ItemGroup>
@@ -152,6 +153,7 @@
     <ClInclude Include="DayZ\DayZMem\RadarAdapter\RadarAdapter.h" />
     <ClInclude Include="DayZ\DayzUtil.h" />
     <ClInclude Include="DayZ\Maps\ChernarusPlus.h" />
+    <ClInclude Include="DayZ\Maps\Livonia.h" />
     <ClInclude Include="DayZ\Maps\Namalsk.h" />
     <ClInclude Include="DayZ\Structs\ArmaString.h" />
     <ClInclude Include="DayZ\Structs\EntityFilterList.h" />
@@ -189,6 +191,12 @@
     <CopyFileToFolders Include="mapcontent\namalsk.png">
       <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)\maps</DestinationFolders>
       <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)\maps</DestinationFolders>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="mapcontent\livonia.png">
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)\maps</DestinationFolders>
+      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)\maps</DestinationFolders>
     </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
