@@ -39,10 +39,10 @@ namespace DayZ {
 				ItemTable = std::shared_ptr<EntityTableSlowItem>(new EntityTableSlowItem(this->ItemTableCountAlloc, this->ItemTableCount));
 				
 
-				this->registerPointer(0xEB8, NearEntityTable.get());
-				this->registerPointer(0x1000, FarEntityTable.get());
-				this->registerPointer(0x1F80, SlowEntityTable.get());
-				this->registerPointer(0x1FD0, ItemTable.get());
+				this->registerPointer(0xEC8, NearEntityTable.get());
+				this->registerPointer(0x1010, FarEntityTable.get());
+				this->registerPointer(0x1F90, SlowEntityTable.get());
+				this->registerPointer(0x1FE0, ItemTable.get());
 				return this->getRequestedResolutions(_remoteAddress);
 			}
 			return this->getPointerResolutions();
@@ -51,12 +51,12 @@ namespace DayZ {
 	public:
 
 		World() {
-			this->registerOffset(0xEC0, &NearEntityTableCount, sizeof(int32_t));
-			this->registerOffset(0x1008, &FarEntityTableCount, sizeof(int32_t));
-			this->registerOffset(0x1F88, &SlowEntityCountAlloc, sizeof(int32_t));
-			this->registerOffset(0x1F90, &SlowEntityValidCount, sizeof(int32_t));
-			this->registerOffset(0x1FD8, &ItemTableCountAlloc, sizeof(int32_t));
-			this->registerOffset(0x1FE0, &ItemTableCount, sizeof(int32_t));
+			this->registerOffset(0xEC8 + 0x8, &NearEntityTableCount, sizeof(int32_t));
+			this->registerOffset(0x1010 + 0x8, &FarEntityTableCount, sizeof(int32_t));
+			this->registerOffset(0x1F90 + 0x8, &SlowEntityCountAlloc, sizeof(int32_t));
+			this->registerOffset(0x1F90 + 0x8 + 0x8, &SlowEntityValidCount, sizeof(int32_t));
+			this->registerOffset(0x1FE0 + 0x8, &ItemTableCountAlloc, sizeof(int32_t));
+			this->registerOffset(0x1FE0 + 0x8 + 0x8, &ItemTableCount, sizeof(int32_t));
 
 			camera = std::shared_ptr<Camera>(new Camera());
 			this->registerPointer(0x1B8, camera.get());

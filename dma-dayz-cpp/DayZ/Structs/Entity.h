@@ -70,11 +70,11 @@ namespace DayZ {
 			FutureVisualStatePtr = std::shared_ptr<FutureVisualState>(new FutureVisualState());
 			EntityTypePtr = std::shared_ptr<EntityType>(new EntityType());
 			InventoryPtr = std::shared_ptr<EntityInventory>(new EntityInventory());
-			this->registerPointer(0x168, EntityTypePtr.get());
-			this->registerPointer(0x1C0, FutureVisualStatePtr.get());
-			this->registerPointer(0x658, InventoryPtr.get());
-			this->registerOffset(0x6DC, &NetworkID, sizeof(uint32_t));
-			this->registerOffset(0x17D, &isDead, sizeof(bool));
+			this->registerPointer(0x180, EntityTypePtr.get());
+			this->registerPointer(0x1D0, FutureVisualStatePtr.get());
+			this->registerPointer(0x678, InventoryPtr.get());
+			this->registerOffset(0x6FC, &NetworkID, sizeof(uint32_t));
+			this->registerOffset(0x194, &isDead, sizeof(bool));
 		}
 
 		

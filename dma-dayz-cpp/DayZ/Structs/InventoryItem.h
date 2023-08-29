@@ -23,7 +23,7 @@ namespace DayZ {
 
 		InventoryItem() {
 			EntityTypePtr = std::shared_ptr<EntityType>(new EntityType());
-			this->registerPointer(0x168, EntityTypePtr.get());
+			this->registerPointer(0x180, EntityTypePtr.get());
 		}
 
 		bool isValid() {

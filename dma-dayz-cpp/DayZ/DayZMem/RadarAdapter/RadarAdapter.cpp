@@ -104,7 +104,6 @@ DayZ::RadarAdapter::RadarAdapter(DayZ::MemoryUpdater* memUpdater)
 void DayZ::RadarAdapter::DrawOverlay(DMARender::IGameMap* curMap, const DMARender::MapTransform& mTransform)
 {
 
-	auto drawList = ImGui::GetBackgroundDrawList();
 	ImGui::PushFont(radarFont);
 	drawLoot(curMap, mTransform, memUpdater->getSlowEntityTable()->resolvedEntities);
 	drawLoot(curMap, mTransform, memUpdater->getItemTable()->resolvedEntities);
