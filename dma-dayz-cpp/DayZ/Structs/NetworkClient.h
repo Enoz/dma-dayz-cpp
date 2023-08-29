@@ -10,9 +10,9 @@ namespace DayZ {
 		std::shared_ptr<Scoreboard> scoreboardPtr;
 
 		NetworkClient() {
-			this->registerOffset(0x18, &PlayerCount, sizeof(uint32_t));
+			this->registerOffset(0x20, &PlayerCount, sizeof(uint32_t));
 			scoreboardPtr = std::shared_ptr<Scoreboard>(new Scoreboard());
-			this->registerPointer(0x10, scoreboardPtr.get());
+			this->registerPointer(0x18, scoreboardPtr.get());
 		}
 	};
 }
