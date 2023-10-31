@@ -43,6 +43,8 @@ void DayZ::RadarAdapter::drawAliveEntities(DMARender::IGameMap* curMap, const DM
 	for (auto ent : entities) {
 		if (!ent->isValid())
 			continue;
+		if (ent->isDead)
+			continue;
 		ImU32 blipColor;
 		float blipSize;
 		if (ent->isPlayer()) {
@@ -107,6 +109,8 @@ void DayZ::RadarAdapter::DrawOverlay(DMARender::IGameMap* curMap, const DMARende
 	ImGui::PushFont(radarFont);
 	drawLoot(curMap, mTransform, memUpdater->getSlowEntityTable()->resolvedEntities);
 	drawLoot(curMap, mTransform, memUpdater->getItemTable()->resolvedEntities);
+	drawLoot(curMap, mTransform, memUpdater->getNearEntityTable()->resolvedEntities);
+	drawLoot(curMap, mTransform, memUpdater->getFarEntityTable()->resolvedEntities);
 	drawAliveEntities(curMap, mTransform, memUpdater->getFarEntityTable()->resolvedEntities, memUpdater->getScoreboard().get());
 	drawAliveEntities(curMap, mTransform, memUpdater->getNearEntityTable()->resolvedEntities, memUpdater->getScoreboard().get());
 	ImGui::PopFont();
