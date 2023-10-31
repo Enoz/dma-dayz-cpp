@@ -40,6 +40,8 @@ void DayZ::OverlayAdapter::DrawOverlay()
 	auto scoreboard = memUpdater->getScoreboard();
 	drawLoot(camera.get(), itemTable->resolvedEntities);
 	drawLoot(camera.get(), slowTable->resolvedEntities);
+	drawLoot(camera.get(), nearTable->resolvedEntities);
+	drawLoot(camera.get(), farTable->resolvedEntities);
 	drawAliveEntities(camera.get(), nearTable->resolvedEntities, scoreboard.get());
 	drawAliveEntities(camera.get(), farTable->resolvedEntities, scoreboard.get());
 	//drawDebugInformation(camera.get(), slowTable->resolvedEntities);
@@ -66,6 +68,8 @@ void DayZ::OverlayAdapter::drawAliveEntities(DayZ::Camera* camera, const std::ve
 	for (const auto& ent : entities) {
 		//Draw Bounding Box
 		if (!ent->isValid())
+			continue;
+		if (ent->isDead)
 			continue;
 		ImU32 boxColor;
 		if (ent->isPlayer()) {
@@ -140,6 +144,7 @@ void DayZ::OverlayAdapter::drawDebugInformation(DayZ::Camera* camera, const std:
 		drawText(item->EntityTypePtr->ConfigName->value, DMARender::Vector2(screenPos.x, screenPos.y + 60), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
 		drawText(item->EntityTypePtr->CleanName->value, DMARender::Vector2(screenPos.x, screenPos.y + 80), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
 		drawText(item->EntityTypePtr->ModelName->value, DMARender::Vector2(screenPos.x, screenPos.y + 100), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
+		drawText(std::to_string(item->isDead), DMARender::Vector2(screenPos.x, screenPos.y + 120), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
 	}
 }
 

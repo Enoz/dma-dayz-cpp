@@ -74,7 +74,7 @@ namespace DayZ {
 			this->registerPointer(0x1D0, FutureVisualStatePtr.get());
 			this->registerPointer(0x678, InventoryPtr.get());
 			this->registerOffset(0x6FC, &NetworkID, sizeof(uint32_t));
-			this->registerOffset(0x194, &isDead, sizeof(bool));
+			this->registerOffset(0xE2, &isDead, sizeof(bool));
 		}
 
 		
