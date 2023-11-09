@@ -44,10 +44,10 @@ void DayZ::OverlayAdapter::DrawOverlay()
 	drawLoot(camera.get(), farTable->resolvedEntities);
 	drawAliveEntities(camera.get(), nearTable->resolvedEntities, scoreboard.get());
 	drawAliveEntities(camera.get(), farTable->resolvedEntities, scoreboard.get());
-	//drawDebugInformation(camera.get(), slowTable->resolvedEntities);
-	//drawDebugInformation(camera.get(), itemTable->resolvedEntities);
-	//drawDebugInformation(camera.get(), nearTable->resolvedEntities);
-	//drawDebugInformation(camera.get(), farTable->resolvedEntities);
+	// drawDebugInformation(camera.get(), slowTable->resolvedEntities);
+	// drawDebugInformation(camera.get(), itemTable->resolvedEntities);
+	// drawDebugInformation(camera.get(), nearTable->resolvedEntities);
+	// drawDebugInformation(camera.get(), farTable->resolvedEntities);
 
 }
 
