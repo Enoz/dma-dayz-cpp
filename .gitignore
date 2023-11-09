@@ -368,4 +368,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Maps
-dma-dayz-cpp/mapcontent
+*.png
