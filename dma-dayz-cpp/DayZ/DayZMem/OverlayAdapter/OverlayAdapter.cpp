@@ -140,10 +140,10 @@ void DayZ::OverlayAdapter::drawDebugInformation(DayZ::Camera* camera, const std:
 		auto screenPos = DMARender::Vector2();
 		if (!WorldToScreenDayZ(camera, itemPos, screenPos))
 			continue;
-		drawText(item->EntityTypePtr->TypeName->value, DMARender::Vector2(screenPos.x, screenPos.y + 40), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));
-		drawText(item->EntityTypePtr->ConfigName->value, DMARender::Vector2(screenPos.x, screenPos.y + 60), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
-		drawText(item->EntityTypePtr->CleanName->value, DMARender::Vector2(screenPos.x, screenPos.y + 80), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
-		drawText(item->EntityTypePtr->ModelName->value, DMARender::Vector2(screenPos.x, screenPos.y + 100), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
+		drawText(std::string("TypeName: ") + item->EntityTypePtr->TypeName->value, DMARender::Vector2(screenPos.x, screenPos.y + 40), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));
+		drawText(std::string("ConfigName: ") + item->EntityTypePtr->ConfigName->value, DMARender::Vector2(screenPos.x, screenPos.y + 60), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
+		drawText(std::string("CleanName: ") + item->EntityTypePtr->CleanName->value, DMARender::Vector2(screenPos.x, screenPos.y + 80), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
+		drawText(std::string("ModelName: ") + item->EntityTypePtr->ModelName->value, DMARender::Vector2(screenPos.x, screenPos.y + 100), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
 		drawText(std::to_string(item->isDead), DMARender::Vector2(screenPos.x, screenPos.y + 120), ImGui::GetFontSize(), IM_COL32(0, 255, 0, 255));;
 	}
 }
