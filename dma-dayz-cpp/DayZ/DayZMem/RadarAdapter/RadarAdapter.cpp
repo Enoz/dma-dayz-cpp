@@ -82,7 +82,7 @@ void DayZ::RadarAdapter::drawAliveEntities(DayZ::Camera* camera, DMARender::IGam
 
 	std::vector<std::string> MainPlayerPlayingNames = { "LOCALPLAYERNAME1", "LOCALPLAYERNAME2" };
 
-	std::vector<std::string> specialPlayerNames = { "Bkmmhz", "BuckHammond", "Friend3", "Friend4", "Friend5", "Friend6" };
+	std::vector<std::string> specialPlayerNames = { "Friend1", "Friend2", "Friend3", "Friend4", "Friend5", "Friend6" };
 
 	for (auto ent : entities) {
 		if (!ent->isValid())
