@@ -72,8 +72,8 @@ namespace DayZ {
 			InventoryPtr = std::shared_ptr<EntityInventory>(new EntityInventory());
 			this->registerPointer(0x180, EntityTypePtr.get());
 			this->registerPointer(0x1D0, FutureVisualStatePtr.get());
-			this->registerPointer(0x678, InventoryPtr.get());
-			this->registerOffset(0x6FC, &NetworkID, sizeof(uint32_t));
+			this->registerPointer(0x680, InventoryPtr.get());
+			this->registerOffset(0x70C, &NetworkID, sizeof(uint32_t));
 			this->registerOffset(0xE2, &isDead, sizeof(bool));
 		}
 

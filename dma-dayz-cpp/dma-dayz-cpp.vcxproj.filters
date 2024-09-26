@@ -42,6 +42,21 @@
     <ClCompile Include="DayZ\Maps\Livonia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DayZ\Maps\DeadFall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DayZ\Maps\Alteria.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DayZ\Maps\Lux.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DayZ\Maps\Esseker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DayZ\Maps\Deerisle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DayZ\Structs\ArmaString.h">
@@ -117,6 +132,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DayZ\Maps\Livonia.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Maps\DeadFall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Maps\Alteria.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Maps\Lux.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Maps\Esseker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DayZ\Maps\Deerisle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

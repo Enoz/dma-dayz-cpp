@@ -16,9 +16,9 @@ void DayZ::Mem::fetchBaseAddresses() {
 	auto pid = getPid();
 	auto baseModule = staticManager.getModule(pid, EXE_NAME);
 
-	this->worldAddress = baseModule.pvmEntry->vaBase + 0x4169C58;
+	this->worldAddress = baseModule.pvmEntry->vaBase + 0x416AC70;
 	std::cout << "World Address: 0x" << std::hex << this->worldAddress << std::endl;
-	this->networkManagerAddress = baseModule.pvmEntry->vaBase + 0xF15E20;
+	this->networkManagerAddress = baseModule.pvmEntry->vaBase + 0xF16E30;
 	std::cout << "NetworkManager Address: 0x" << std::hex << this->networkManagerAddress << std::endl;
 
 };

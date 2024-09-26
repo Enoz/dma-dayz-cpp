@@ -11,7 +11,7 @@ namespace DayZ {
 			this->registerOffset(0x30, &NetworkID, sizeof(uint32_t));
 
 			PlayerName = std::shared_ptr<ArmaString>(new ArmaString());
-			this->registerPointer(0xF0, PlayerName.get());
+			this->registerPointer(0xF8, PlayerName.get());
 		}
 	};
 }
