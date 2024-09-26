@@ -13,6 +13,11 @@
 #include "DayZ/Maps/ChernarusPlus.h"
 #include "DayZ/Maps/Namalsk.h"
 #include "DayZ/Maps/Livonia.h"
+#include "DayZ/Maps/DeadFall.h"
+#include "DayZ/Maps/Alteria.h"
+#include "DayZ/Maps/Lux.h"
+#include "DayZ/Maps/Esseker.h"
+#include "DayZ/Maps/Deerisle.h"
 
 int main()
 {
@@ -30,6 +35,11 @@ int main()
     cmd.getBridge()->addMap(std::shared_ptr<DayZ::ChernarusPlus>(new DayZ::ChernarusPlus()));
     cmd.getBridge()->addMap(std::shared_ptr<DayZ::Namalsk>(new DayZ::Namalsk()));
     cmd.getBridge()->addMap(std::shared_ptr<DayZ::Livonia>(new DayZ::Livonia()));
+    cmd.getBridge()->addMap(std::shared_ptr<DayZ::DeadFall>(new DayZ::DeadFall()));
+    cmd.getBridge()->addMap(std::shared_ptr<DayZ::Alteria>(new DayZ::Alteria()));
+    cmd.getBridge()->addMap(std::shared_ptr<DayZ::Lux>(new DayZ::Lux()));
+    cmd.getBridge()->addMap(std::shared_ptr<DayZ::Esseker>(new DayZ::Esseker()));
+    cmd.getBridge()->addMap(std::shared_ptr<DayZ::Deerisle>(new DayZ::Deerisle()));
 
     cmd.getBridge()->setRadar(std::shared_ptr<DayZ::RadarAdapter>(new DayZ::RadarAdapter(memUpdater.get())));
 

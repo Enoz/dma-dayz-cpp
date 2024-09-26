@@ -16,7 +16,7 @@ namespace DayZ {
 			this->registerPointer(0x70, TypeName.get());
 			this->registerPointer(0x88, ModelName.get());
 			this->registerPointer(0xA8, ConfigName.get());
-			this->registerPointer(0x4E8, CleanName.get());
+			this->registerPointer(0x4F0, CleanName.get());
 		}
 
 		std::shared_ptr<ArmaString> getBestString() {

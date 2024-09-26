@@ -133,6 +133,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)DMALib\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -141,8 +142,13 @@
     <ClCompile Include="DayZ\DayZMem\OverlayAdapter\OverlayAdapter.cpp" />
     <ClCompile Include="DayZ\DayZMem\RadarAdapter\RadarAdapter.cpp" />
     <ClCompile Include="DayZ\DayzUtil.cpp" />
+    <ClCompile Include="DayZ\Maps\Alteria.cpp" />
     <ClCompile Include="DayZ\Maps\ChernarusPlus.cpp" />
+    <ClCompile Include="DayZ\Maps\DeadFall.cpp" />
+    <ClCompile Include="DayZ\Maps\Deerisle.cpp" />
+    <ClCompile Include="DayZ\Maps\Esseker.cpp" />
     <ClCompile Include="DayZ\Maps\Livonia.cpp" />
+    <ClCompile Include="DayZ\Maps\Lux.cpp" />
     <ClCompile Include="DayZ\Maps\Namalsk.cpp" />
     <ClCompile Include="dma-dayz-cpp.cpp" />
   </ItemGroup>
@@ -152,8 +158,13 @@
     <ClInclude Include="DayZ\DayZMem\OverlayAdapter\OverlayAdapter.h" />
     <ClInclude Include="DayZ\DayZMem\RadarAdapter\RadarAdapter.h" />
     <ClInclude Include="DayZ\DayzUtil.h" />
+    <ClInclude Include="DayZ\Maps\Alteria.h" />
     <ClInclude Include="DayZ\Maps\ChernarusPlus.h" />
+    <ClInclude Include="DayZ\Maps\DeadFall.h" />
+    <ClInclude Include="DayZ\Maps\Deerisle.h" />
+    <ClInclude Include="DayZ\Maps\Esseker.h" />
     <ClInclude Include="DayZ\Maps\Livonia.h" />
+    <ClInclude Include="DayZ\Maps\Lux.h" />
     <ClInclude Include="DayZ\Maps\Namalsk.h" />
     <ClInclude Include="DayZ\Structs\ArmaString.h" />
     <ClInclude Include="DayZ\Structs\EntityFilterList.h" />
