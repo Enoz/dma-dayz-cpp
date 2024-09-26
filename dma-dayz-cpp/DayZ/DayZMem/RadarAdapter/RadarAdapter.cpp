@@ -48,7 +48,7 @@ void DayZ::RadarAdapter::drawLoot(DMARender::IGameMap* curMap, const DMARender::
 		}*/
 		
 		if (item->isPlayer()) {
-			textCol = IM_COL32(0, 255, 255, 100);
+			textCol = IM_COL32(0, 255, 255, 255);
 			postFix = " (Dead)";
 		} else if (item->isAnimal()) {
 			textCol = IM_COL32(0, 255, 0, 100);
@@ -82,7 +82,7 @@ void DayZ::RadarAdapter::drawAliveEntities(DayZ::Camera* camera, DMARender::IGam
 
 	std::vector<std::string> MainPlayerPlayingNames = { "LOCALPLAYERNAME1", "LOCALPLAYERNAME2" };
 
-	std::vector<std::string> specialPlayerNames = { "Bkmmhz", "BuckHammond", "Friend3", "Friend4", "Friend5", "Friend6" };
+	std::vector<std::string> specialPlayerNames = { "Friend1", "Friend2", "Friend3", "Friend4", "Friend5", "Friend6" };
 
 	for (auto ent : entities) {
 		if (!ent->isValid())
